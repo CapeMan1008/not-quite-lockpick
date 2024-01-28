@@ -186,7 +186,7 @@ function CheckLock(lock, parent_door, imaginary)
     elseif lock.type == "blank" then
         ---@cast lock BlankLock
         return CheckBlankLock(lock, parent_door)
-    elseif lock.type == "blank" then
+    elseif lock.type == "blast" then
         ---@cast lock BlastLock
         --TODO return CheckBlastLock(lock, parent_door, imaginary)
     elseif lock.type == "all" then
