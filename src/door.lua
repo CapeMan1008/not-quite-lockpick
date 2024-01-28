@@ -309,10 +309,7 @@ end
 ---@param door Door
 ---@return boolean
 function GetDoorPure(door)
-    ---@type KeyColor
-    local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
-
-    if effective_color == "pure" then
+    if GetEffectiveColor(door.color, door.cursed, door.mimic) == "pure" then
         return true
     end
 
