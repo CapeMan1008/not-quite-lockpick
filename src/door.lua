@@ -19,7 +19,7 @@
 
 ---@class NormalLock : Lock
 ---@field type "normal"
----@field amount ComplexNumber The amount of keys required for the lock to open. Only functions properly if the amount is purely real or purely imaginary.
+---@field amount ComplexNumber The amount of keys required for the lock to open.
 ---@field negative boolean Whether the lock checks if your keys are greater than or less than the amount.
 
 ---@class BlankLock : Lock
