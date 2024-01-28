@@ -277,6 +277,14 @@ function CheckNormalLock(lock, parent_door, imaginary)
     return false
 end
 
+---Returns if a black lock is openable.
+---@param lock BlankLock The lock being checked.
+---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
+---@return boolean can_open
+function CheckBlankLock(lock, parent_door)
+    return Keys[GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)] == 0
+end
+
 ---Generates a version of a normal lock that has been multiplied by i.
 ---@param lock NormalLock The lock being checked
 ---@return NormalLock
