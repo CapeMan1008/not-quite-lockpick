@@ -231,7 +231,7 @@ function CheckNormalLock(lock, parent_door, imaginary)
         if lock.negative then
             if Keys[required_color].real <= lock.amount.real then
                 cost = cost + lock.amount.real
-            elseif required_color ~= "wild" and Keys[required_color].real + Keys.wild.real <= lock.amount.real then
+            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].real + Keys.wild.real <= lock.amount.real then
                 cost = cost + CreateComplexNum(Keys[required_color].real)
                 wild_cost = wild_cost + CreateComplexNum(lock.amount.real) - CreateComplexNum(Keys[required_color].real)
                 can_open = false
@@ -239,7 +239,7 @@ function CheckNormalLock(lock, parent_door, imaginary)
         else
             if Keys[required_color].real >= lock.amount.real then
                 cost = cost + lock.amount.real
-            elseif required_color ~= "wild" and Keys[required_color].real + Keys.wild.real >= lock.amount.real then
+            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].real + Keys.wild.real >= lock.amount.real then
                 cost = cost + CreateComplexNum(Keys[required_color].real)
                 wild_cost = wild_cost + CreateComplexNum(lock.amount.real) - CreateComplexNum(Keys[required_color].real)
             else
