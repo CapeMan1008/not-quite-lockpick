@@ -93,9 +93,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             end
 
             return true
-        end
-
-        if Keys.master.imaginary > 0 and imaginary then
+        elseif Keys.master.imaginary > 0 and imaginary then
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(0,1)
 
@@ -103,9 +101,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             end
 
             return true
-        end
-
-        if Keys.master.real < 0 and not imaginary then
+        elseif Keys.master.real < 0 and not imaginary then
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(1)
 
@@ -113,9 +109,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             end
 
             return false
-        end
-
-        if Keys.master.imaginary < 0 and imaginary then
+        elseif Keys.master.imaginary < 0 and imaginary then
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(0,1)
 
