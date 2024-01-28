@@ -22,8 +22,8 @@
 ---@class NormalLock : Lock
 ---@field type "normal"
 ---@field amount ComplexNumber The amount of keys required for the lock to open.
----@field negative boolean Whether the lock checks if your keys are greater than or less than the amount.
----@field imaginary_negative boolean Whether the lock checks if your keys are greater than or less than the amount.
+---@field negative boolean Whether the lock checks if your keys are greater than or less than the real amount.
+---@field imaginary_negative boolean Whether the lock checks if your keys are greater than or less than the imaginary amount.
 
 ---@class BlankLock : Lock
 ---@field type "blank"
