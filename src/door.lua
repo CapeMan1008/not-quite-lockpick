@@ -291,6 +291,29 @@ function CreateImaginaryNormalLock(lock)
     return new_lock
 end
 
+---Checks if the door has any pure parts on it.
+---@param door Door
+---@return boolean
+function GetDoorPure(door)
+    ---@type KeyColor
+    local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
+
+    if effective_color == "pure" then
+        return true
+    end
+
+    for _, lock in ipairs(door.locks) do
+        ---@type KeyColor
+        local lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic)
+
+        if lock_color == "pure" then
+            return true
+        end
+    end
+
+    return false
+end
+
 ---Opens one copy of a door, without checking any requirements, nor spending any keys. Not to be confused with TryOpenDoor, which does all necessary checks first.
 ---@param door Door
 ---@param imaginary boolean
