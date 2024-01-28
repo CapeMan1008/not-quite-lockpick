@@ -53,7 +53,7 @@
 function TryOpenDoor(door, use_master, imaginary, no_open)
     if door.copies == 0 then
         if not no_open then
-            OpenDoor(door, false, true)
+            OpenDoor(door, imaginary, true)
         end
 
         return true
