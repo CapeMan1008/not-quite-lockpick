@@ -291,7 +291,6 @@ end
 ---@param imaginary? boolean Used for imaginary copies of doors.
 ---@return boolean can_open
 ---@return ComplexNumber? cost
----@return ComplexNumber? wild_cost
 function CheckBlastLock(lock, parent_door, imaginary)
     ---@type boolean
     local check_imaginary, check_negative
@@ -337,7 +336,6 @@ end
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
 ---@return boolean can_open
 ---@return ComplexNumber? cost
----@return ComplexNumber? wild_cost
 function CheckAllLock(lock, parent_door)
     ---@type KeyColor
     local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
