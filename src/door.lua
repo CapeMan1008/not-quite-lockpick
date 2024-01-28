@@ -52,6 +52,10 @@
 ---@return ComplexNumber? wild_cost The number of wildcard keys spent to open the door.
 function TryOpenDoor(door, use_master, imaginary, no_open)
     if door.copies == 0 then
+        if not no_open then
+            OpenDoor(door, false, true)
+        end
+
         return true
     end
 
