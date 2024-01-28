@@ -44,9 +44,9 @@
 
 --- Tries to open a door, while checking if you meet the requirements.
 ---@param door Door The door to try opening.
----@param use_master boolean If true, checks if you can use a master key on the door before preforming normal checks.
----@param imaginary boolean If true, tries to open an imaginary copy of the door instead of a real copy.
----@param no_open boolean If true, returns a value without opening the door.
+---@param use_master boolean? If true, checks if you can use a master key on the door before preforming normal checks.
+---@param imaginary boolean? If true, tries to open an imaginary copy of the door instead of a real copy.
+---@param no_open boolean? If true, returns a value without opening the door.
 ---@return boolean can_open If you can open the door.
 ---@return ComplexNumber? cost The number of keys spent to open the door.
 ---@return ComplexNumber? wild_cost The number of wildcard keys spent to open the door.
