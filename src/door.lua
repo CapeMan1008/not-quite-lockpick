@@ -166,6 +166,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
     return true, cost, wild_cost
 end
 
+---Returns if a lock is openable, as well as how many keys it would cost to open.
 ---@param lock Lock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
 ---@param imaginary? boolean Used for imaginary copies of doors.
@@ -190,6 +191,7 @@ function CheckLock(lock, parent_door, imaginary)
     return false
 end
 
+---Returns if a normal lock is openable, as well as how many keys it would cost to open.
 ---@param lock NormalLock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
 ---@param imaginary? boolean Used for imaginary copies of doors.
@@ -269,6 +271,7 @@ function CheckNormalLock(lock, parent_door, imaginary)
     return false
 end
 
+---Generates a version of a normal lock that has been multiplied by i.
 ---@param lock NormalLock The lock being checked
 ---@return NormalLock
 function CreateImaginaryNormalLock(lock)
