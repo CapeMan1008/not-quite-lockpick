@@ -327,8 +327,8 @@ end
 
 ---Opens one copy of a door, without checking any requirements, nor spending any keys. Not to be confused with TryOpenDoor, which does all necessary checks first.
 ---@param door Door
----@param imaginary boolean
----@param always_deactivate boolean?
+---@param imaginary boolean?
+---@param always_deactivate boolean? Always deactivates the door and sets its copies to 0, no matter how many copies it actually has.
 ---@return boolean deactivated
 function OpenDoor(door, imaginary, always_deactivate)
     if always_deactivate then
