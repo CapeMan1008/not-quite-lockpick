@@ -65,12 +65,13 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     if use_master then
         ---@type boolean
-        local master_immune = false
+        local master_immune = GetDoorPure(door)
 
+        if not master_immune then
         ---@type KeyColor
         local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
 
-        if effective_color == "master" or effective_color == "pure" then
+            if effective_color == "master" then
             master_immune = true
         end
 
@@ -78,9 +79,10 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             ---@type KeyColor
             local lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic)
 
-            if lock_color == "master" or lock_color == "pure" then
+                if lock_color == "master" then
                 master_immune = true
                 break
+                end
             end
         end
 
