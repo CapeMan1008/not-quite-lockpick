@@ -306,25 +306,25 @@ function CheckBlastLock(lock, parent_door, imaginary)
     local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
 
     if not check_imaginary and not check_negative then
-        if Keys[required_color].real > 0 or Keys[required_color].real + Keys.wild.real > 0 then
+        if Keys[required_color].real > 0 then
             return true, CreateComplexNum(Keys[required_color].real)
         end
     end
 
     if not check_imaginary and check_negative then
-        if Keys[required_color].real < 0 or Keys[required_color].real + Keys.wild.real < 0 then
+        if Keys[required_color].real < 0 then
             return true, CreateComplexNum(Keys[required_color].real)
         end
     end
 
     if check_imaginary and not check_negative then
-        if Keys[required_color].imaginary > 0 or Keys[required_color].imaginary + Keys.wild.imaginary > 0 then
+        if Keys[required_color].imaginary > 0 then
             return true, CreateComplexNum(0,Keys[required_color].imaginary)
         end
     end
 
     if check_imaginary and check_negative then
-        if Keys[required_color].imaginary < 0 or Keys[required_color].imaginary + Keys.wild.imaginary < 0 then
+        if Keys[required_color].imaginary < 0 then
             return true, CreateComplexNum(0,Keys[required_color].imaginary)
         end
     end
