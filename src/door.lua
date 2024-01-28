@@ -286,7 +286,7 @@ function CheckBlankLock(lock, parent_door)
 end
 
 ---Generates a version of a normal lock that has been multiplied by i.
----@param lock NormalLock The lock being checked
+---@param lock NormalLock The lock being used as the base for the new lock.
 ---@return NormalLock
 function CreateImaginaryNormalLock(lock)
     ---@type table
