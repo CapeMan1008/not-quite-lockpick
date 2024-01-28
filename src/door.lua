@@ -191,7 +191,7 @@ function CheckLock(lock, parent_door, imaginary)
         return CheckBlastLock(lock, parent_door, imaginary)
     elseif lock.type == "all" then
         ---@cast lock AllLock
-        --TODO return CheckAllLock(lock, parent_door)
+        return CheckAllLock(lock, parent_door)
     end
 
     return false
@@ -327,6 +327,23 @@ function CheckBlastLock(lock, parent_door, imaginary)
         if Keys[required_color].imaginary < 0 then
             return true, CreateComplexNum(0,Keys[required_color].imaginary)
         end
+    end
+
+    return false
+end
+
+---Returns if a blast lock is openable, as well as how many keys it would cost to open.
+---@param lock AllLock The lock being checked.
+---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
+---@return boolean can_open
+---@return ComplexNumber? cost
+---@return ComplexNumber? wild_cost
+function CheckAllLock(lock, parent_door)
+    ---@type KeyColor
+    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
+
+    if Keys[required_color] ~= 0 then
+        return true, Keys[required_color]
     end
 
     return false
