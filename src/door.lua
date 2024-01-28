@@ -327,6 +327,8 @@ end
 ---@return boolean deactivated
 function OpenDoor(door, imaginary, always_deactivate)
     if always_deactivate then
+        door.copies = CreateComplexNum()
+
         door.active = false
 
         return true
