@@ -54,5 +54,10 @@ end
 --- Collect a key, deactivating it and changing your key count accordingly.
 ---@param key Key
 function CollectKey(key)
-    
+    local color = GetEffectiveColor(key.color, nil, key.mimic)
+
+    if key.type == "add" and not StarKeys[color] then
+        Keys[color] = Keys[color] + key.amount
+    end
+
 end
