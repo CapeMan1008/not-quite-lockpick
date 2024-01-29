@@ -36,7 +36,7 @@ StarKeys = {}
 
 ---Gets the effective color (the color used for most purposes) from the true color and the mimic status.
 ---@param color KeyColor
----@param cursed boolean?
+---@param cursed boolean? Only applies to doors (so far).
 ---@param mimic KeyColor?
 ---@return KeyColor
 function GetEffectiveColor(color, cursed, mimic)
@@ -51,8 +51,32 @@ function GetEffectiveColor(color, cursed, mimic)
     return color
 end
 
---- Collect a key, deactivating it and changing your key count accordingly.
+---Collect a key, deactivating it and changing your key count accordingly.
 ---@param key Key
 function CollectKey(key)
-    
+    local color = GetEffectiveColor(key.color, nil, key.mimic)
+
+    if key.type == "add" and not StarKeys[color] then
+        Keys[color] = Keys[color] + key.amount
+    end
+
+    if key.type == "exact" and not StarKeys[color] then
+        Keys[color] = key.amount
+    end
+
+    if key.type == "multiply" and not StarKeys[color] then
+        Keys[color] = Keys[color] * key.amount
+    end
+
+    if key.type == "square" and not StarKeys[color] then
+        Keys[color] = Keys[color] * Keys[color]
+    end
+
+    if key.type == "star" then
+        StarKeys[color] = true
+    end
+
+    if key.type == "unstar" then
+        StarKeys[color] = false
+    end
 end
