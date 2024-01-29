@@ -9,6 +9,9 @@
 ---@field negativeborder boolean Determines the appearance of the door's border.
 ---@field copies ComplexNumber The number of copies this door has.
 ---@field cursed boolean If this door is cursed or not.
+---@field frozen boolean If this door is frozen or not.
+---@field eroded boolean If this door is eroded or not.
+---@field painted boolean If this door is painted or not.
 ---@field mimic KeyColor? The mimic color for glitched doors or locks (locks use the mimic color of the door they're attached to).
 
 ---@class Lock
@@ -51,6 +54,10 @@
 ---@return ComplexNumber? cost The number of keys spent to open the door.
 ---@return ComplexNumber? wild_cost The number of wildcard keys spent to open the door.
 function TryOpenDoor(door, use_master, imaginary, no_open)
+    if door.frozen or door.eroded or door.painted then
+        return false
+    end
+
     if door.copies == 0 then
         if not no_open then
             OpenDoor(door, imaginary, true)
@@ -432,4 +439,50 @@ function CopyDoor(door, imaginary)
     end
 
     return false
+end
+
+---@alias AuraType
+---| '"unfreeze"' Frozen doors must be unfrozen with at least 1 red key before being opened.
+---| '"unerode"' Eroded doors must be uneroded with at least 5 green keys.
+---| '"unpaint"' Painted doors must be unpainted with at least 3 blue keys.
+---| '"curse"' If you have more than 0 brown keys, doors are cursed, turning them brown.
+
+---Checks if an aura is active, probably not complex enough to put into a function like this.
+---@param aura_type AuraType
+---@return boolean
+---@nodiscard
+function CheckAura(aura_type)
+    if aura_type == "unfreeze" and Keys[UNFREEZE_KEY_TYPE] >= UNFREEZE_KEY_AMOUNT then
+        return true
+    end
+    if aura_type == "unerode" and Keys[UNERODE_KEY_TYPE] >= UNERODE_KEY_AMOUNT then
+        return true
+    end
+    if aura_type == "unpaint" and Keys[UNPAINT_KEY_TYPE] >= UNPAINT_KEY_AMOUNT then
+        return true
+    end
+
+    if aura_type == "curse" and Keys.brown > 0 then
+        return true
+    end
+
+    return false
+end
+
+---Tries all auras on the specified door.
+---@param door Door
+function TryAurasOnDoor(door)
+    if door.frozen and CheckAura("unfreeze") then
+        door.frozen = false
+    end
+    if door.eroded and CheckAura("unerode") then
+        door.eroded = false
+    end
+    if door.painted and CheckAura("unpaint") then
+        door.painted = false
+    end
+
+    if not door.cursed and CheckAura("curse") and not GetDoorPure(door) then
+        door.cursed = true
+    end
 end
