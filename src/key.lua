@@ -71,4 +71,12 @@ function CollectKey(key)
     if key.type == "square" and not StarKeys[color] then
         Keys[color] = Keys[color] * Keys[color]
     end
+
+    if key.type == "star" then
+        StarKeys[color] = true
+    end
+
+    if key.type == "unstar" then
+        StarKeys[color] = false
+    end
 end
