@@ -60,4 +60,7 @@ function CollectKey(key)
         Keys[color] = Keys[color] + key.amount
     end
 
+    if key.type == "exact" and not StarKeys[color] then
+        Keys[color] = key.amount
+    end
 end
