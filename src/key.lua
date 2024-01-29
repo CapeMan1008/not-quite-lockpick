@@ -63,4 +63,8 @@ function CollectKey(key)
     if key.type == "exact" and not StarKeys[color] then
         Keys[color] = key.amount
     end
+
+    if key.type == "multiply" and not StarKeys[color] then
+        Keys[color] = Keys[color] * key.amount
+    end
 end
