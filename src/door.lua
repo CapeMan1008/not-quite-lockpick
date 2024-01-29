@@ -433,3 +433,9 @@ function CopyDoor(door, imaginary)
 
     return false
 end
+
+---@alias AuraType
+---| '"unfreeze"' Frozen doors must be unfrozen with at least 1 red key before being opened.
+---| '"unerode"' Eroded doors must be uneroded with at least 5 green keys.
+---| '"unpaint"' Painted doors must be unpainted with at least 3 blue keys.
+---| '"curse"' If you have more than 0 brown keys, doors are cursed, turning them brown.
