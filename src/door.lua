@@ -481,4 +481,8 @@ function TryAurasOnDoor(door)
     if door.painted and CheckAura("unpaint") then
         door.painted = false
     end
+
+    if not door.cursed and CheckAura("curse") and not GetDoorPure(door) then
+        door.cursed = true
+    end
 end
