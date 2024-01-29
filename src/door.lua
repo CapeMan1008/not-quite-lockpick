@@ -455,5 +455,9 @@ function CheckAura(aura_type)
         return true
     end
 
+    if aura_type == "curse" and Keys.brown > 0 then
+        return true
+    end
+
     return false
 end
