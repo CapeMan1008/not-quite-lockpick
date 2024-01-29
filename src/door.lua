@@ -1,6 +1,8 @@
 ---@class Door
 ---@field x integer The x position of the door.
 ---@field y integer The y position of the door.
+---@field width integer The width of the door.
+---@field height integer The height of the door.
 ---@field color KeyColor The "spend color" of the door. Used as the color of key to spend.
 ---@field locks Lock[] The list of locks on the door.
 ---@field active boolean Only active doors check for collision. Doors are deactivated once all copies have been opened.
@@ -19,8 +21,9 @@
 
 ---@class NormalLock : Lock
 ---@field type "normal"
----@field amount ComplexNumber The amount of keys required for the lock to open. Only functions properly if the amount is purely real or purely imaginary.
----@field negative boolean Whether the lock checks if your keys are greater than or less than the amount.
+---@field amount ComplexNumber The amount of keys required for the lock to open.
+---@field negative boolean Whether the lock checks if your keys are greater than or less than the real amount.
+---@field imaginary_negative boolean Whether the lock checks if your keys are greater than or less than the imaginary amount.
 
 ---@class BlankLock : Lock
 ---@field type "blank"
@@ -41,14 +44,18 @@
 
 --- Tries to open a door, while checking if you meet the requirements.
 ---@param door Door The door to try opening.
----@param use_master boolean If true, checks if you can use a master key on the door before preforming normal checks.
----@param imaginary boolean If true, tries to open an imaginary copy of the door instead of a real copy.
----@param no_open boolean If true, returns a value without opening the door.
+---@param use_master boolean? If true, checks if you can use a master key on the door before preforming normal checks.
+---@param imaginary boolean? If true, tries to open an imaginary copy of the door instead of a real copy.
+---@param no_open boolean? If true, returns a value without opening the door.
 ---@return boolean can_open If you can open the door.
 ---@return ComplexNumber? cost The number of keys spent to open the door.
 ---@return ComplexNumber? wild_cost The number of wildcard keys spent to open the door.
 function TryOpenDoor(door, use_master, imaginary, no_open)
     if door.copies == 0 then
+        if not no_open then
+            OpenDoor(door, imaginary, true)
+        end
+
         return true
     end
 
@@ -62,22 +69,24 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     if use_master then
         ---@type boolean
-        local master_immune = false
+        local master_immune = GetDoorPure(door)
 
-        ---@type KeyColor
-        local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
-
-        if effective_color == "master" or effective_color == "pure" then
-            master_immune = true
-        end
-
-        for _, lock in ipairs(door.locks) do
+        if not master_immune then
             ---@type KeyColor
-            local lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic)
+            local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
 
-            if lock_color == "master" or lock_color == "pure" then
+            if effective_color == "master" then
                 master_immune = true
-                break
+            end
+
+            for _, lock in ipairs(door.locks) do
+                ---@type KeyColor
+                local lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic)
+
+                if lock_color == "master" then
+                    master_immune = true
+                    break
+                end
             end
         end
 
@@ -93,9 +102,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             end
 
             return true
-        end
-
-        if Keys.master.imaginary > 0 and imaginary then
+        elseif Keys.master.imaginary > 0 and imaginary then
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(0,1)
 
@@ -103,9 +110,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             end
 
             return true
-        end
-
-        if Keys.master.real < 0 and not imaginary then
+        elseif Keys.master.real < 0 and not imaginary then
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(1)
 
@@ -113,9 +118,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             end
 
             return false
-        end
-
-        if Keys.master.imaginary < 0 and imaginary then
+        elseif Keys.master.imaginary < 0 and imaginary then
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(0,1)
 
@@ -169,23 +172,230 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
     return true, cost, wild_cost
 end
 
----@param lock Lock The lock being checked
+---Returns if a lock is openable, as well as how many keys it would cost to open.
+---@param lock Lock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
 ---@param imaginary? boolean Used for imaginary copies of doors.
 ---@return boolean can_open
 ---@return ComplexNumber? cost
 ---@return ComplexNumber? wild_cost
 function CheckLock(lock, parent_door, imaginary)
+    if lock.type == "normal" then
+        ---@cast lock NormalLock
+        return CheckNormalLock(lock, parent_door, imaginary)
+    elseif lock.type == "blank" then
+        ---@cast lock BlankLock
+        return CheckBlankLock(lock, parent_door)
+    elseif lock.type == "blast" then
+        ---@cast lock BlastLock
+        return CheckBlastLock(lock, parent_door, imaginary)
+    elseif lock.type == "all" then
+        ---@cast lock AllLock
+        return CheckAllLock(lock, parent_door)
+    end
+
+    return false
+end
+
+---Returns if a normal lock is openable, as well as how many keys it would cost to open.
+---@param lock NormalLock The lock being checked.
+---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
+---@param imaginary? boolean Used for imaginary copies of doors.
+---@return boolean can_open
+---@return ComplexNumber? cost
+---@return ComplexNumber? wild_cost
+function CheckNormalLock(lock, parent_door, imaginary)
+    if imaginary then
+        return CheckNormalLock(CreateImaginaryNormalLock(lock), parent_door, false)
+    end
+
+    ---@type KeyColor
+    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
+
+    ---@type boolean
+    local check_real, check_imaginary = true,true
+
+    if lock.amount.real == 0 then
+        check_real = false
+    end
+    if lock.amount.imaginary == 0 then
+        check_imaginary = false
+    end
+
+    ---@type boolean
+    local can_open = true
+    ---@type ComplexNumber
+    local cost, wild_cost = CreateComplexNum(), CreateComplexNum()
+
+    if check_real then
+        if lock.negative then
+            if Keys[required_color].real <= lock.amount.real then
+                cost = cost + lock.amount.real
+            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].real + Keys.wild.real <= lock.amount.real then
+                cost = cost + CreateComplexNum(Keys[required_color].real)
+                wild_cost = wild_cost + CreateComplexNum(lock.amount.real) - CreateComplexNum(Keys[required_color].real)
+                can_open = false
+            end
+        else
+            if Keys[required_color].real >= lock.amount.real then
+                cost = cost + lock.amount.real
+            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].real + Keys.wild.real >= lock.amount.real then
+                cost = cost + CreateComplexNum(Keys[required_color].real)
+                wild_cost = wild_cost + CreateComplexNum(lock.amount.real) - CreateComplexNum(Keys[required_color].real)
+            else
+                can_open = false
+            end
+        end
+    end
+
+    if check_imaginary then
+        if lock.imaginary_negative then
+            if Keys[required_color].imaginary <= lock.amount.imaginary then
+                cost = cost + lock.amount.imaginary
+            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].imaginary + Keys.wild.imaginary <= lock.amount.imaginary then
+                cost = cost + CreateComplexNum(0,Keys[required_color].imaginary)
+                wild_cost = wild_cost + CreateComplexNum(0,lock.amount.imaginary - Keys[required_color].imaginary)
+            else
+                can_open = false
+            end
+        else
+            if Keys[required_color].imaginary >= lock.amount.imaginary then
+                cost = cost + lock.amount.imaginary
+            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].imaginary + Keys.wild.imaginary >= lock.amount.imaginary then
+                cost = cost + CreateComplexNum(0,Keys[required_color].imaginary)
+                wild_cost = wild_cost + CreateComplexNum(0,lock.amount.imaginary - Keys[required_color].imaginary)
+            else
+                can_open = false
+            end
+        end
+    end
+
+    if can_open then
+        return true, cost, wild_cost
+    end
+
+    return false
+end
+
+---Returns if a black lock is openable.
+---@param lock BlankLock The lock being checked.
+---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
+---@return boolean can_open
+function CheckBlankLock(lock, parent_door)
+    return Keys[GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)] == 0
+end
+
+---Returns if a blast lock is openable, as well as how many keys it would cost to open.
+---@param lock BlastLock The lock being checked.
+---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
+---@param imaginary? boolean Used for imaginary copies of doors.
+---@return boolean can_open
+---@return ComplexNumber? cost
+function CheckBlastLock(lock, parent_door, imaginary)
+    ---@type boolean
+    local check_imaginary, check_negative
+
+    if imaginary then
+        check_imaginary = not lock.imaginary
+    else
+        check_negative = (lock.imaginary and not lock.negative) or (not lock.imaginary and lock.negative)
+    end
+
+    ---@type KeyColor
+    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
+
+    if not check_imaginary and not check_negative then
+        if Keys[required_color].real > 0 then
+            return true, CreateComplexNum(Keys[required_color].real)
+        end
+    end
+
+    if not check_imaginary and check_negative then
+        if Keys[required_color].real < 0 then
+            return true, CreateComplexNum(Keys[required_color].real)
+        end
+    end
+
+    if check_imaginary and not check_negative then
+        if Keys[required_color].imaginary > 0 then
+            return true, CreateComplexNum(0,Keys[required_color].imaginary)
+        end
+    end
+
+    if check_imaginary and check_negative then
+        if Keys[required_color].imaginary < 0 then
+            return true, CreateComplexNum(0,Keys[required_color].imaginary)
+        end
+    end
+
+    return false
+end
+
+---Returns if a blast lock is openable, as well as how many keys it would cost to open.
+---@param lock AllLock The lock being checked.
+---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
+---@return boolean can_open
+---@return ComplexNumber? cost
+function CheckAllLock(lock, parent_door)
+    ---@type KeyColor
+    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
+
+    if Keys[required_color] ~= 0 then
+        return true, Keys[required_color]
+    end
+
+    return false
+end
+
+---Generates a version of a normal lock that has been multiplied by i.
+---@param lock NormalLock The lock being used as the base for the new lock.
+---@return NormalLock
+function CreateImaginaryNormalLock(lock)
+    ---@type table
+    local new_lock = {}
+
+    for k, v in pairs(lock) do
+        new_lock[k] = v
+    end
+
+    ---@cast new_lock NormalLock
+    new_lock.amount = CreateComplexNum(-lock.amount.imaginary, lock.amount.real)
+
+    new_lock.negative = not lock.imaginary_negative
+    new_lock.imaginary_negative = lock.negative
+
+    return new_lock
+end
+
+---Checks if the door has any pure parts on it.
+---@param door Door
+---@return boolean
+function GetDoorPure(door)
+    if GetEffectiveColor(door.color, door.cursed, door.mimic) == "pure" then
+        return true
+    end
+
+    for _, lock in ipairs(door.locks) do
+        ---@type KeyColor
+        local lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic)
+
+        if lock_color == "pure" then
+            return true
+        end
+    end
+
     return false
 end
 
 ---Opens one copy of a door, without checking any requirements, nor spending any keys. Not to be confused with TryOpenDoor, which does all necessary checks first.
 ---@param door Door
----@param imaginary boolean
----@param always_deactivate boolean?
+---@param imaginary boolean?
+---@param always_deactivate boolean? Always deactivates the door and sets its copies to 0, no matter how many copies it actually has.
 ---@return boolean deactivated
 function OpenDoor(door, imaginary, always_deactivate)
     if always_deactivate then
+        door.copies = CreateComplexNum()
+
         door.active = false
 
         return true
