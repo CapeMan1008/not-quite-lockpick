@@ -36,7 +36,7 @@ StarKeys = {}
 
 ---Gets the effective color (the color used for most purposes) from the true color and the mimic status.
 ---@param color KeyColor
----@param cursed boolean?
+---@param cursed boolean? Only applies to doors (so far).
 ---@param mimic KeyColor?
 ---@return KeyColor
 function GetEffectiveColor(color, cursed, mimic)
