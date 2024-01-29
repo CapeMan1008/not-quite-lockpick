@@ -51,7 +51,7 @@ function GetEffectiveColor(color, cursed, mimic)
     return color
 end
 
---- Collect a key, deactivating it and changing your key count accordingly.
+---Collect a key, deactivating it and changing your key count accordingly.
 ---@param key Key
 function CollectKey(key)
     local color = GetEffectiveColor(key.color, nil, key.mimic)
