@@ -468,3 +468,17 @@ function CheckAura(aura_type)
 
     return false
 end
+
+---Tries all auras on the specified door.
+---@param door Door
+function TryAurasOnDoor(door)
+    if door.frozen and CheckAura("unfreeze") then
+        door.frozen = false
+    end
+    if door.eroded and CheckAura("unerode") then
+        door.eroded = false
+    end
+    if door.painted and CheckAura("unpaint") then
+        door.painted = false
+    end
+end
