@@ -9,6 +9,9 @@
 ---@field negativeborder boolean Determines the appearance of the door's border.
 ---@field copies ComplexNumber The number of copies this door has.
 ---@field cursed boolean If this door is cursed or not.
+---@field frozen boolean If this door is frozen or not.
+---@field eroded boolean If this door is eroded or not.
+---@field painted boolean If this door is painted or not.
 ---@field mimic KeyColor? The mimic color for glitched doors or locks (locks use the mimic color of the door they're attached to).
 
 ---@class Lock
@@ -51,6 +54,10 @@
 ---@return ComplexNumber? cost The number of keys spent to open the door.
 ---@return ComplexNumber? wild_cost The number of wildcard keys spent to open the door.
 function TryOpenDoor(door, use_master, imaginary, no_open)
+    if door.frozen or door.eroded or door.painted then
+        return false
+    end
+
     if door.copies == 0 then
         if not no_open then
             OpenDoor(door, imaginary, true)
