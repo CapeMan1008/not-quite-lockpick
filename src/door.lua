@@ -439,3 +439,21 @@ end
 ---| '"unerode"' Eroded doors must be uneroded with at least 5 green keys.
 ---| '"unpaint"' Painted doors must be unpainted with at least 3 blue keys.
 ---| '"curse"' If you have more than 0 brown keys, doors are cursed, turning them brown.
+
+---Checks if an aura is active, probably not complex enough to put into a function like this.
+---@param aura_type AuraType
+---@return boolean
+---@nodiscard
+function CheckAura(aura_type)
+    if aura_type == "unfreeze" and Keys[UNFREEZE_KEY_TYPE] >= UNFREEZE_KEY_AMOUNT then
+        return true
+    end
+    if aura_type == "unerode" and Keys[UNERODE_KEY_TYPE] >= UNERODE_KEY_AMOUNT then
+        return true
+    end
+    if aura_type == "unpaint" and Keys[UNPAINT_KEY_TYPE] >= UNPAINT_KEY_AMOUNT then
+        return true
+    end
+
+    return false
+end
