@@ -1,6 +1,4 @@
 ---@class Key
----@field x integer
----@field y integer
 ---@field color KeyColor
 ---@field type KeyType
 ---@field amount ComplexNumber

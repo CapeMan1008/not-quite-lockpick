@@ -1,6 +1,4 @@
 ---@class Door
----@field x integer The x position of the door.
----@field y integer The y position of the door.
 ---@field width integer The width of the door.
 ---@field height integer The height of the door.
 ---@field color KeyColor The "spend color" of the door. Used as the color of key to spend.
