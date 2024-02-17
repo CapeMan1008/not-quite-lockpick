@@ -381,8 +381,8 @@ function CreateNonWholeNormalLock(lock, imaginary, negative)
         new_amount.real = -new_amount.real
         new_amount.imaginary = -new_amount.imaginary
 
-        new_lock.negative = not lock.negative
-        new_lock.imaginary_negative = not lock.imaginary_negative
+        new_lock.negative = not new_lock.negative
+        new_lock.imaginary_negative = not new_lock.imaginary_negative
     end
 
     new_lock.amount = new_amount
