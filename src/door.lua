@@ -307,6 +307,10 @@ function CheckBlastLock(lock, parent_door, imaginary, negative)
         check_negative = (lock.imaginary and not lock.negative) or (not lock.imaginary and lock.negative)
     end
 
+    if negative then
+        check_negative = not check_negative
+    end
+
     ---@type KeyColor
     local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
 
