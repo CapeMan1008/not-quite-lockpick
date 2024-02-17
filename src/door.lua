@@ -304,7 +304,6 @@ function CheckBlastLock(lock, parent_door, imaginary, negative)
 
     if imaginary then
         check_imaginary = not lock.imaginary
-    else
         check_negative = (lock.imaginary and not lock.negative) or (not lock.imaginary and lock.negative)
     end
 
