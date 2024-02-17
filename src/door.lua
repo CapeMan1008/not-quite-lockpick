@@ -205,13 +205,14 @@ end
 ---Returns if a normal lock is openable, as well as how many keys it would cost to open.
 ---@param lock NormalLock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
----@param imaginary? boolean Used for imaginary copies of doors.
+---@param imaginary? boolean If this door copy is imaginary.
+---@param negative? boolean If this door copy is negative.
 ---@return boolean can_open
 ---@return ComplexNumber? cost
 ---@return ComplexNumber? wild_cost
-function CheckNormalLock(lock, parent_door, imaginary)
-    if imaginary then
-        return CheckNormalLock(CreateNonWholeNormalLock(lock), parent_door, false)
+function CheckNormalLock(lock, parent_door, imaginary, negative)
+    if imaginary or negative then
+        return CheckNormalLock(CreateNonWholeNormalLock(lock, imaginary, negative), parent_door, false)
     end
 
     ---@type KeyColor
@@ -354,8 +355,8 @@ end
 
 ---Generates a version of a normal lock that has been multiplied by i, -1, or -i.
 ---@param lock NormalLock The lock being used as the base for the new lock.
----@param imaginary boolean If the lock should be multiplied by i.
----@param negative boolean If the lock should be multiplied by -1.
+---@param imaginary? boolean If the lock should be multiplied by i.
+---@param negative? boolean If the lock should be multiplied by -1.
 ---@return NormalLock
 function CreateNonWholeNormalLock(lock, imaginary, negative)
     ---@type table
