@@ -300,7 +300,7 @@ end
 ---@return ComplexNumber? cost
 function CheckBlastLock(lock, parent_door, imaginary, negative)
     ---@type boolean
-    local check_imaginary, check_negative
+    local check_imaginary, check_negative = lock.imaginary, lock.negative
 
     if imaginary then
         check_imaginary = not lock.imaginary
