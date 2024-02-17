@@ -294,10 +294,11 @@ end
 ---Returns if a blast lock is openable, as well as how many keys it would cost to open.
 ---@param lock BlastLock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
----@param imaginary? boolean Used for imaginary copies of doors.
+---@param imaginary? boolean If this door copy is imaginary.
+---@param negative? boolean If this door copy is negative.
 ---@return boolean can_open
 ---@return ComplexNumber? cost
-function CheckBlastLock(lock, parent_door, imaginary)
+function CheckBlastLock(lock, parent_door, imaginary, negative)
     ---@type boolean
     local check_imaginary, check_negative
 
