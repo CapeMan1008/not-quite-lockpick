@@ -370,11 +370,11 @@ function CreateNonWholeNormalLock(lock, imaginary, negative)
     local new_amount = lock.amount()
 
     if imaginary then
-        new_amount.real = -lock.amount.imaginary
-        new_amount.imaginary = lock.amount.real
+        new_amount.real = -new_amount.imaginary
+        new_amount.imaginary = new_amount.real
 
-        new_lock.negative = not lock.imaginary_negative
-        new_lock.imaginary_negative = lock.negative
+        new_lock.negative = not new_lock.imaginary_negative
+        new_lock.imaginary_negative = new_lock.negative
     end
 
     if negative then
