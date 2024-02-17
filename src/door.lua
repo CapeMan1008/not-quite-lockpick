@@ -211,7 +211,7 @@ end
 ---@return ComplexNumber? wild_cost
 function CheckNormalLock(lock, parent_door, imaginary)
     if imaginary then
-        return CheckNormalLock(CreateImaginaryNormalLock(lock), parent_door, false)
+        return CheckNormalLock(CreateNonWholeNormalLock(lock), parent_door, false)
     end
 
     ---@type KeyColor
@@ -352,10 +352,12 @@ function CheckAllLock(lock, parent_door)
     return false
 end
 
----Generates a version of a normal lock that has been multiplied by i.
+---Generates a version of a normal lock that has been multiplied by i, -1, or -i.
 ---@param lock NormalLock The lock being used as the base for the new lock.
+---@param imaginary boolean If the lock should be multiplied by i.
+---@param negative boolean If the lock should be multiplied by -1.
 ---@return NormalLock
-function CreateImaginaryNormalLock(lock)
+function CreateNonWholeNormalLock(lock, imaginary, negative)
     ---@type table
     local new_lock = {}
 
