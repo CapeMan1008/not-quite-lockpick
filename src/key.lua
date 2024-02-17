@@ -1,6 +1,8 @@
 ---@class Key
 ---@field color KeyColor
 ---@field type KeyType
+---@field active boolean
+---@field reusable boolean
 ---@field amount ComplexNumber
 ---@field mimic KeyColor?
 
@@ -76,5 +78,9 @@ function CollectKey(key)
 
     if key.type == "unstar" then
         StarKeys[color] = false
+    end
+
+    if not key.reusable then
+        key.active = false
     end
 end
