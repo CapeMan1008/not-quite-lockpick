@@ -212,7 +212,7 @@ end
 ---@return ComplexNumber? wild_cost
 function CheckNormalLock(lock, parent_door, imaginary, negative)
     if imaginary or negative then
-        return CheckNormalLock(CreateNonWholeNormalLock(lock, imaginary, negative), parent_door, false)
+        return CheckNormalLock(CreateNonWholeNormalLock(lock, imaginary, negative), parent_door, false, false)
     end
 
     ---@type KeyColor
