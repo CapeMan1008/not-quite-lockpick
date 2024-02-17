@@ -366,7 +366,19 @@ function CreateNonWholeNormalLock(lock, imaginary, negative)
     end
 
     ---@cast new_lock NormalLock
-    new_lock.amount = CreateComplexNum(-lock.amount.imaginary, lock.amount.real)
+    local new_amount = lock.amount()
+
+    if imaginary then
+        new_amount.real = -lock.amount.imaginary
+        new_amount.imaginary = lock.amount.real
+    end
+
+    if negative then
+        new_amount.real = -new_amount.real
+        new_amount.imaginary = -new_amount.imaginary
+    end
+
+    new_lock.amount = new_amount
 
     new_lock.negative = not lock.imaginary_negative
     new_lock.imaginary_negative = lock.negative
