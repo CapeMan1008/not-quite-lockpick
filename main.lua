@@ -33,7 +33,7 @@ function love.load()
             eroded = false,
             frozen = false,
             painted = false,
-            width = 32,
+            width = 64,
             height = 32,
             locks = {
                 {
@@ -44,6 +44,14 @@ function love.load()
                     color = "cyan",
                     type = "normal",
                     amount = 5
+                },
+                {
+                    x = 40,
+                    y = 8,
+                    width = 16,
+                    height = 16,
+                    color = "cyan",
+                    type = "blank"
                 }
             }
         }
