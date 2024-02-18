@@ -2,8 +2,8 @@
 ---@field color KeyColor
 ---@field type KeyType
 ---@field active boolean
----@field reusable boolean
 ---@field amount ComplexNumber
+---@field reusable boolean
 ---@field mimic KeyColor?
 
 ---@alias KeyType
