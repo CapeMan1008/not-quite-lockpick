@@ -48,8 +48,15 @@ function love.load()
     } --[[@as DoorObject]]
 end
 
-function love.mousemoved()
-    
+function love.mousemoved(x, y)
+    local hovered_obj
+
+    for _, obj in ipairs(ObjectList) do
+        if DetectMouse(obj, x, y) then
+            hovered_obj = obj
+            break
+        end
+    end
 end
 
 function love.draw()
