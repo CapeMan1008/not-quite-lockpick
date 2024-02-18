@@ -36,8 +36,8 @@ function love.load()
             height = 32,
             locks = {
                 {
-                    x = 7,
-                    y = 7,
+                    x = 8,
+                    y = 8,
                     width = 16,
                     height = 16,
                     color = "cyan",
