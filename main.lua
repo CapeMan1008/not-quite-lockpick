@@ -52,11 +52,15 @@ function love.mousemoved(x, y)
     local hovered_obj
 
     for _, obj in ipairs(ObjectList) do
-        if DetectMouse(obj, x, y) then
+        if IsObjectOnMouse(obj, x, y) then
             hovered_obj = obj
             break
         end
     end
+end
+
+function IsObjectOnMouse(obj)
+    
 end
 
 function love.draw()
