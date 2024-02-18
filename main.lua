@@ -87,7 +87,7 @@ function love.draw()
 
         love.graphics.setColor(0,0,0,1)
         love.graphics.setLineWidth(1)
-        love.graphics.rectangle("line", HoverBox.x, HoverBox.y, Font:getWidth(HoverBox.text)+16, text_height+16)
+        love.graphics.rectangle("line", HoverBox.x+0.5, HoverBox.y+0.5, Font:getWidth(HoverBox.text)+15, text_height+15)
 
         love.graphics.print(HoverBox.text, HoverBox.x+8, HoverBox.y+8)
     end
