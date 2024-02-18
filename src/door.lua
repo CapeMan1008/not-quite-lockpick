@@ -64,14 +64,6 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
         return true
     end
 
-    if door.copies.imaginary == 0 and imaginary then
-        return false
-    end
-
-    if door.copies.real == 0 and not imaginary then
-        return false
-    end
-
     if use_master then
         ---@type boolean
         local master_immune = GetDoorPure(door)
@@ -132,6 +124,14 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
             return false
         end
+    end
+
+    if door.copies.imaginary == 0 and imaginary then
+        return false
+    end
+
+    if door.copies.real == 0 and not imaginary then
+        return false
     end
 
     ---@type ComplexNumber, ComplexNumber
