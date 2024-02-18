@@ -1,8 +1,10 @@
 require "src.const"
+require "src.draw"
 require "src.complexnumber"
 require "src.key"
 require "src.door"
 require "src.objects"
+require "src.hoverinfo"
 
 function love.load()
     ObjectList[1] = {
@@ -32,7 +34,7 @@ function love.load()
             eroded = false,
             frozen = false,
             painted = false,
-            width = 32,
+            width = 64,
             height = 32,
             locks = {
                 {
@@ -41,15 +43,38 @@ function love.load()
                     width = 16,
                     height = 16,
                     color = "cyan",
-                    type = "normal"
+                    type = "normal",
+                    amount = 5
+                },
+                {
+                    x = 40,
+                    y = 8,
+                    width = 16,
+                    height = 16,
+                    color = "master",
+                    type = "blank"
                 }
             }
         }
     } --[[@as DoorObject]]
+
+    LoadResources()
 end
 
-function love.draw()
+---@param x any
+---@param y any
+function love.mousemoved(x, y)
+    local hovered_obj
+
     for _, obj in ipairs(ObjectList) do
-        DrawObject(obj)
+        if IsObjectOTouchingPoint(obj, x, y) then
+            hovered_obj = obj
+            break
+        end
     end
+
+    HoverBox.x = x
+    HoverBox.y = y
+
+    GenerateHoverInfo(hovered_obj)
 end
