@@ -59,16 +59,40 @@ function love.mousemoved(x, y)
             break
         end
     end
+
+    if not hovered_obj then
+        return
+    end
 end
 
 ---Gets if an object is touching a certain point.
 ---@param obj Object
 ---@param x number
 ---@param y number
+---@return boolean
+---@nodiscard
 function IsObjectOTouchingPoint(obj, x, y)
-    if obj then
-        
+    if obj.type == "key" then
+        ---@cast obj KeyObject
+
+        if x >= obj.x and
+        x <= obj.x+32 and
+        y >= obj.y and
+        y <= obj.y+32 then
+            return true
+        end
+    elseif obj.type == "door" then
+        ---@cast obj DoorObject
+
+        if x >= obj.x and
+        x <= obj.x+obj.data.width and
+        y >= obj.y and
+        y <= obj.y+obj.data.height then
+            return true
+        end
     end
+
+    return false
 end
 
 function love.draw()
