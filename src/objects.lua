@@ -62,6 +62,10 @@ function IsObjectOTouchingPoint(obj, x, y)
     if obj.type == "key" then
         ---@cast obj KeyObject
 
+        if not obj.data.active then
+            return false
+        end
+
         if x >= obj.x and
         x <= obj.x+32 and
         y >= obj.y and
@@ -70,6 +74,10 @@ function IsObjectOTouchingPoint(obj, x, y)
         end
     elseif obj.type == "door" then
         ---@cast obj DoorObject
+
+        if not obj.data.active then
+            return false
+        end
 
         if x >= obj.x and
         x <= obj.x+obj.data.width and

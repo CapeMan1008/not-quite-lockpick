@@ -440,6 +440,26 @@ function GetDoorPure(door)
     return false
 end
 
+---Checks if the door has any glitch parts on it, for deciding whether or not to tell the player the door's mimic color.
+---@param door Door
+---@return boolean
+function GetDoorGlitched(door)
+    if door.color == "glitch" then
+        return true
+    end
+
+    for _, lock in ipairs(door.locks) do
+        ---@type KeyColor
+        local lock_color = lock.color
+
+        if lock_color == "glitch" then
+            return true
+        end
+    end
+
+    return false
+end
+
 ---Opens one copy of a door, without checking any requirements, nor spending any keys. Not to be confused with TryOpenDoor, which does all necessary checks first.
 ---@param door Door
 ---@param imaginary boolean?
