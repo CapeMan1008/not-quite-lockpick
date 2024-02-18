@@ -15,7 +15,7 @@
 ---| '"door"'
 ---| '"key"'
 
----@type ObjectType[]
+---@type Object[]
 ObjectList = {}
 
 ---Draws an object to the screen at it's coordinates.
