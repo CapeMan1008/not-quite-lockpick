@@ -180,20 +180,21 @@ end
 ---Returns if a lock is openable, as well as how many keys it would cost to open.
 ---@param lock Lock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
----@param imaginary? boolean Used for imaginary copies of doors.
+---@param imaginary? boolean If this door copy is imaginary.
+---@param negative? boolean If this door copy is negative.
 ---@return boolean can_open
 ---@return ComplexNumber? cost
 ---@return ComplexNumber? wild_cost
-function CheckLock(lock, parent_door, imaginary)
+function CheckLock(lock, parent_door, imaginary, negative)
     if lock.type == "normal" then
         ---@cast lock NormalLock
-        return CheckNormalLock(lock, parent_door, imaginary)
+        return CheckNormalLock(lock, parent_door, imaginary, negative)
     elseif lock.type == "blank" then
         ---@cast lock BlankLock
         return CheckBlankLock(lock, parent_door)
     elseif lock.type == "blast" then
         ---@cast lock BlastLock
-        return CheckBlastLock(lock, parent_door, imaginary)
+        return CheckBlastLock(lock, parent_door, imaginary, negative)
     elseif lock.type == "all" then
         ---@cast lock AllLock
         return CheckAllLock(lock, parent_door)
