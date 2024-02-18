@@ -58,18 +58,18 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     if door.copies == 0 then
         if not no_open then
-            OpenDoor(door, imaginary, true)
+            OpenDoor(door, imaginary, nil, true)
         end
 
         return true
     end
 
-    if door.copies.imaginary == 0 and imaginary then
-        return false
-    end
+    local negative = false
 
-    if door.copies.real == 0 and not imaginary then
-        return false
+    if imaginary then
+        negative = door.copies.imaginary < 0
+    else
+        negative = door.copies.real < 0
     end
 
     if use_master then
@@ -103,7 +103,11 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(1)
 
-                OpenDoor(door, false)
+                if negative then
+                    CopyDoor(door, false, true)
+                else
+                    OpenDoor(door, false, false)
+                end
             end
 
             return true
@@ -111,7 +115,11 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(0,1)
 
-                OpenDoor(door, true)
+                if negative then
+                    CopyDoor(door, true, true)
+                else
+                    OpenDoor(door, true, false)
+                end
             end
 
             return true
@@ -119,7 +127,11 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(1)
 
-                CopyDoor(door, false)
+                if negative then
+                    OpenDoor(door, false, true)
+                else
+                    CopyDoor(door, false, false)
+                end
             end
 
             return false
@@ -127,11 +139,23 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(0,1)
 
-                CopyDoor(door, true)
+                if negative then
+                    OpenDoor(door, true, true)
+                else
+                    CopyDoor(door, true, false)
+                end
             end
 
             return false
         end
+    end
+
+    if door.copies.imaginary == 0 and imaginary then
+        return false
+    end
+
+    if door.copies.real == 0 and not imaginary then
+        return false
     end
 
     ---@type ComplexNumber, ComplexNumber
@@ -139,7 +163,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     for _, lock in ipairs(door.locks) do
         ---@type boolean, ComplexNumber?, ComplexNumber?
-        local check, lock_cost, lock_wild_cost = CheckLock(lock, door, imaginary)
+        local check, lock_cost, lock_wild_cost = CheckLock(lock, door, imaginary, negative)
 
         if not check then
             return false
@@ -174,26 +198,29 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
         Keys.wild = Keys.wild - wild_cost
     end
 
+    OpenDoor(door, imaginary, negative)
+
     return true, cost, wild_cost
 end
 
 ---Returns if a lock is openable, as well as how many keys it would cost to open.
 ---@param lock Lock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
----@param imaginary? boolean Used for imaginary copies of doors.
+---@param imaginary? boolean If this door copy is imaginary.
+---@param negative? boolean If this door copy is negative.
 ---@return boolean can_open
 ---@return ComplexNumber? cost
 ---@return ComplexNumber? wild_cost
-function CheckLock(lock, parent_door, imaginary)
+function CheckLock(lock, parent_door, imaginary, negative)
     if lock.type == "normal" then
         ---@cast lock NormalLock
-        return CheckNormalLock(lock, parent_door, imaginary)
+        return CheckNormalLock(lock, parent_door, imaginary, negative)
     elseif lock.type == "blank" then
         ---@cast lock BlankLock
         return CheckBlankLock(lock, parent_door)
     elseif lock.type == "blast" then
         ---@cast lock BlastLock
-        return CheckBlastLock(lock, parent_door, imaginary)
+        return CheckBlastLock(lock, parent_door, imaginary, negative)
     elseif lock.type == "all" then
         ---@cast lock AllLock
         return CheckAllLock(lock, parent_door)
@@ -205,13 +232,14 @@ end
 ---Returns if a normal lock is openable, as well as how many keys it would cost to open.
 ---@param lock NormalLock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
----@param imaginary? boolean Used for imaginary copies of doors.
+---@param imaginary? boolean If this door copy is imaginary.
+---@param negative? boolean If this door copy is negative.
 ---@return boolean can_open
 ---@return ComplexNumber? cost
 ---@return ComplexNumber? wild_cost
-function CheckNormalLock(lock, parent_door, imaginary)
-    if imaginary then
-        return CheckNormalLock(CreateImaginaryNormalLock(lock), parent_door, false)
+function CheckNormalLock(lock, parent_door, imaginary, negative)
+    if imaginary or negative then
+        return CheckNormalLock(CreateNonWholeNormalLock(lock, imaginary, negative), parent_door, false, false)
     end
 
     ---@type KeyColor
@@ -293,17 +321,21 @@ end
 ---Returns if a blast lock is openable, as well as how many keys it would cost to open.
 ---@param lock BlastLock The lock being checked.
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
----@param imaginary? boolean Used for imaginary copies of doors.
+---@param imaginary? boolean If this door copy is imaginary.
+---@param negative? boolean If this door copy is negative.
 ---@return boolean can_open
 ---@return ComplexNumber? cost
-function CheckBlastLock(lock, parent_door, imaginary)
+function CheckBlastLock(lock, parent_door, imaginary, negative)
     ---@type boolean
-    local check_imaginary, check_negative
+    local check_imaginary, check_negative = lock.imaginary, lock.negative
 
     if imaginary then
         check_imaginary = not lock.imaginary
-    else
         check_negative = (lock.imaginary and not lock.negative) or (not lock.imaginary and lock.negative)
+    end
+
+    if negative then
+        check_negative = not check_negative
     end
 
     ---@type KeyColor
@@ -352,10 +384,12 @@ function CheckAllLock(lock, parent_door)
     return false
 end
 
----Generates a version of a normal lock that has been multiplied by i.
+---Generates a version of a normal lock that has been multiplied by i, -1, or -i.
 ---@param lock NormalLock The lock being used as the base for the new lock.
+---@param imaginary? boolean If the lock should be multiplied by i.
+---@param negative? boolean If the lock should be multiplied by -1.
 ---@return NormalLock
-function CreateImaginaryNormalLock(lock)
+function CreateNonWholeNormalLock(lock, imaginary, negative)
     ---@type table
     local new_lock = {}
 
@@ -364,11 +398,25 @@ function CreateImaginaryNormalLock(lock)
     end
 
     ---@cast new_lock NormalLock
-    new_lock.amount = CreateComplexNum(-lock.amount.imaginary, lock.amount.real)
+    local new_amount = lock.amount()
 
-    new_lock.negative = not lock.imaginary_negative
-    new_lock.imaginary_negative = lock.negative
+    if imaginary then
+        new_amount.real = -new_amount.imaginary
+        new_amount.imaginary = new_amount.real
 
+        new_lock.negative = not new_lock.imaginary_negative
+        new_lock.imaginary_negative = new_lock.negative
+    end
+
+    if negative then
+        new_amount.real = -new_amount.real
+        new_amount.imaginary = -new_amount.imaginary
+
+        new_lock.negative = not new_lock.negative
+        new_lock.imaginary_negative = not new_lock.imaginary_negative
+    end
+
+    new_lock.amount = new_amount
     return new_lock
 end
 
@@ -395,9 +443,10 @@ end
 ---Opens one copy of a door, without checking any requirements, nor spending any keys. Not to be confused with TryOpenDoor, which does all necessary checks first.
 ---@param door Door
 ---@param imaginary boolean?
+---@param negative boolean?
 ---@param always_deactivate boolean? Always deactivates the door and sets its copies to 0, no matter how many copies it actually has.
 ---@return boolean deactivated
-function OpenDoor(door, imaginary, always_deactivate)
+function OpenDoor(door, imaginary, negative, always_deactivate)
     if always_deactivate then
         door.copies = CreateComplexNum()
 
@@ -406,11 +455,17 @@ function OpenDoor(door, imaginary, always_deactivate)
         return true
     end
 
+    local to_subtract = CreateComplexNum(1)
+
     if imaginary then
-        door.copies = door.copies - CreateComplexNum(0,1)
-    else
-        door.copies = door.copies - CreateComplexNum(1)
+        to_subtract = to_subtract * CreateComplexNum(0,1)
     end
+
+    if negative then
+        to_subtract = to_subtract * CreateComplexNum(-1)
+    end
+
+    door.copies = door.copies - to_subtract
 
     if door.copies == 0 then
         door.active = false
@@ -423,17 +478,24 @@ end
 
 ---Adds one copy to a door, either real or imaginary.
 ---@param door Door
----@param imaginary boolean
+---@param imaginary boolean?
+---@param negative boolean?
 ---@return boolean deactivated
-function CopyDoor(door, imaginary)
+function CopyDoor(door, imaginary, negative)
+    local to_add = CreateComplexNum(1)
+
     if imaginary then
-        door.copies = door.copies + CreateComplexNum(0,1)
-    else
-        door.copies = door.copies + CreateComplexNum(1)
+        to_add = to_add * CreateComplexNum(0,1)
     end
 
+    if negative then
+        to_add = to_add * CreateComplexNum(-1)
+    end
+
+    door.copies = door.copies + to_add
+
     if door.copies == 0 then
-        return OpenDoor(door, imaginary, true)
+        return OpenDoor(door, imaginary, negative, true)
     end
 
     return false
