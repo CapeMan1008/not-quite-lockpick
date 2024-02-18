@@ -297,6 +297,10 @@ end
 ---@param self ComplexNumber
 ---@return string
 function complex_metatable:__tostring()
+    if self.imaginary == 0 then
+        return tostring(self.real)
+    end
+
     return tostring(self.real) .. " + " .. tostring(self.imaginary) .. "i"
 end
 
