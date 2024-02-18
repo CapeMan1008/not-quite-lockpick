@@ -22,3 +22,13 @@ COLOR_NAMES = {
     glitch = "Glitch",
     wild = "Wildcard"
 }
+
+---@type table<KeyType, string>
+KEY_TYPE_NAMES = {
+    add = "Normal",
+    exact = "Exact",
+    multiply = "Multiply",
+    square = "Square",
+    star = "Star",
+    unstar = "Unstar"
+}

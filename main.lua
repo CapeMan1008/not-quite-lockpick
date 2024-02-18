@@ -42,7 +42,8 @@ function love.load()
                     width = 16,
                     height = 16,
                     color = "cyan",
-                    type = "normal"
+                    type = "normal",
+                    amount = 5
                 }
             }
         }
@@ -82,9 +83,12 @@ function love.draw()
         local text_height = Font:getHeight() * Font:getLineHeight() * (newlines+1)
 
         love.graphics.setColor(1,1,1,1)
-        love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, Font:getWidth(HoverBox.text), text_height)
+        love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, Font:getWidth(HoverBox.text)+16, text_height+16)
 
         love.graphics.setColor(0,0,0,1)
-        love.graphics.rectangle("line", HoverBox.x, HoverBox.y, Font:getWidth(HoverBox.text), text_height)
+        love.graphics.setLineWidth(1)
+        love.graphics.rectangle("line", HoverBox.x, HoverBox.y, Font:getWidth(HoverBox.text)+16, text_height+16)
+
+        love.graphics.print(HoverBox.text, HoverBox.x+8, HoverBox.y+8)
     end
 end
