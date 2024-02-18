@@ -59,7 +59,7 @@ function love.mousemoved(x, y)
     end
 end
 
-function IsObjectOnMouse(obj)
+function IsObjectOnMouse(obj, x, y)
     
 end
 
