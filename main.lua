@@ -3,6 +3,7 @@ require "src.complexnumber"
 require "src.key"
 require "src.door"
 require "src.objects"
+require "src.hoverinfo"
 
 function love.load()
     ObjectList[1] = {
