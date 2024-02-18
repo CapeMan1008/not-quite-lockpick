@@ -48,19 +48,27 @@ function love.load()
     } --[[@as DoorObject]]
 end
 
+---@param x any
+---@param y any
 function love.mousemoved(x, y)
     local hovered_obj
 
     for _, obj in ipairs(ObjectList) do
-        if IsObjectOnMouse(obj, x, y) then
+        if IsObjectOTouchingPoint(obj, x, y) then
             hovered_obj = obj
             break
         end
     end
 end
 
-function IsObjectOnMouse(obj, x, y)
-    
+---Gets if an object is touching a certain point.
+---@param obj Object
+---@param x number
+---@param y number
+function IsObjectOTouchingPoint(obj, x, y)
+    if obj then
+        
+    end
 end
 
 function love.draw()
