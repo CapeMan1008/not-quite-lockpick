@@ -25,7 +25,7 @@ function love.load()
         y = 16,
         type = "door",
         data = {
-            color = "orange",
+            color = "cyan",
             active = true,
             amount = CreateComplexNum(1),
             copies = CreateComplexNum(1),
