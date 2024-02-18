@@ -56,7 +56,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
         return false
     end
 
-    if door.copies == 0 then
+    if door.copies == CreateComplexNum() then
         if not no_open then
             OpenDoor(door, imaginary, nil, true)
         end
@@ -315,7 +315,7 @@ end
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
 ---@return boolean can_open
 function CheckBlankLock(lock, parent_door)
-    return Keys[GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)] == 0
+    return Keys[GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)] == CreateComplexNum()
 end
 
 ---Returns if a blast lock is openable, as well as how many keys it would cost to open.
@@ -377,7 +377,7 @@ function CheckAllLock(lock, parent_door)
     ---@type KeyColor
     local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
 
-    if Keys[required_color] ~= 0 then
+    if Keys[required_color] ~= CreateComplexNum() then
         return true, Keys[required_color]
     end
 
@@ -467,7 +467,7 @@ function OpenDoor(door, imaginary, negative, always_deactivate)
 
     door.copies = door.copies - to_subtract
 
-    if door.copies == 0 then
+    if door.copies == CreateComplexNum() then
         door.active = false
 
         return true
@@ -494,7 +494,7 @@ function CopyDoor(door, imaginary, negative)
 
     door.copies = door.copies + to_add
 
-    if door.copies == 0 then
+    if door.copies == CreateComplexNum() then
         return OpenDoor(door, imaginary, negative, true)
     end
 
@@ -512,17 +512,17 @@ end
 ---@return boolean
 ---@nodiscard
 function CheckAura(aura_type)
-    if aura_type == "unfreeze" and Keys[UNFREEZE_KEY_TYPE] >= UNFREEZE_KEY_AMOUNT then
+    if aura_type == "unfreeze" and Keys[UNFREEZE_KEY_TYPE].real >= UNFREEZE_KEY_AMOUNT then
         return true
     end
-    if aura_type == "unerode" and Keys[UNERODE_KEY_TYPE] >= UNERODE_KEY_AMOUNT then
+    if aura_type == "unerode" and Keys[UNERODE_KEY_TYPE].real >= UNERODE_KEY_AMOUNT then
         return true
     end
-    if aura_type == "unpaint" and Keys[UNPAINT_KEY_TYPE] >= UNPAINT_KEY_AMOUNT then
+    if aura_type == "unpaint" and Keys[UNPAINT_KEY_TYPE].real >= UNPAINT_KEY_AMOUNT then
         return true
     end
 
-    if aura_type == "curse" and Keys.brown > 0 then
+    if aura_type == "curse" and Keys.brown.real > 0 then
         return true
     end
 
