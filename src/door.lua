@@ -58,10 +58,18 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     if door.copies == 0 then
         if not no_open then
-            OpenDoor(door, imaginary, true)
+            OpenDoor(door, imaginary, nil, true)
         end
 
         return true
+    end
+
+    local negative = false
+
+    if imaginary then
+        negative = door.copies.imaginary < 0
+    else
+        negative = door.copies.real < 0
     end
 
     if use_master then
@@ -95,7 +103,11 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(1)
 
-                OpenDoor(door, false)
+                if negative then
+                    CopyDoor(door, false, true)
+                else
+                    OpenDoor(door, false, false)
+                end
             end
 
             return true
@@ -103,7 +115,11 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(0,1)
 
-                OpenDoor(door, true)
+                if negative then
+                    CopyDoor(door, true, true)
+                else
+                    OpenDoor(door, true, false)
+                end
             end
 
             return true
@@ -111,7 +127,11 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(1)
 
-                CopyDoor(door, false)
+                if negative then
+                    OpenDoor(door, false, true)
+                else
+                    CopyDoor(door, false, false)
+                end
             end
 
             return false
@@ -119,7 +139,11 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(0,1)
 
-                CopyDoor(door, true)
+                if negative then
+                    OpenDoor(door, true, true)
+                else
+                    CopyDoor(door, true, false)
+                end
             end
 
             return false
@@ -139,7 +163,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     for _, lock in ipairs(door.locks) do
         ---@type boolean, ComplexNumber?, ComplexNumber?
-        local check, lock_cost, lock_wild_cost = CheckLock(lock, door, imaginary)
+        local check, lock_cost, lock_wild_cost = CheckLock(lock, door, imaginary, negative)
 
         if not check then
             return false
@@ -173,6 +197,8 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
     if not StarKeys.wild then
         Keys.wild = Keys.wild - wild_cost
     end
+
+    OpenDoor(door, imaginary, negative)
 
     return true, cost, wild_cost
 end
@@ -417,9 +443,10 @@ end
 ---Opens one copy of a door, without checking any requirements, nor spending any keys. Not to be confused with TryOpenDoor, which does all necessary checks first.
 ---@param door Door
 ---@param imaginary boolean?
+---@param negative boolean?
 ---@param always_deactivate boolean? Always deactivates the door and sets its copies to 0, no matter how many copies it actually has.
 ---@return boolean deactivated
-function OpenDoor(door, imaginary, always_deactivate)
+function OpenDoor(door, imaginary, negative, always_deactivate)
     if always_deactivate then
         door.copies = CreateComplexNum()
 
@@ -428,11 +455,17 @@ function OpenDoor(door, imaginary, always_deactivate)
         return true
     end
 
+    local to_subtract = CreateComplexNum(1)
+
     if imaginary then
-        door.copies = door.copies - CreateComplexNum(0,1)
-    else
-        door.copies = door.copies - CreateComplexNum(1)
+        to_subtract = to_subtract * CreateComplexNum(0,1)
     end
+
+    if negative then
+        to_subtract = to_subtract * CreateComplexNum(-1)
+    end
+
+    door.copies = door.copies - to_subtract
 
     if door.copies == 0 then
         door.active = false
@@ -445,17 +478,24 @@ end
 
 ---Adds one copy to a door, either real or imaginary.
 ---@param door Door
----@param imaginary boolean
+---@param imaginary boolean?
+---@param negative boolean?
 ---@return boolean deactivated
-function CopyDoor(door, imaginary)
+function CopyDoor(door, imaginary, negative)
+    local to_add = CreateComplexNum(1)
+
     if imaginary then
-        door.copies = door.copies + CreateComplexNum(0,1)
-    else
-        door.copies = door.copies + CreateComplexNum(1)
+        to_add = to_add * CreateComplexNum(0,1)
     end
 
+    if negative then
+        to_add = to_add * CreateComplexNum(-1)
+    end
+
+    door.copies = door.copies + to_add
+
     if door.copies == 0 then
-        return OpenDoor(door, imaginary, true)
+        return OpenDoor(door, imaginary, negative, true)
     end
 
     return false
