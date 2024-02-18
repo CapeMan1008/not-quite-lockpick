@@ -1,3 +1,5 @@
+---@diagnostic disable: unknown-operator
+
 ---@class ComplexNumber
 ---@field real number
 ---@field imaginary number
@@ -7,6 +9,10 @@
 ---@operator div(ComplexNumber|number): ComplexNumber
 ---@operator unm: ComplexNumber
 ---@operator call: ComplexNumber
+---@operator eq(ComplexNumber): boolean
+---@operator lt(ComplexNumber): boolean
+---@operator le(ComplexNumber): boolean
+---@operator tostring: string
 
 local complex_metatable = {}
 

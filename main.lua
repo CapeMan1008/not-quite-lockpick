@@ -48,6 +48,10 @@ function love.load()
     } --[[@as DoorObject]]
 end
 
+function love.mousemoved()
+    
+end
+
 function love.draw()
     for _, obj in ipairs(ObjectList) do
         DrawObject(obj)
