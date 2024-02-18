@@ -20,6 +20,7 @@
 ---| '"cyan"' # Cyan keys
 ---| '"purple"' # Purple keys
 ---| '"pink"' # Pink keys
+---| '"black"' # Black keys
 ---| '"red"' # Red keys (if you have at least 1, you can unfreeze doors)
 ---| '"green"' # Green keys (if you have at least 5, you can unerode doors)
 ---| '"blue"' # Blue keys (if you have at least 3, you can unpaint doors)

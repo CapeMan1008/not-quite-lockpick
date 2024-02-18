@@ -13,6 +13,7 @@ COLOR_NAMES = {
     cyan = "Cyan",
     purple = "Purple",
     pink = "Pink",
+    black = "Black",
     red = "Red",
     green = "Green",
     blue = "Blue",
