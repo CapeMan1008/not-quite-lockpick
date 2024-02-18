@@ -18,30 +18,30 @@ function GenerateHoverInfo(obj)
     if obj.type == "key" then
         ---@cast obj KeyObject
 
-        HoverBox.text = obj.data.type .. " " .. obj.data.color .. " Key\nAmount: " .. obj.data.amount
+        HoverBox.text = obj.data.type .. " " .. COLOR_NAMES[obj.data.color] .. " Key\nAmount: " .. obj.data.amount
     elseif obj.type == "door" then
         ---@cast obj DoorObject
 
         local text = ""
 
         if #obj.data.locks == 0 then
-            text = "Lockless " .. obj.data.color .. " Door"
+            text = "Lockless " .. COLOR_NAMES[obj.data.color] .. " Door"
         elseif #obj.data.locks == 1 then
-            text = obj.data.color .. " Door\n"
+            text = COLOR_NAMES[obj.data.color] .. " Door\n"
 
             local lock = obj.data.locks[1]
 
-            text = text .. "Cost: " .. LockCostAsString(lock) .. " " .. lock.color
+            text = text .. "Cost: " .. LockCostAsString(lock) .. " " .. COLOR_NAMES[lock.color]
         else
-            text = "Combo " .. obj.data.color .. " Door"
+            text = "Combo " .. COLOR_NAMES[obj.data.color] .. " Door"
 
             for _, lock in ipairs(obj.data.locks) do
-                text = text .. "\nLock: " .. lock.color .. ", Cost: " .. LockCostAsString(lock)
+                text = text .. "\nLock: " .. COLOR_NAMES[lock.color] .. ", Cost: " .. LockCostAsString(lock)
             end
         end
 
         if GetDoorGlitched(obj.data) then
-            text = text .. "\nMimic: " .. obj.data.mimic
+            text = text .. "\nMimic: " .. COLOR_NAMES[obj.data.mimic]
         end
 
         if obj.data.frozen or obj.data.eroded or obj.data.painted or obj.data.cursed then
