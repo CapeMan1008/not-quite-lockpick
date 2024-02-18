@@ -3,6 +3,23 @@ Fonts = {}
 ---@type table<string, love.Texture>
 Textures = {}
 
+---@type table<KeyColor, { [1]: number, [2]: number, [3]: number }>
+Palette = {
+    white = {0.8,0.85,0.85},
+    orange = {1,0.5,0},
+    cyan = {0,1,1},
+    purple = {0.5,0,1},
+    pink = {1,0,1},
+    red = {1,0,0},
+    green = {0,1,0},
+    blue = {0,0,1},
+    brown = {0.5,0.25,0},
+    pure = {1,1,1},
+    master = {1,1,0},
+    glitch = {0.5,0.5,0.5},
+    wild = {1,0,0},
+}
+
 function LoadResources()
     Textures.key_border = love.graphics.newImage("res/sprKey_0.png")
     Textures.key_border:setFilter("nearest", "nearest")
@@ -29,8 +46,7 @@ function DrawDoorObject(obj)
         return
     end
 
-    love.graphics.setColor(1,1,1,1)
-
+    love.graphics.setColor(Palette[obj.data.color] or {1,1,1})
     love.graphics.rectangle("fill", obj.x, obj.y, obj.data.width, obj.data.height)
 end
 
@@ -40,10 +56,10 @@ function DrawKeyObject(obj)
         return
     end
 
-    love.graphics.setColor(1,1,1,1)
-
+    love.graphics.setColor(Palette[obj.data.color] or {1,1,1})
     love.graphics.draw(Textures.key_inside, obj.x, obj.y)
 
+    love.graphics.setColor(1,1,1,1)
     love.graphics.draw(Textures.key_border, obj.x, obj.y)
 end
 
