@@ -16,7 +16,36 @@ function love.load()
             amount = CreateComplexNum(1),
             reusable = false
         }
-    }
+    } --[[@as KeyObject]]
+
+    ObjectList[2] = {
+        x = 64,
+        y = 16,
+        type = "door",
+        data = {
+            color = "orange",
+            active = true,
+            amount = CreateComplexNum(1),
+            copies = CreateComplexNum(1),
+            negativeborder = false,
+            cursed = false,
+            eroded = false,
+            frozen = false,
+            painted = false,
+            width = 32,
+            height = 32,
+            locks = {
+                {
+                    x = 7,
+                    y = 7,
+                    width = 16,
+                    height = 16,
+                    color = "cyan",
+                    type = "normal"
+                }
+            }
+        }
+    } --[[@as DoorObject]]
 end
 
 function love.draw()
