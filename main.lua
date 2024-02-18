@@ -50,7 +50,7 @@ function love.load()
                     y = 8,
                     width = 16,
                     height = 16,
-                    color = "cyan",
+                    color = "master",
                     type = "blank"
                 }
             }
