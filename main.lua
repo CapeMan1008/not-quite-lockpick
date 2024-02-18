@@ -46,6 +46,8 @@ function love.load()
             }
         }
     } --[[@as DoorObject]]
+
+    Font = love.graphics.newFont(12)
 end
 
 ---@param x any
