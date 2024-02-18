@@ -34,28 +34,6 @@ function DrawObject(object)
     end
 end
 
----@param object DoorObject
-function DrawDoorObject(object)
-    if not object.data.active then
-        return
-    end
-
-    love.graphics.setColor(1,1,1,1)
-
-    love.graphics.rectangle("fill", object.x, object.y, object.data.width, object.data.height)
-end
-
----@param object KeyObject
-function DrawKeyObject(object)
-    if not object.data.active then
-        return
-    end
-
-    love.graphics.setColor(1,1,1,1)
-
-    love.graphics.circle("fill", object.x+16, object.y+16, 16)
-end
-
 ---Gets if an object is touching a certain point.
 ---@param obj Object
 ---@param x number

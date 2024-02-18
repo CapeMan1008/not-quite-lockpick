@@ -1,4 +1,5 @@
 require "src.const"
+require "src.draw"
 require "src.complexnumber"
 require "src.key"
 require "src.door"
@@ -57,7 +58,7 @@ function love.load()
         }
     } --[[@as DoorObject]]
 
-    Font = love.graphics.newFont(12)
+    LoadResources()
 end
 
 ---@param x any
@@ -76,27 +77,4 @@ function love.mousemoved(x, y)
     HoverBox.y = y
 
     GenerateHoverInfo(hovered_obj)
-end
-
-function love.draw()
-    for _, obj in ipairs(ObjectList) do
-        DrawObject(obj)
-    end
-
-    if HoverBox.text then
-        love.graphics.setFont(Font)
-
-        local _, newlines = string.gsub(HoverBox.text, "\n", "\n")
-
-        local text_height = Font:getHeight() * Font:getLineHeight() * (newlines+1)
-
-        love.graphics.setColor(1,1,1,1)
-        love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, Font:getWidth(HoverBox.text)+16, text_height+16)
-
-        love.graphics.setColor(0,0,0,1)
-        love.graphics.setLineWidth(1)
-        love.graphics.rectangle("line", HoverBox.x+0.5, HoverBox.y+0.5, Font:getWidth(HoverBox.text)+15, text_height+15)
-
-        love.graphics.print(HoverBox.text, HoverBox.x+8, HoverBox.y+8)
-    end
 end
