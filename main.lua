@@ -62,13 +62,28 @@ function love.mousemoved(x, y)
         end
     end
 
-    if not hovered_obj then
-        return
-    end
+    HoverBox.x = x
+    HoverBox.y = y
+
+    GenerateHoverInfo(hovered_obj)
 end
 
 function love.draw()
     for _, obj in ipairs(ObjectList) do
         DrawObject(obj)
+    end
+
+    if HoverBox.text then
+        love.graphics.setFont(Font)
+
+        local _, newlines = string.gsub(HoverBox.text, "\n", "\n")
+
+        local text_height = Font:getHeight() * Font:getLineHeight() * (newlines+1)
+
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, Font:getWidth(HoverBox.text), text_height)
+
+        love.graphics.setColor(0,0,0,1)
+        love.graphics.rectangle("line", HoverBox.x, HoverBox.y, Font:getWidth(HoverBox.text), text_height)
     end
 end

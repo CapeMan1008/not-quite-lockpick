@@ -11,14 +11,22 @@ HoverBox = {
 }
 
 ---Sets HoverBox to have the proper text
----@param obj Object
+---@param obj? Object
 function GenerateHoverInfo(obj)
+    HoverBox.text = nil
+
+    if not obj then
+        return
+    end
+
     HoverBox.text = ""
 
     if obj.type == "key" then
         ---@cast obj KeyObject
 
         HoverBox.text = obj.data.type .. " " .. COLOR_NAMES[obj.data.color] .. " Key\nAmount: " .. obj.data.amount
+
+        return
     elseif obj.type == "door" then
         ---@cast obj DoorObject
 
@@ -65,7 +73,11 @@ function GenerateHoverInfo(obj)
         end
 
         HoverBox.text = text
+
+        return
     end
+
+    HoverBox.text = nil
 end
 
 ---Returns a string describing the cost of a lock, not accounting for color.

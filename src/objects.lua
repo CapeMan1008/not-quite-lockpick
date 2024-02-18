@@ -40,6 +40,8 @@ function DrawDoorObject(object)
         return
     end
 
+    love.graphics.setColor(1,1,1,1)
+
     love.graphics.rectangle("fill", object.x, object.y, object.data.width, object.data.height)
 end
 
@@ -48,6 +50,8 @@ function DrawKeyObject(object)
     if not object.data.active then
         return
     end
+
+    love.graphics.setColor(1,1,1,1)
 
     love.graphics.circle("fill", object.x+16, object.y+16, 16)
 end
