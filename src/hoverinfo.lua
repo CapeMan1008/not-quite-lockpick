@@ -24,7 +24,7 @@ function GenerateHoverInfo(obj)
     if obj.type == "key" then
         ---@cast obj KeyObject
 
-        HoverBox.text = obj.data.type .. " " .. COLOR_NAMES[obj.data.color] .. " Key\nAmount: " .. obj.data.amount
+        HoverBox.text = obj.data.type .. " " .. COLOR_NAMES[obj.data.color] .. " Key\nAmount: " .. tostring(obj.data.amount)
 
         return
     elseif obj.type == "door" then
