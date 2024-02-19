@@ -28,12 +28,31 @@
 ---| '"master"' # Master keys (can open any door)
 ---| '"pure"' # Pure keys (pure keys have no special function, but pure doors are immune to master keys, brown keys, and wildcard keys)
 ---| '"glitch"' # Glitch keys (change color to the last opened door's color)
+---| '"stone"' # Stone keys (no special properties, but the amount you start with is equal to the number of worlds you've cleared)
 ---| '"wild"' # Wildcard keys (makes up for keys you don't have)
 
 ---@type table<KeyColor,ComplexNumber>
 Keys = {}
 ---@type table<KeyColor,boolean>
 StarKeys = {}
+
+function InitKeys()
+    Keys.white = CreateComplexNum()
+    Keys.orange = CreateComplexNum()
+    Keys.cyan = CreateComplexNum()
+    Keys.purple = CreateComplexNum()
+    Keys.pink = CreateComplexNum()
+    Keys.black = CreateComplexNum()
+    Keys.red = CreateComplexNum()
+    Keys.green = CreateComplexNum()
+    Keys.blue = CreateComplexNum()
+    Keys.brown = CreateComplexNum()
+    Keys.master = CreateComplexNum()
+    Keys.pure = CreateComplexNum()
+    Keys.glitch = CreateComplexNum()
+    Keys.stone = CreateComplexNum()
+    Keys.wild = CreateComplexNum()
+end
 
 ---Gets the effective color (the color used for most purposes) from the true color and the mimic status.
 ---@param color KeyColor

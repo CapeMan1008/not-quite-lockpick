@@ -182,20 +182,6 @@ end
 ---@param op2 ComplexNumber|number
 ---@return boolean
 function complex_metatable.__eq(op1, op2)
-    if type(op1) == "number" then
-        op1 = CreateComplexNum(op1)
-    end
-    if type(op2) == "number" then
-        op2 = CreateComplexNum(op2)
-    end
-
-    if type(op1) ~= type(op2) then
-        return false
-    end
-
-    if type(op1) ~= "table" then
-        error()
-    end
     if type(op1.real) ~= "number" then
         return false
     end
@@ -203,9 +189,6 @@ function complex_metatable.__eq(op1, op2)
         return false
     end
 
-    if type(op2) ~= "table" then
-        error()
-    end
     if type(op2.real) ~= "number" then
         return false
     end
@@ -221,16 +204,6 @@ end
 ---@param op2 ComplexNumber|number
 ---@return boolean
 function complex_metatable.__lt(op1, op2)
-    if type(op1) == "number" then
-        op1 = CreateComplexNum(op1)
-    end
-    if type(op2) == "number" then
-        op2 = CreateComplexNum(op2)
-    end
-
-    if type(op1) ~= "table" then
-        error()
-    end
     if type(op1.real) ~= "number" then
         error()
     end
@@ -238,9 +211,6 @@ function complex_metatable.__lt(op1, op2)
         error()
     end
 
-    if type(op2) ~= "table" then
-        error()
-    end
     if type(op2.real) ~= "number" then
         error()
     end
@@ -256,16 +226,6 @@ end
 ---@param op2 ComplexNumber|number
 ---@return boolean
 function complex_metatable.__le(op1, op2)
-    if type(op1) == "number" then
-        op1 = CreateComplexNum(op1)
-    end
-    if type(op2) == "number" then
-        op2 = CreateComplexNum(op2)
-    end
-
-    if type(op1) ~= "table" then
-        error()
-    end
     if type(op1.real) ~= "number" then
         error()
     end
@@ -273,9 +233,6 @@ function complex_metatable.__le(op1, op2)
         error()
     end
 
-    if type(op2) ~= "table" then
-        error()
-    end
     if type(op2.real) ~= "number" then
         error()
     end

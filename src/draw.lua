@@ -32,6 +32,8 @@ function LoadResources()
 end
 
 function love.draw()
+    love.graphics.clear(0.5,0.5,0.5)
+
     for _, obj in ipairs(ObjectList) do
         DrawObject(obj)
     end
@@ -49,6 +51,36 @@ function DrawDoorObject(obj)
 
     love.graphics.setColor(Palette[obj.data.color] or {1,1,1})
     love.graphics.rectangle("fill", obj.x, obj.y, obj.data.width, obj.data.height)
+
+    love.graphics.setColor(0,0,0)
+    love.graphics.rectangle("line", obj.x+0.5, obj.y+0.5, obj.data.width-1, obj.data.height-1)
+
+    for _, lock in ipairs(obj.data.locks) do
+        love.graphics.setColor(Palette[lock.color] or {1,1,1})
+        love.graphics.rectangle("fill", obj.x+lock.x, obj.y+lock.y, lock.width, lock.height)
+
+        love.graphics.setColor(0,0,0)
+        love.graphics.rectangle("line", obj.x+lock.x+0.5, obj.y+lock.y+0.5, lock.width-1, lock.height-1)
+
+        if lock.type == "normal" then
+            ---@cast lock NormalLock
+            local text = love.graphics.newText(Fonts.default, tostring(lock.amount))
+
+            local text_width, text_height = text:getDimensions()
+
+            love.graphics.draw(text, obj.x+lock.x+lock.width/2-text_width/2, obj.y+lock.y+lock.height/2-text_height/2)
+        end
+    end
+
+    if obj.data.copies ~= CreateComplexNum(1) then
+        local text = love.graphics.newText(Fonts.default, "x"..tostring(obj.data.copies))
+
+        local text_width, text_height = text:getDimensions()
+
+        love.graphics.setColor(1,1,1)
+
+        love.graphics.draw(text, obj.x+obj.data.width/2-text_width/2, obj.y+obj.data.height/2-text_height/2)
+    end
 end
 
 ---@param obj KeyObject

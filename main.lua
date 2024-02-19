@@ -44,7 +44,7 @@ function love.load()
                     height = 16,
                     color = "cyan",
                     type = "normal",
-                    amount = 5
+                    amount = CreateComplexNum(5)
                 },
                 {
                     x = 40,
@@ -59,6 +59,8 @@ function love.load()
     } --[[@as DoorObject]]
 
     LoadResources()
+
+    InitKeys()
 end
 
 ---@param x any

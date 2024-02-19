@@ -526,6 +526,7 @@ end
 ---| '"unerode"' Eroded doors must be uneroded with at least 5 green keys.
 ---| '"unpaint"' Painted doors must be unpainted with at least 3 blue keys.
 ---| '"curse"' If you have more than 0 brown keys, doors are cursed, turning them brown.
+---| '"uncurse"' If you have less than 0 brown keys, cursed doors are uncursed.
 
 ---Checks if an aura is active, probably not complex enough to put into a function like this.
 ---@param aura_type AuraType
@@ -543,6 +544,10 @@ function CheckAura(aura_type)
     end
 
     if aura_type == "curse" and Keys.brown.real > 0 then
+        return true
+    end
+
+    if aura_type == "uncurse" and Keys.brown.real < 0 then
         return true
     end
 
@@ -564,5 +569,7 @@ function TryAurasOnDoor(door)
 
     if not door.cursed and CheckAura("curse") and not GetDoorPure(door) then
         door.cursed = true
+    elseif door.cursed and CheckAura("uncurse") then
+        door.cursed = false
     end
 end
