@@ -91,7 +91,7 @@ function love.load()
         y = 64,
         type = "door",
         data = {
-            color = "cyan",
+            color = "glitch",
             active = true,
             copies = CreateComplexNum(1),
             negativeborder = false,
@@ -110,6 +110,34 @@ function love.load()
                     color = "orange",
                     type = "normal",
                     amount = CreateComplexNum(1)
+                },
+            }
+        }
+    } --[[@as DoorObject]]
+
+    ObjectList[5] = {
+        x = 96,
+        y = 64,
+        type = "door",
+        data = {
+            color = "cyan",
+            active = true,
+            copies = CreateComplexNum(1),
+            negativeborder = false,
+            cursed = false,
+            eroded = false,
+            frozen = false,
+            painted = false,
+            width = 32,
+            height = 32,
+            locks = {
+                {
+                    x = 8,
+                    y = 8,
+                    width = 16,
+                    height = 16,
+                    color = "cyan",
+                    type = "blank"
                 },
             }
         }
