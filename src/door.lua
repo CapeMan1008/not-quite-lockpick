@@ -103,7 +103,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(1)
 
-                if negative then
+                if door.copies.real <= 0 then
                     CopyDoor(door, false, true)
                 else
                     OpenDoor(door, false, false)
@@ -115,7 +115,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(0,1)
 
-                if negative then
+                if door.copies.imaginary <= 0 then
                     CopyDoor(door, true, true)
                 else
                     OpenDoor(door, true, false)
@@ -127,7 +127,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(1)
 
-                if negative then
+                if door.copies.real < 0 then
                     OpenDoor(door, false, true)
                 else
                     CopyDoor(door, false, false)
@@ -139,7 +139,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(0,1)
 
-                if negative then
+                if door.copies.imaginary < 0 then
                     OpenDoor(door, true, true)
                 else
                     CopyDoor(door, true, false)
