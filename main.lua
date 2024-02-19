@@ -156,7 +156,7 @@ function love.load()
         }
     } --[[@as KeyObject]]
 
-    ObjectList[6] = {
+    ObjectList[7] = {
         x = 144,
         y = 64,
         type = "key",

@@ -110,6 +110,17 @@ function DrawKeyObject(obj)
 
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(Textures.key_border, obj.x, obj.y)
+
+    if not obj.data.amount then
+        return
+    end
+
+    local text = love.graphics.newText(Fonts.default, tostring(obj.data.amount))
+
+    local text_width, text_height = text:getDimensions()
+
+    love.graphics.setColor(1,1,1)
+    love.graphics.draw(text, obj.x+32-text_width, obj.y+32-text_height)
 end
 
 function DrawHoverBox()
