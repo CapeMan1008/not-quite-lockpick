@@ -96,7 +96,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
         end
 
         if master_immune then
-            return TryOpenDoor(door, false, imaginary, no_open)
+            return false
         end
 
         if Keys.master.real > 0 and not imaginary then
@@ -148,6 +148,8 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
             return false
         end
+
+        return false
     end
 
     if door.copies.imaginary == 0 and imaginary then
