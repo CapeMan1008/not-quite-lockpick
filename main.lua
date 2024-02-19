@@ -156,6 +156,19 @@ function love.load()
         }
     } --[[@as KeyObject]]
 
+    ObjectList[6] = {
+        x = 144,
+        y = 64,
+        type = "key",
+        data = {
+            color = "master",
+            type = "add",
+            active = true,
+            amount = CreateComplexNum(-1),
+            reusable = false
+        }
+    } --[[@as KeyObject]]
+
     LoadResources()
 
     InitKeys()
