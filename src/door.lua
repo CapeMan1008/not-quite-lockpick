@@ -58,7 +58,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     if door.copies == CreateComplexNum() then
         if not no_open then
-            OpenDoor(door, imaginary, nil, true)
+            OpenDoor(door, imaginary, nil, nil, true)
         end
 
         return true
@@ -103,10 +103,10 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(1)
 
-                if negative then
+                if door.copies.real <= 0 then
                     CopyDoor(door, false, true)
                 else
-                    OpenDoor(door, false, false)
+                    OpenDoor(door, false, false, true)
                 end
             end
 
@@ -115,10 +115,10 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master - CreateComplexNum(0,1)
 
-                if negative then
+                if door.copies.imaginary <= 0 then
                     CopyDoor(door, true, true)
                 else
-                    OpenDoor(door, true, false)
+                    OpenDoor(door, true, false, true)
                 end
             end
 
@@ -127,8 +127,8 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(1)
 
-                if negative then
-                    OpenDoor(door, false, true)
+                if door.copies.real < 0 then
+                    OpenDoor(door, false, true, true)
                 else
                     CopyDoor(door, false, false)
                 end
@@ -139,8 +139,8 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
             if not no_open then
                 Keys.master = Keys.master + CreateComplexNum(0,1)
 
-                if negative then
-                    OpenDoor(door, true, true)
+                if door.copies.imaginary < 0 then
+                    OpenDoor(door, true, true, true)
                 else
                     CopyDoor(door, true, false)
                 end
@@ -464,9 +464,14 @@ end
 ---@param door Door
 ---@param imaginary boolean?
 ---@param negative boolean?
+---@param no_mimic boolean?
 ---@param always_deactivate boolean? Always deactivates the door and sets its copies to 0, no matter how many copies it actually has.
 ---@return boolean deactivated
-function OpenDoor(door, imaginary, negative, always_deactivate)
+function OpenDoor(door, imaginary, negative, no_mimic, always_deactivate)
+    if not no_mimic then
+        ChangeDoorMimic(GetEffectiveColor(door.color, door.cursed, door.mimic), door)
+    end
+
     if always_deactivate then
         door.copies = CreateComplexNum()
 
@@ -494,6 +499,20 @@ function OpenDoor(door, imaginary, negative, always_deactivate)
     end
 
     return false
+end
+
+---Changes the mimic of all active non-cursed doors.
+---@param color KeyColor
+---@param ignore_door Door?
+function ChangeDoorMimic(color, ignore_door)
+    for _, obj in ipairs(ObjectList) do
+        if obj.type == "door" then
+            ---@cast obj DoorObject
+            if obj.data ~= ignore_door and obj.data.active and not obj.data.cursed then
+                obj.data.mimic = color
+            end
+        end
+    end
 end
 
 ---Adds one copy to a door, either real or imaginary.
@@ -526,6 +545,7 @@ end
 ---| '"unerode"' Eroded doors must be uneroded with at least 5 green keys.
 ---| '"unpaint"' Painted doors must be unpainted with at least 3 blue keys.
 ---| '"curse"' If you have more than 0 brown keys, doors are cursed, turning them brown.
+---| '"uncurse"' If you have less than 0 brown keys, cursed doors are uncursed.
 
 ---Checks if an aura is active, probably not complex enough to put into a function like this.
 ---@param aura_type AuraType
@@ -543,6 +563,10 @@ function CheckAura(aura_type)
     end
 
     if aura_type == "curse" and Keys.brown.real > 0 then
+        return true
+    end
+
+    if aura_type == "uncurse" and Keys.brown.real < 0 then
         return true
     end
 
@@ -564,5 +588,7 @@ function TryAurasOnDoor(door)
 
     if not door.cursed and CheckAura("curse") and not GetDoorPure(door) then
         door.cursed = true
+    elseif door.cursed and CheckAura("uncurse") then
+        door.cursed = false
     end
 end

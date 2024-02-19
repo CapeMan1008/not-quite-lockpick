@@ -52,7 +52,7 @@ function GenerateHoverInfo(obj)
             end
         end
 
-        if GetDoorGlitched(obj.data) then
+        if GetDoorGlitched(obj.data) and obj.data.mimic then
             text = text .. "\nMimic: " .. COLOR_NAMES[obj.data.mimic]
         end
 

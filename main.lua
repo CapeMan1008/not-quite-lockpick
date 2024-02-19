@@ -27,7 +27,6 @@ function love.load()
         data = {
             color = "cyan",
             active = true,
-            amount = CreateComplexNum(1),
             copies = CreateComplexNum(1),
             negativeborder = false,
             cursed = false,
@@ -44,7 +43,7 @@ function love.load()
                     height = 16,
                     color = "cyan",
                     type = "normal",
-                    amount = 5
+                    amount = CreateComplexNum(-1)
                 },
                 {
                     x = 40,
@@ -58,7 +57,121 @@ function love.load()
         }
     } --[[@as DoorObject]]
 
+    ObjectList[3] = {
+        x = 16,
+        y = 64,
+        type = "door",
+        data = {
+            color = "orange",
+            active = true,
+            copies = CreateComplexNum(1),
+            negativeborder = false,
+            cursed = false,
+            eroded = false,
+            frozen = false,
+            painted = false,
+            width = 32,
+            height = 32,
+            locks = {
+                {
+                    x = 8,
+                    y = 8,
+                    width = 16,
+                    height = 16,
+                    color = "orange",
+                    type = "normal",
+                    amount = CreateComplexNum(1)
+                },
+            }
+        }
+    } --[[@as DoorObject]]
+
+    ObjectList[4] = {
+        x = 64,
+        y = 64,
+        type = "door",
+        data = {
+            color = "glitch",
+            active = true,
+            copies = CreateComplexNum(1),
+            negativeborder = false,
+            cursed = false,
+            eroded = false,
+            frozen = false,
+            painted = false,
+            width = 32,
+            height = 32,
+            locks = {
+                {
+                    x = 8,
+                    y = 8,
+                    width = 16,
+                    height = 16,
+                    color = "orange",
+                    type = "normal",
+                    amount = CreateComplexNum(1)
+                },
+            }
+        }
+    } --[[@as DoorObject]]
+
+    ObjectList[5] = {
+        x = 96,
+        y = 64,
+        type = "door",
+        data = {
+            color = "cyan",
+            active = true,
+            copies = CreateComplexNum(1),
+            negativeborder = false,
+            cursed = false,
+            eroded = false,
+            frozen = false,
+            painted = false,
+            width = 32,
+            height = 32,
+            locks = {
+                {
+                    x = 8,
+                    y = 8,
+                    width = 16,
+                    height = 16,
+                    color = "cyan",
+                    type = "blank"
+                },
+            }
+        }
+    } --[[@as DoorObject]]
+
+    ObjectList[6] = {
+        x = 144,
+        y = 16,
+        type = "key",
+        data = {
+            color = "master",
+            type = "add",
+            active = true,
+            amount = CreateComplexNum(1),
+            reusable = false
+        }
+    } --[[@as KeyObject]]
+
+    ObjectList[7] = {
+        x = 144,
+        y = 64,
+        type = "key",
+        data = {
+            color = "master",
+            type = "add",
+            active = true,
+            amount = CreateComplexNum(-1),
+            reusable = false
+        }
+    } --[[@as KeyObject]]
+
     LoadResources()
+
+    InitKeys()
 end
 
 ---@param x any
@@ -77,4 +190,31 @@ function love.mousemoved(x, y)
     HoverBox.y = y
 
     GenerateHoverInfo(hovered_obj)
+end
+
+function love.mousepressed(x, y, b)
+    if b == 1 or b == 2 then
+        local clicked_obj
+
+        for _, obj in ipairs(ObjectList) do
+            if IsObjectOTouchingPoint(obj, x, y) then
+                clicked_obj = obj
+                break
+            end
+        end
+
+        if not clicked_obj then
+            return
+        end
+
+        if clicked_obj.type == "key" then
+            ---@cast clicked_obj KeyObject
+
+            CollectKey(clicked_obj.data)
+        elseif clicked_obj.type == "door" then
+            ---@cast clicked_obj DoorObject
+
+            TryOpenDoor(clicked_obj.data, b == 2)
+        end
+    end
 end

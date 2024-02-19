@@ -17,7 +17,7 @@ Palette = {
     black = {54/255,48/255,41/255},
     pure = {1,1,1},
     master = {1,1,0},
-    glitch = {0.5,0.5,0.5},
+    glitch = {0.3,0.3,0.3},
     wild = {1,0,0},
 }
 
@@ -32,6 +32,8 @@ function LoadResources()
 end
 
 function love.draw()
+    love.graphics.clear(0.5,0.5,0.5)
+
     for _, obj in ipairs(ObjectList) do
         DrawObject(obj)
     end
@@ -39,6 +41,22 @@ function love.draw()
     if HoverBox.text then
         DrawHoverBox()
     end
+
+    local key_display_text = ""
+    local first_line = true
+
+    for key, value in pairs(Keys) do
+        if first_line then
+            key_display_text = key .. ": " .. tostring(value)
+
+            first_line = false
+        else
+            key_display_text = key_display_text .. "\n" .. key .. ": " .. tostring(value)
+        end
+    end
+
+    love.graphics.setColor(1,1,1)
+    love.graphics.print(key_display_text, love.graphics.getWidth()-128, 16)
 end
 
 ---@param obj DoorObject
@@ -49,6 +67,36 @@ function DrawDoorObject(obj)
 
     love.graphics.setColor(Palette[obj.data.color] or {1,1,1})
     love.graphics.rectangle("fill", obj.x, obj.y, obj.data.width, obj.data.height)
+
+    love.graphics.setColor(0,0,0)
+    love.graphics.rectangle("line", obj.x+0.5, obj.y+0.5, obj.data.width-1, obj.data.height-1)
+
+    for _, lock in ipairs(obj.data.locks) do
+        love.graphics.setColor(Palette[lock.color] or {1,1,1})
+        love.graphics.rectangle("fill", obj.x+lock.x, obj.y+lock.y, lock.width, lock.height)
+
+        love.graphics.setColor(0,0,0)
+        love.graphics.rectangle("line", obj.x+lock.x+0.5, obj.y+lock.y+0.5, lock.width-1, lock.height-1)
+
+        if lock.type == "normal" then
+            ---@cast lock NormalLock
+            local text = love.graphics.newText(Fonts.default, tostring(lock.amount))
+
+            local text_width, text_height = text:getDimensions()
+
+            love.graphics.draw(text, obj.x+lock.x+lock.width/2-text_width/2, obj.y+lock.y+lock.height/2-text_height/2)
+        end
+    end
+
+    if obj.data.copies ~= CreateComplexNum(1) then
+        local text = love.graphics.newText(Fonts.default, "x"..tostring(obj.data.copies))
+
+        local text_width, text_height = text:getDimensions()
+
+        love.graphics.setColor(1,1,1)
+
+        love.graphics.draw(text, obj.x+obj.data.width/2-text_width/2, obj.y-text_height)
+    end
 end
 
 ---@param obj KeyObject
@@ -62,6 +110,20 @@ function DrawKeyObject(obj)
 
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(Textures.key_border, obj.x, obj.y)
+
+    if not obj.data.amount then
+        return
+    end
+
+    local text = love.graphics.newText(Fonts.default, tostring(obj.data.amount))
+
+    local text_width, text_height = text:getDimensions()
+
+    love.graphics.setColor(0,0,0)
+    love.graphics.rectangle("fill", obj.x+31-text_width, obj.y+31-text_height, text_width+2, text_height+2)
+
+    love.graphics.setColor(1,1,1)
+    love.graphics.draw(text, obj.x+32-text_width, obj.y+32-text_height)
 end
 
 function DrawHoverBox()
