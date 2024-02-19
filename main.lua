@@ -82,7 +82,7 @@ end
 function love.mousepressed(x, y, b)
     if b == 1 or b == 2 then
         local clicked_obj
-        
+
         for _, obj in ipairs(ObjectList) do
             if IsObjectOTouchingPoint(obj, x, y) then
                 clicked_obj = obj
@@ -96,11 +96,11 @@ function love.mousepressed(x, y, b)
 
         if clicked_obj.type == "key" then
             ---@cast clicked_obj KeyObject
-            
+
             CollectKey(clicked_obj.data)
         elseif clicked_obj.type == "door" then
             ---@cast clicked_obj DoorObject
-            
+
             TryOpenDoor(clicked_obj.data, b == 2)
         end
     end
