@@ -505,7 +505,7 @@ function ChangeDoorMimic(color, ignore_door)
     for _, obj in ipairs(ObjectList) do
         if obj.type == "door" then
             ---@cast obj DoorObject
-            if obj.data ~= ignore_door and not obj.data.cursed then
+            if obj.data ~= ignore_door and obj.data.active and not obj.data.cursed then
                 obj.data.mimic = color
             end
         end
