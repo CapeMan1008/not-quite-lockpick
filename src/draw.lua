@@ -55,6 +55,7 @@ function love.draw()
         end
     end
 
+    love.graphics.setColor(1,1,1)
     love.graphics.print(key_display_text, love.graphics.getWidth()-128, 16)
 end
 

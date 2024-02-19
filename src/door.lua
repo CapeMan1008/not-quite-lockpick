@@ -58,7 +58,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     if door.copies == CreateComplexNum() then
         if not no_open then
-            OpenDoor(door, imaginary, nil, true)
+            OpenDoor(door, imaginary, nil, nil, true)
         end
 
         return true
@@ -106,7 +106,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
                 if door.copies.real <= 0 then
                     CopyDoor(door, false, true)
                 else
-                    OpenDoor(door, false, false)
+                    OpenDoor(door, false, false, true)
                 end
             end
 
@@ -118,7 +118,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
                 if door.copies.imaginary <= 0 then
                     CopyDoor(door, true, true)
                 else
-                    OpenDoor(door, true, false)
+                    OpenDoor(door, true, false, true)
                 end
             end
 
@@ -128,7 +128,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
                 Keys.master = Keys.master + CreateComplexNum(1)
 
                 if door.copies.real < 0 then
-                    OpenDoor(door, false, true)
+                    OpenDoor(door, false, true, true)
                 else
                     CopyDoor(door, false, false)
                 end
@@ -140,7 +140,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
                 Keys.master = Keys.master + CreateComplexNum(0,1)
 
                 if door.copies.imaginary < 0 then
-                    OpenDoor(door, true, true)
+                    OpenDoor(door, true, true, true)
                 else
                     CopyDoor(door, true, false)
                 end
@@ -464,10 +464,13 @@ end
 ---@param door Door
 ---@param imaginary boolean?
 ---@param negative boolean?
+---@param no_mimic boolean?
 ---@param always_deactivate boolean? Always deactivates the door and sets its copies to 0, no matter how many copies it actually has.
 ---@return boolean deactivated
-function OpenDoor(door, imaginary, negative, always_deactivate)
-    ChangeDoorMimic(GetEffectiveColor(door.color, door.cursed, door.mimic), door)
+function OpenDoor(door, imaginary, negative, no_mimic, always_deactivate)
+    if not no_mimic then
+        ChangeDoorMimic(GetEffectiveColor(door.color, door.cursed, door.mimic), door)
+    end
 
     if always_deactivate then
         door.copies = CreateComplexNum()
