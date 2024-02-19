@@ -256,9 +256,13 @@ end
 function complex_metatable:__tostring()
     if self.imaginary == 0 then
         return tostring(self.real)
+    elseif self.real == 0 then
+        return tostring(self.imaginary) .. "i"
+    elseif self.imaginary > 0 then
+        return tostring(self.real) .. "+" .. tostring(math.abs(self.imaginary)) .. "i"
+    else
+        return tostring(self.real) .. "-" .. tostring(math.abs(self.imaginary)) .. "i"
     end
-
-    return tostring(self.real) .. " + " .. tostring(self.imaginary) .. "i"
 end
 
 --- Creates a complex number from one or two real numbers, using one as the real part, and the other as the imaginary part.
