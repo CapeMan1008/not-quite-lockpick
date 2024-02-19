@@ -80,22 +80,24 @@ function DrawDoorObject(obj)
 
         if lock.type == "normal" then
             ---@cast lock NormalLock
-            local text = love.graphics.newText(Fonts.default, tostring(lock.amount))
+            love.graphics.setFont(Fonts.default)
 
-            local text_width, text_height = text:getDimensions()
+            local text_width, text_height = Fonts.default:getWidth(tostring(lock.amount)), Fonts.default:getHeight()
 
-            love.graphics.draw(text, obj.x+lock.x+lock.width/2-text_width/2, obj.y+lock.y+lock.height/2-text_height/2)
+            love.graphics.print(tostring(lock.amount), obj.x+lock.x+lock.width/2-text_width/2, obj.y+lock.y+lock.height/2-text_height/2)
         end
     end
 
     if obj.data.copies ~= CreateComplexNum(1) then
-        local text = love.graphics.newText(Fonts.default, "x"..tostring(obj.data.copies))
+        local text = "x"..tostring(obj.data.copies)
 
-        local text_width, text_height = text:getDimensions()
+        love.graphics.setFont(Fonts.default)
+
+        local text_width, text_height = Fonts.default:getWidth(text), Fonts.default:getHeight()
 
         love.graphics.setColor(1,1,1)
 
-        love.graphics.draw(text, obj.x+obj.data.width/2-text_width/2, obj.y-text_height)
+        love.graphics.print(text, obj.x+obj.data.width/2-text_width/2, obj.y-text_height)
     end
 end
 
@@ -111,25 +113,27 @@ function DrawKeyObject(obj)
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(Textures.key_border, obj.x, obj.y)
 
-    if not obj.data.amount then
+    if not obj.data.amount or obj.data.amount == 1 then
         return
     end
 
-    local text = love.graphics.newText(Fonts.default, tostring(obj.data.amount))
+    local text = tostring(obj.data.amount)
 
-    local text_width, text_height = text:getDimensions()
+    love.graphics.setFont(Fonts.default)
+
+    local text_width, text_height = Fonts.default:getWidth(text), Fonts.default:getHeight()
 
     love.graphics.setColor(0,0,0)
     love.graphics.rectangle("fill", obj.x+31-text_width, obj.y+31-text_height, text_width+2, text_height+2)
 
     love.graphics.setColor(1,1,1)
-    love.graphics.draw(text, obj.x+32-text_width, obj.y+32-text_height)
+    love.graphics.print(text, obj.x+32-text_width, obj.y+32-text_height)
 end
 
 function DrawHoverBox()
-    local text = love.graphics.newText(Fonts.default, HoverBox.text)
+    love.graphics.setFont(Fonts.default)
 
-    local text_width, text_height = text:getDimensions()
+    local text_width, text_height = Fonts.default:getWidth(HoverBox.text), Fonts.default:getHeight()
 
     love.graphics.setColor(1,1,1,1)
     love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, text_width+16, text_height+16)
@@ -138,5 +142,5 @@ function DrawHoverBox()
     love.graphics.setLineWidth(1)
     love.graphics.rectangle("line", HoverBox.x+0.5, HoverBox.y+0.5, text_width+15, text_height+15)
 
-    love.graphics.draw(text, HoverBox.x+8, HoverBox.y+8)
+    love.graphics.print(HoverBox.text, HoverBox.x+8, HoverBox.y+8)
 end
