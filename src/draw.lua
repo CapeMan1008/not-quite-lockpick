@@ -119,6 +119,9 @@ function DrawKeyObject(obj)
 
     local text_width, text_height = text:getDimensions()
 
+    love.graphics.setColor(0,0,0)
+    love.graphics.rectangle("fill", obj.x+31-text_width, obj.y+31-text_height, text_width+2, text_height+2)
+
     love.graphics.setColor(1,1,1)
     love.graphics.draw(text, obj.x+32-text_width, obj.y+32-text_height)
 end
