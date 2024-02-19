@@ -470,47 +470,48 @@ end
 ---@param always_deactivate boolean? Always deactivates the door and sets its copies to 0, no matter how many copies it actually has.
 ---@return boolean deactivated
 function OpenDoor(door, imaginary, negative, no_mimic, always_deactivate)
-    if not no_mimic then
-        ChangeDoorMimic(GetEffectiveColor(door.color, door.cursed, door.mimic), door)
-    end
+    local return_val = false
 
     if always_deactivate then
         door.copies = CreateComplexNum()
 
         door.active = false
 
-        return true
+        return_val = true
+    else
+        local to_subtract = CreateComplexNum(1)
+    
+        if imaginary then
+            to_subtract = to_subtract * CreateComplexNum(0,1)
+        end
+    
+        if negative then
+            to_subtract = to_subtract * CreateComplexNum(-1)
+        end
+    
+        door.copies = door.copies - to_subtract
+    
+        if door.copies == CreateComplexNum() then
+            door.active = false
+    
+            return_val = true
+        end
     end
 
-    local to_subtract = CreateComplexNum(1)
-
-    if imaginary then
-        to_subtract = to_subtract * CreateComplexNum(0,1)
+    if not no_mimic then
+        ChangeDoorMimic(GetEffectiveColor(door.color, door.cursed, door.mimic))
     end
 
-    if negative then
-        to_subtract = to_subtract * CreateComplexNum(-1)
-    end
-
-    door.copies = door.copies - to_subtract
-
-    if door.copies == CreateComplexNum() then
-        door.active = false
-
-        return true
-    end
-
-    return false
+    return return_val
 end
 
 ---Changes the mimic of all active non-cursed doors.
 ---@param color KeyColor
----@param ignore_door Door?
-function ChangeDoorMimic(color, ignore_door)
+function ChangeDoorMimic(color)
     for _, obj in ipairs(ObjectList) do
         if obj.type == "door" then
             ---@cast obj DoorObject
-            if obj.data ~= ignore_door and obj.data.active and not obj.data.cursed then
+            if obj.data.active and not obj.data.cursed then
                 obj.data.mimic = color
             end
         end
