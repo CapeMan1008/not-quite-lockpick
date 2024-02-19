@@ -467,6 +467,8 @@ end
 ---@param always_deactivate boolean? Always deactivates the door and sets its copies to 0, no matter how many copies it actually has.
 ---@return boolean deactivated
 function OpenDoor(door, imaginary, negative, always_deactivate)
+    ChangeDoorMimic(GetEffectiveColor(door.color, door.cursed, door.mimic), door)
+
     if always_deactivate then
         door.copies = CreateComplexNum()
 
@@ -494,6 +496,20 @@ function OpenDoor(door, imaginary, negative, always_deactivate)
     end
 
     return false
+end
+
+---Changes the mimic of all active non-cursed doors.
+---@param color KeyColor
+---@param ignore_door Door?
+function ChangeDoorMimic(color, ignore_door)
+    for _, obj in ipairs(ObjectList) do
+        if obj.type == "door" then
+            ---@cast obj DoorObject
+            if obj.data ~= ignore_door and not obj.data.cursed then
+                obj.data.mimic = color
+            end
+        end
+    end
 end
 
 ---Adds one copy to a door, either real or imaginary.
