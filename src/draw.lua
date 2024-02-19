@@ -140,13 +140,13 @@ function DrawHoverBox()
     local text_width, text_height = Fonts.default:getWidth(HoverBox.text), Fonts.default:getHeight()*(linebreaks+1)
 
     love.graphics.setColor(1,1,1,1)
-    love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, text_width+16, text_height+16)
+    love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, text_width+HOVER_BOX_SPACING*2, text_height+HOVER_BOX_SPACING*2)
 
     love.graphics.setColor(0,0,0,1)
     love.graphics.setLineWidth(1)
-    love.graphics.rectangle("line", HoverBox.x+0.5, HoverBox.y+0.5, text_width+15, text_height+15)
+    love.graphics.rectangle("line", HoverBox.x+0.5, HoverBox.y+0.5, text_width+HOVER_BOX_SPACING*2-1, text_height+HOVER_BOX_SPACING*2-1)
 
-    love.graphics.print(HoverBox.text, HoverBox.x+8, HoverBox.y+8)
+    love.graphics.print(HoverBox.text, HoverBox.x+HOVER_BOX_SPACING, HoverBox.y+HOVER_BOX_SPACING)
 end
 
 function DrawRightClickMenu()
@@ -163,17 +163,17 @@ function DrawRightClickMenu()
     end
 
     love.graphics.setColor(1,1,1,1)
-    love.graphics.rectangle("fill", RightClickMenu.x, RightClickMenu.y, text_width+16, (text_height+16)*#buttons)
+    love.graphics.rectangle("fill", RightClickMenu.x, RightClickMenu.y, text_width+RIGHT_CLICK_MENU_SPACING*2, (text_height+RIGHT_CLICK_MENU_SPACING*2)*#buttons)
 
     love.graphics.setColor(0,0,0,1)
     love.graphics.setLineWidth(1)
-    love.graphics.rectangle("line", RightClickMenu.x+0.5, RightClickMenu.y+0.5, text_width+15, (text_height+16)*#buttons-1)
+    love.graphics.rectangle("line", RightClickMenu.x+0.5, RightClickMenu.y+0.5, text_width+RIGHT_CLICK_MENU_SPACING*2-1, (text_height+RIGHT_CLICK_MENU_SPACING*2)*#buttons-1)
 
     for i, text in ipairs(buttons) do
-        love.graphics.print(text, RightClickMenu.x+8, RightClickMenu.y+8+(text_height+16)*(i-1))
+        love.graphics.print(text, RightClickMenu.x+RIGHT_CLICK_MENU_SPACING, RightClickMenu.y+RIGHT_CLICK_MENU_SPACING+(text_height+RIGHT_CLICK_MENU_SPACING*2)*(i-1))
 
         if i ~= 1 then
-            love.graphics.line(RightClickMenu.x, RightClickMenu.y+(text_height+16)*(i-1), RightClickMenu.x+text_width+16, RightClickMenu.y+(text_height+16)*(i-1))
+            love.graphics.line(RightClickMenu.x, RightClickMenu.y+(text_height+RIGHT_CLICK_MENU_SPACING*2)*(i-1), RightClickMenu.x+text_width+RIGHT_CLICK_MENU_SPACING*2, RightClickMenu.y+(text_height+RIGHT_CLICK_MENU_SPACING*2)*(i-1))
         end
     end
 end
