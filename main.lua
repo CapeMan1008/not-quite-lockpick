@@ -90,7 +90,7 @@ function love.mousepressed(x, y, b)
             end
         end
 
-        if not clicked_obj then  
+        if not clicked_obj then
             return
         end
 
