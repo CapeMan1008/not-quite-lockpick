@@ -38,7 +38,9 @@ function love.draw()
         DrawObject(obj)
     end
 
-    if HoverBox.text then
+    if RightClickMenu.obj then
+        DrawRightClickMenu()
+    elseif HoverBox.text then
         DrawHoverBox()
     end
 
@@ -133,7 +135,9 @@ end
 function DrawHoverBox()
     love.graphics.setFont(Fonts.default)
 
-    local text_width, text_height = Fonts.default:getWidth(HoverBox.text), Fonts.default:getHeight()
+    local _,linebreaks = string.gsub(HoverBox.text, "\n", "\n")
+
+    local text_width, text_height = Fonts.default:getWidth(HoverBox.text), Fonts.default:getHeight()*(linebreaks+1)
 
     love.graphics.setColor(1,1,1,1)
     love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, text_width+16, text_height+16)
@@ -166,7 +170,10 @@ function DrawRightClickMenu()
     love.graphics.rectangle("line", RightClickMenu.x+0.5, RightClickMenu.y+0.5, text_width+15, (text_height+16)*#buttons-1)
 
     for i, text in ipairs(buttons) do
-        love.graphics.line(RightClickMenu.x, RightClickMenu.y+(text_height+16)*(i+1), RightClickMenu.x+text_width+16, RightClickMenu.y+(text_height+16)*(i+1))
-        love.graphics.print(text, RightClickMenu.x+8, RightClickMenu.y+8+(text_height+16)*i)
+        love.graphics.print(text, RightClickMenu.x+8, RightClickMenu.y+8+(text_height+16)*(i-1))
+
+        if i ~= 1 then
+            love.graphics.line(RightClickMenu.x, RightClickMenu.y+(text_height+16)*(i-1), RightClickMenu.x+text_width+16, RightClickMenu.y+(text_height+16)*(i-1))
+        end
     end
 end
