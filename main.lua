@@ -27,7 +27,6 @@ function love.load()
         data = {
             color = "cyan",
             active = true,
-            amount = CreateComplexNum(1),
             copies = CreateComplexNum(1),
             negativeborder = false,
             cursed = false,
@@ -44,7 +43,7 @@ function love.load()
                     height = 16,
                     color = "cyan",
                     type = "normal",
-                    amount = CreateComplexNum(5)
+                    amount = CreateComplexNum(-1)
                 },
                 {
                     x = 40,
@@ -54,6 +53,64 @@ function love.load()
                     color = "master",
                     type = "blank"
                 }
+            }
+        }
+    } --[[@as DoorObject]]
+
+    ObjectList[3] = {
+        x = 16,
+        y = 64,
+        type = "door",
+        data = {
+            color = "orange",
+            active = true,
+            copies = CreateComplexNum(1),
+            negativeborder = false,
+            cursed = false,
+            eroded = false,
+            frozen = false,
+            painted = false,
+            width = 32,
+            height = 32,
+            locks = {
+                {
+                    x = 8,
+                    y = 8,
+                    width = 16,
+                    height = 16,
+                    color = "orange",
+                    type = "normal",
+                    amount = CreateComplexNum(1)
+                },
+            }
+        }
+    } --[[@as DoorObject]]
+
+    ObjectList[4] = {
+        x = 64,
+        y = 64,
+        type = "door",
+        data = {
+            color = "cyan",
+            active = true,
+            copies = CreateComplexNum(1),
+            negativeborder = false,
+            cursed = false,
+            eroded = false,
+            frozen = false,
+            painted = false,
+            width = 32,
+            height = 32,
+            locks = {
+                {
+                    x = 8,
+                    y = 8,
+                    width = 16,
+                    height = 16,
+                    color = "orange",
+                    type = "normal",
+                    amount = CreateComplexNum(1)
+                },
             }
         }
     } --[[@as DoorObject]]

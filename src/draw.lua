@@ -41,6 +41,21 @@ function love.draw()
     if HoverBox.text then
         DrawHoverBox()
     end
+
+    local key_display_text = ""
+    local first_line = true
+
+    for key, value in pairs(Keys) do
+        if first_line then
+            key_display_text = key .. ": " .. tostring(value)
+
+            first_line = false
+        else
+            key_display_text = key_display_text .. "\n" .. key .. ": " .. tostring(value)
+        end
+    end
+
+    love.graphics.print(key_display_text, love.graphics.getWidth()-128, 16)
 end
 
 ---@param obj DoorObject
