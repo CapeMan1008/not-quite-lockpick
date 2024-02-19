@@ -95,7 +95,7 @@ function DrawDoorObject(obj)
 
         love.graphics.setColor(1,1,1)
 
-        love.graphics.draw(text, obj.x+obj.data.width/2-text_width/2, obj.y+obj.data.height/2-text_height/2)
+        love.graphics.draw(text, obj.x+obj.data.width/2-text_width/2, obj.y-text_height)
     end
 end
 
