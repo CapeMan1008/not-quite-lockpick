@@ -144,3 +144,29 @@ function DrawHoverBox()
 
     love.graphics.print(HoverBox.text, HoverBox.x+8, HoverBox.y+8)
 end
+
+function DrawRightClickMenu()
+    local buttons = GetRightClickButtons()
+
+    love.graphics.setFont(Fonts.default)
+
+    local text_width, text_height = 0, Fonts.default:getHeight()
+
+    for _, text in ipairs(buttons) do
+        if Fonts.default:getWidth(text) >= text_width then
+            text_width = Fonts.default:getWidth(text)
+        end
+    end
+
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.rectangle("fill", RightClickMenu.x, RightClickMenu.y, text_width+16, (text_height+16)*#buttons)
+
+    love.graphics.setColor(0,0,0,1)
+    love.graphics.setLineWidth(1)
+    love.graphics.rectangle("line", RightClickMenu.x+0.5, RightClickMenu.y+0.5, text_width+15, (text_height+16)*#buttons-1)
+
+    for i, text in ipairs(buttons) do
+        love.graphics.line(RightClickMenu.x, RightClickMenu.y+(text_height+16)*(i+1), RightClickMenu.x+text_width+16, RightClickMenu.y+(text_height+16)*(i+1))
+        love.graphics.print(text, RightClickMenu.x+8, RightClickMenu.y+8+(text_height+16)*i)
+    end
+end

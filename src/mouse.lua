@@ -29,7 +29,15 @@ end
 ---@param y number
 ---@param b integer
 function love.mousepressed(x, y, b)
-    if b == 1 or b == 2 or b == 3 then
+    if b == 1 and RightClickMenu.obj then
+        CheckRightClickMenuButtonsPressed(x, y)
+    end
+
+    if b == 1 or b == 2 then
+        if RightClickMenu.obj then
+            RightClickMenu.obj = nil
+        end
+
         local clicked_obj
 
         for _, obj in ipairs(ObjectList) do
@@ -43,18 +51,35 @@ function love.mousepressed(x, y, b)
             return
         end
 
-        if clicked_obj.type == "key" and b ~= 3 then
+        if b == 2 then
+            RightClickMenu.x = x
+            RightClickMenu.y = y
+
+            RightClickMenu.obj = clicked_obj
+        elseif clicked_obj.type == "key" then
             ---@cast clicked_obj KeyObject
 
             CollectKey(clicked_obj.data)
         elseif clicked_obj.type == "door" then
             ---@cast clicked_obj DoorObject
 
-            if b == 3 then
-                TryAurasOnDoor(clicked_obj.data)
-            else
-                TryOpenDoor(clicked_obj.data, b == 2)
-            end
+            TryOpenDoor(clicked_obj.data, b == 2)
         end
+    end
+end
+
+function CheckRightClickMenuButtonsPressed(x, y)
+    
+end
+
+function GetRightClickButtons()
+    if not RightClickMenu.obj then
+        return {}
+    end
+
+    if RightClickMenu.obj.type == "key" then
+        return {"Collect"}
+    elseif RightClickMenu.obj.type == "door" then
+        return {"Open", "Use Master Key", "Try Auras"}
     end
 end
