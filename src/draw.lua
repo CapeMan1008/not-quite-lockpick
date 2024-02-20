@@ -80,7 +80,7 @@ function DrawDoorObject(obj)
     love.graphics.rectangle("line", obj.x+0.5, obj.y+0.5, obj.data.width-1, obj.data.height-1)
 
     for _, lock in ipairs(obj.data.locks) do
-        visible_color = obj.data.color
+        visible_color = lock.color
 
         if obj.data.cursed then
             visible_color = "brown"
