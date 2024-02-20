@@ -14,7 +14,7 @@ function love.load()
         y = 32,
         type = "door",
         data = {
-            color = "cyan",
+            color = "white",
             active = true,
             copies = CreateComplexNum(1),
             negativeborder = false,
@@ -27,6 +27,15 @@ function love.load()
             locks = {
                 {
                     x = 8,
+                    y = 8,
+                    width = 16,
+                    height = 48,
+                    color = "white",
+                    type = "normal",
+                    amount = CreateComplexNum(3)
+                },
+                {
+                    x = 40,
                     y = 8,
                     width = 16,
                     height = 48,
