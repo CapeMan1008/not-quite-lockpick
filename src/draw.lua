@@ -21,6 +21,18 @@ Palette = {
     wild = {1,0,0},
 }
 
+AnimationTimer = 0
+
+function HSVtoRGB(h,s,v,a)
+    local function f(n)
+        local k = (n+h/60)%6
+
+        return v-v*s*math.max(0,math.min(k,4-k,1))
+    end
+
+    return f(5),f(3),f(1),a or 1
+end
+
 function LoadResources()
     Textures.key_border = love.graphics.newImage("res/sprKey_0.png")
     Textures.key_border:setFilter("nearest", "nearest")
