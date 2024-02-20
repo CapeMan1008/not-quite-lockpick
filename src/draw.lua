@@ -38,7 +38,9 @@ function love.draw()
         DrawObject(obj)
     end
 
-    if HoverBox.text then
+    if RightClickMenu.obj then
+        DrawRightClickMenu()
+    elseif HoverBox.text then
         DrawHoverBox()
     end
 
@@ -80,22 +82,24 @@ function DrawDoorObject(obj)
 
         if lock.type == "normal" then
             ---@cast lock NormalLock
-            local text = love.graphics.newText(Fonts.default, tostring(lock.amount))
+            love.graphics.setFont(Fonts.default)
 
-            local text_width, text_height = text:getDimensions()
+            local text_width, text_height = Fonts.default:getWidth(tostring(lock.amount)), Fonts.default:getHeight()
 
-            love.graphics.draw(text, obj.x+lock.x+lock.width/2-text_width/2, obj.y+lock.y+lock.height/2-text_height/2)
+            love.graphics.print(tostring(lock.amount), obj.x+lock.x+lock.width/2-text_width/2, obj.y+lock.y+lock.height/2-text_height/2)
         end
     end
 
     if obj.data.copies ~= CreateComplexNum(1) then
-        local text = love.graphics.newText(Fonts.default, "x"..tostring(obj.data.copies))
+        local text = "x"..tostring(obj.data.copies)
 
-        local text_width, text_height = text:getDimensions()
+        love.graphics.setFont(Fonts.default)
+
+        local text_width, text_height = Fonts.default:getWidth(text), Fonts.default:getHeight()
 
         love.graphics.setColor(1,1,1)
 
-        love.graphics.draw(text, obj.x+obj.data.width/2-text_width/2, obj.y-text_height)
+        love.graphics.print(text, obj.x+obj.data.width/2-text_width/2, obj.y-text_height)
     end
 end
 
@@ -111,32 +115,65 @@ function DrawKeyObject(obj)
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(Textures.key_border, obj.x, obj.y)
 
-    if not obj.data.amount then
+    if not obj.data.amount or obj.data.amount == 1 then
         return
     end
 
-    local text = love.graphics.newText(Fonts.default, tostring(obj.data.amount))
+    local text = tostring(obj.data.amount)
 
-    local text_width, text_height = text:getDimensions()
+    love.graphics.setFont(Fonts.default)
+
+    local text_width, text_height = Fonts.default:getWidth(text), Fonts.default:getHeight()
 
     love.graphics.setColor(0,0,0)
     love.graphics.rectangle("fill", obj.x+31-text_width, obj.y+31-text_height, text_width+2, text_height+2)
 
     love.graphics.setColor(1,1,1)
-    love.graphics.draw(text, obj.x+32-text_width, obj.y+32-text_height)
+    love.graphics.print(text, obj.x+32-text_width, obj.y+32-text_height)
 end
 
 function DrawHoverBox()
-    local text = love.graphics.newText(Fonts.default, HoverBox.text)
+    love.graphics.setFont(Fonts.default)
 
-    local text_width, text_height = text:getDimensions()
+    local _,linebreaks = string.gsub(HoverBox.text, "\n", "\n")
+
+    local text_width, text_height = Fonts.default:getWidth(HoverBox.text), Fonts.default:getHeight()*(linebreaks+1)
 
     love.graphics.setColor(1,1,1,1)
-    love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, text_width+16, text_height+16)
+    love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, text_width+HOVER_BOX_SPACING*2, text_height+HOVER_BOX_SPACING*2)
 
     love.graphics.setColor(0,0,0,1)
     love.graphics.setLineWidth(1)
-    love.graphics.rectangle("line", HoverBox.x+0.5, HoverBox.y+0.5, text_width+15, text_height+15)
+    love.graphics.rectangle("line", HoverBox.x+0.5, HoverBox.y+0.5, text_width+HOVER_BOX_SPACING*2-1, text_height+HOVER_BOX_SPACING*2-1)
 
-    love.graphics.draw(text, HoverBox.x+8, HoverBox.y+8)
+    love.graphics.print(HoverBox.text, HoverBox.x+HOVER_BOX_SPACING, HoverBox.y+HOVER_BOX_SPACING)
+end
+
+function DrawRightClickMenu()
+    local buttons = GetRightClickButtons()
+
+    love.graphics.setFont(Fonts.default)
+
+    local text_width, text_height = 0, Fonts.default:getHeight()
+
+    for _, text in ipairs(buttons) do
+        if Fonts.default:getWidth(text) >= text_width then
+            text_width = Fonts.default:getWidth(text)
+        end
+    end
+
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.rectangle("fill", RightClickMenu.x, RightClickMenu.y, text_width+RIGHT_CLICK_MENU_SPACING*2, RIGHT_CLICK_MENU_OPTION_HEIGHT*#buttons)
+
+    love.graphics.setColor(0,0,0,1)
+    love.graphics.setLineWidth(1)
+    love.graphics.rectangle("line", RightClickMenu.x+0.5, RightClickMenu.y+0.5, text_width+RIGHT_CLICK_MENU_SPACING*2-1, RIGHT_CLICK_MENU_OPTION_HEIGHT*#buttons-1)
+
+    for i, text in ipairs(buttons) do
+        love.graphics.print(text, RightClickMenu.x+RIGHT_CLICK_MENU_SPACING, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT-text_height)*0.5+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1))
+
+        if i ~= 1 then
+            love.graphics.line(RightClickMenu.x, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1), RightClickMenu.x+text_width+RIGHT_CLICK_MENU_SPACING*2, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1))
+        end
+    end
 end

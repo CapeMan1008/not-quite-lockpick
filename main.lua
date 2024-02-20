@@ -5,6 +5,7 @@ require "src.key"
 require "src.door"
 require "src.objects"
 require "src.hoverinfo"
+require "src.mouse"
 
 function love.load()
     ObjectList[1] = {
@@ -172,49 +173,4 @@ function love.load()
     LoadResources()
 
     InitKeys()
-end
-
----@param x any
----@param y any
-function love.mousemoved(x, y)
-    local hovered_obj
-
-    for _, obj in ipairs(ObjectList) do
-        if IsObjectOTouchingPoint(obj, x, y) then
-            hovered_obj = obj
-            break
-        end
-    end
-
-    HoverBox.x = x
-    HoverBox.y = y
-
-    GenerateHoverInfo(hovered_obj)
-end
-
-function love.mousepressed(x, y, b)
-    if b == 1 or b == 2 then
-        local clicked_obj
-
-        for _, obj in ipairs(ObjectList) do
-            if IsObjectOTouchingPoint(obj, x, y) then
-                clicked_obj = obj
-                break
-            end
-        end
-
-        if not clicked_obj then
-            return
-        end
-
-        if clicked_obj.type == "key" then
-            ---@cast clicked_obj KeyObject
-
-            CollectKey(clicked_obj.data)
-        elseif clicked_obj.type == "door" then
-            ---@cast clicked_obj DoorObject
-
-            TryOpenDoor(clicked_obj.data, b == 2)
-        end
-    end
 end
