@@ -22,7 +22,7 @@ function love.load()
             eroded = false,
             frozen = false,
             painted = false,
-            width = 32,
+            width = 64,
             height = 64,
             locks = {
                 {
