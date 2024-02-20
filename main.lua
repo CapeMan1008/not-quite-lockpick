@@ -183,6 +183,19 @@ function love.load()
         }
     } --[[@as KeyObject]]
 
+    ObjectList[9] = {
+        x = 64,
+        y = 112,
+        type = "key",
+        data = {
+            color = "brown",
+            type = "exact",
+            active = true,
+            amount = CreateComplexNum(-1),
+            reusable = false
+        }
+    } --[[@as KeyObject]]
+
 
     LoadResources()
 
