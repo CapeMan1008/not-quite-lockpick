@@ -38,6 +38,15 @@ function love.mousepressed(x, y, b)
                 if menu_click == "Collect" then
                     CollectKey(RightClickMenu.obj.data)
                 end
+            elseif RightClickMenu.obj.type == "door" then
+                ---@cast RightClickMenu.obj DoorObject
+                if menu_click == "Open" then
+                    TryOpenDoor(RightClickMenu.obj.data, false, false)
+                elseif menu_click == "Use Master Key" then
+                    TryOpenDoor(RightClickMenu.obj.data, true, false)
+                elseif menu_click == "Try Auras" then
+                    TryAurasOnDoor(RightClickMenu.obj.data)
+                end
             end
 
             RightClickMenu.obj = nil
