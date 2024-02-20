@@ -32,9 +32,16 @@ function love.mousepressed(x, y, b)
     if b == 1 and RightClickMenu.obj then
         local menu_click = CheckRightClickMenuButtonsPressed(x, y)
 
-        print(menu_click)
-
         if menu_click then
+            if RightClickMenu.obj.type == "key" then
+                ---@cast RightClickMenu.obj KeyObject
+                if menu_click == "Collect" then
+                    CollectKey(RightClickMenu.obj.data)
+                end
+            end
+
+            RightClickMenu.obj = nil
+
             return
         end
     end
@@ -95,8 +102,6 @@ function CheckRightClickMenuButtonsPressed(x, y)
     end
 
     local selected_option = math.floor((oy/RIGHT_CLICK_MENU_OPTION_HEIGHT)+1)
-
-    print(selected_option)
 
     if selected_option < 1 or selected_option > #buttons then
         return
