@@ -30,7 +30,13 @@ end
 ---@param b integer
 function love.mousepressed(x, y, b)
     if b == 1 and RightClickMenu.obj then
-        CheckRightClickMenuButtonsPressed(x, y)
+        local menu_click = CheckRightClickMenuButtonsPressed(x, y)
+
+        print(menu_click)
+
+        if menu_click then
+            return
+        end
     end
 
     if b == 1 or b == 2 then
@@ -68,8 +74,34 @@ function love.mousepressed(x, y, b)
     end
 end
 
+---@param x number
+---@param y number
+---@return string?
 function CheckRightClickMenuButtonsPressed(x, y)
-    
+    local ox,oy = x-RightClickMenu.x,y-RightClickMenu.y
+
+    local buttons = GetRightClickButtons()
+
+    local text_width = 0
+
+    for _, text in ipairs(buttons) do
+        if Fonts.default:getWidth(text) >= text_width then
+            text_width = Fonts.default:getWidth(text)
+        end
+    end
+
+    if ox < 0 or ox > text_width+RIGHT_CLICK_MENU_SPACING*2 then
+        return
+    end
+
+    local selected_option = math.floor((oy/RIGHT_CLICK_MENU_OPTION_HEIGHT)+1)
+
+    print(selected_option)
+
+    if selected_option < 1 or selected_option > #buttons then
+        return
+    end
+    return buttons[selected_option]
 end
 
 function GetRightClickButtons()
