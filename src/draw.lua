@@ -67,14 +67,26 @@ function DrawDoorObject(obj)
         return
     end
 
-    love.graphics.setColor(Palette[obj.data.color] or {1,1,1})
+    local visible_color = obj.data.color
+
+    if obj.data.cursed then
+        visible_color = "brown"
+    end
+
+    love.graphics.setColor(Palette[visible_color] or {1,1,1})
     love.graphics.rectangle("fill", obj.x, obj.y, obj.data.width, obj.data.height)
 
     love.graphics.setColor(0,0,0)
     love.graphics.rectangle("line", obj.x+0.5, obj.y+0.5, obj.data.width-1, obj.data.height-1)
 
     for _, lock in ipairs(obj.data.locks) do
-        love.graphics.setColor(Palette[lock.color] or {1,1,1})
+        visible_color = lock.color
+
+        if obj.data.cursed then
+            visible_color = "brown"
+        end
+
+        love.graphics.setColor(Palette[visible_color] or {1,1,1})
         love.graphics.rectangle("fill", obj.x+lock.x, obj.y+lock.y, lock.width, lock.height)
 
         love.graphics.setColor(0,0,0)
