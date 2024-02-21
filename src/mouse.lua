@@ -34,12 +34,12 @@ function love.mousepressed(x, y, b)
 
         if menu_click then
             if RightClickMenu.obj.type == "key" then
-                ---@cast RightClickMenu.obj KeyObject
+                ---@cast RightClickMenu.obj Key
                 if menu_click == "Collect" then
                     CollectKey(RightClickMenu.obj.data)
                 end
             elseif RightClickMenu.obj.type == "door" then
-                ---@cast RightClickMenu.obj DoorObject
+                ---@cast RightClickMenu.obj Door
                 if menu_click == "Open" then
                     TryOpenDoor(RightClickMenu.obj.data, false, false)
                 elseif menu_click == "Use Master Key" then
@@ -79,11 +79,11 @@ function love.mousepressed(x, y, b)
 
             RightClickMenu.obj = clicked_obj
         elseif clicked_obj.type == "key" then
-            ---@cast clicked_obj KeyObject
+            ---@cast clicked_obj Key
 
             CollectKey(clicked_obj.data)
         elseif clicked_obj.type == "door" then
-            ---@cast clicked_obj DoorObject
+            ---@cast clicked_obj Door
 
             TryOpenDoor(clicked_obj.data, b == 2)
         end

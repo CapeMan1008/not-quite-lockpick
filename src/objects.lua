@@ -3,14 +3,6 @@
 ---@field x integer
 ---@field y integer
 
----@class DoorObject : Object
----@field type "door"
----@field data Door
-
----@class KeyObject : Object
----@field type "key"
----@field data Key
-
 ---@alias ObjectType
 ---| '"door"'
 ---| '"key"'
@@ -26,10 +18,10 @@ function DrawObject(object)
     end
 
     if object.type == "door" then
-        ---@cast object DoorObject
+        ---@cast object Door
         DrawDoorObject(object)
     elseif object.type == "key" then
-        ---@cast object KeyObject
+        ---@cast object Key
         DrawKeyObject(object)
     end
 end
@@ -42,9 +34,9 @@ end
 ---@nodiscard
 function IsObjectOTouchingPoint(obj, x, y)
     if obj.type == "key" then
-        ---@cast obj KeyObject
+        ---@cast obj Key
 
-        if not obj.data.active then
+        if not obj.active then
             return false
         end
 
@@ -55,16 +47,16 @@ function IsObjectOTouchingPoint(obj, x, y)
             return true
         end
     elseif obj.type == "door" then
-        ---@cast obj DoorObject
+        ---@cast obj Door
 
-        if not obj.data.active then
+        if not obj.active then
             return false
         end
 
         if x >= obj.x and
-        x <= obj.x+obj.data.width and
+        x <= obj.x+obj.width and
         y >= obj.y and
-        y <= obj.y+obj.data.height then
+        y <= obj.y+obj.height then
             return true
         end
     end
