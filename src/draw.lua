@@ -73,28 +73,28 @@ function love.draw()
     love.graphics.print(key_display_text, love.graphics.getWidth()-128, 16)
 end
 
----@param obj DoorObject
+---@param obj Door
 function DrawDoorObject(obj)
-    if not obj.data.active then
+    if not obj.active then
         return
     end
 
-    local visible_color = obj.data.color
+    local visible_color = obj.color
 
-    if obj.data.cursed then
+    if obj.cursed then
         visible_color = "brown"
     end
 
     love.graphics.setColor(Palette[visible_color] or {1,1,1})
-    love.graphics.rectangle("fill", obj.x, obj.y, obj.data.width, obj.data.height)
+    love.graphics.rectangle("fill", obj.x, obj.y, obj.width, obj.height)
 
     love.graphics.setColor(0,0,0)
-    love.graphics.rectangle("line", obj.x+0.5, obj.y+0.5, obj.data.width-1, obj.data.height-1)
+    love.graphics.rectangle("line", obj.x+0.5, obj.y+0.5, obj.width-1, obj.height-1)
 
-    for _, lock in ipairs(obj.data.locks) do
+    for _, lock in ipairs(obj.locks) do
         visible_color = lock.color
 
-        if obj.data.cursed then
+        if obj.cursed then
             visible_color = "brown"
         end
 
@@ -114,8 +114,8 @@ function DrawDoorObject(obj)
         end
     end
 
-    if obj.data.copies ~= CreateComplexNum(1) then
-        local text = "x"..tostring(obj.data.copies)
+    if obj.copies ~= CreateComplexNum(1) then
+        local text = "x"..tostring(obj.copies)
 
         love.graphics.setFont(Fonts.default)
 
@@ -123,27 +123,27 @@ function DrawDoorObject(obj)
 
         love.graphics.setColor(1,1,1)
 
-        love.graphics.print(text, obj.x+obj.data.width/2-text_width/2, obj.y-text_height)
+        love.graphics.print(text, obj.x+obj.width/2-text_width/2, obj.y-text_height)
     end
 end
 
----@param obj KeyObject
+---@param obj Key
 function DrawKeyObject(obj)
-    if not obj.data.active then
+    if not obj.active then
         return
     end
 
-    love.graphics.setColor(Palette[obj.data.color] or {1,1,1})
+    love.graphics.setColor(Palette[obj.color] or {1,1,1})
     love.graphics.draw(Textures.key_inside, obj.x, obj.y)
 
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(Textures.key_border, obj.x, obj.y)
 
-    if not obj.data.amount or obj.data.amount == 1 then
+    if not obj.amount or obj.amount == 1 then
         return
     end
 
-    local text = tostring(obj.data.amount)
+    local text = tostring(obj.amount)
 
     love.graphics.setFont(Fonts.default)
 
