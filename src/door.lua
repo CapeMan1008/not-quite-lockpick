@@ -1,4 +1,5 @@
----@class Door
+---@class Door : Object
+---@field type "door"
 ---@field width integer The width of the door.
 ---@field height integer The height of the door.
 ---@field color KeyColor The "spend color" of the door. Used as the color of key to spend.
@@ -510,9 +511,9 @@ end
 function ChangeDoorMimic(color)
     for _, obj in ipairs(ObjectList) do
         if obj.type == "door" then
-            ---@cast obj DoorObject
-            if obj.data.active and not obj.data.cursed then
-                obj.data.mimic = color
+            ---@cast obj Door
+            if obj.active and not obj.cursed then
+                obj.mimic = color
             end
         end
     end

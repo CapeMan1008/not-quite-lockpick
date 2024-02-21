@@ -1,6 +1,7 @@
----@class Key
+---@class Key : Object
+---@field type "key"
 ---@field color KeyColor
----@field type KeyType
+---@field key_type KeyType
 ---@field active boolean
 ---@field amount ComplexNumber
 ---@field reusable boolean
