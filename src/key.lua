@@ -31,6 +31,8 @@
 ---| '"glitch"' # Glitch keys (change color to the last opened door's color)
 ---| '"stone"' # Stone keys (no special properties, but the amount you start with is equal to the number of worlds you've cleared)
 ---| '"wild"' # Wildcard keys (makes up for keys you don't have)
+---| '"fire"' # Fire keys (change to ice whenever you pick up a fire or ice key)
+---| '"ice"' # Ice keys (change to fire whenever you pick up a fire or ice key)
 
 ---@type table<KeyColor,ComplexNumber>
 Keys = {}
@@ -53,6 +55,26 @@ function InitKeys()
     Keys.glitch = CreateComplexNum()
     Keys.stone = CreateComplexNum()
     Keys.wild = CreateComplexNum()
+    Keys.fire = CreateComplexNum()
+    Keys.ice = CreateComplexNum()
+
+    StarKeys.white = false
+    StarKeys.orange = false
+    StarKeys.cyan = false
+    StarKeys.purple = false
+    StarKeys.pink = false
+    StarKeys.black = false
+    StarKeys.red = false
+    StarKeys.green = false
+    StarKeys.blue = false
+    StarKeys.brown = false
+    StarKeys.master = false
+    StarKeys.pure = false
+    StarKeys.glitch = false
+    StarKeys.stone = false
+    StarKeys.wild = false
+    StarKeys.fire = false
+    StarKeys.ice = false
 end
 
 ---Gets the effective color (the color used for most purposes) from the true color and the mimic status.
