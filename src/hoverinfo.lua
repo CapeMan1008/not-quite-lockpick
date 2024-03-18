@@ -24,10 +24,10 @@ function GenerateHoverInfo(obj)
     if obj.type == "key" then
         ---@cast obj Key
 
-        if obj.data.type == "add" then
-            HoverBox.text = COLOR_NAMES[obj.data.color] .. " Key\nAmount: " .. tostring(obj.data.amount)
+        if obj.type == "add" then
+            HoverBox.text = COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
         else
-            HoverBox.text = KEY_TYPE_NAMES[obj.data.type] .. " " .. COLOR_NAMES[obj.data.color] .. " Key\nAmount: " .. tostring(obj.data.amount)
+            HoverBox.text = KEY_TYPE_NAMES[obj.key_type] .. " " .. COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
         end
 
         return
@@ -36,42 +36,42 @@ function GenerateHoverInfo(obj)
 
         local text = ""
 
-        if #obj.data.locks == 0 then
-            text = "Lockless " .. COLOR_NAMES[obj.data.color] .. " Door"
-        elseif #obj.data.locks == 1 then
-            text = COLOR_NAMES[obj.data.color] .. " Door\n"
+        if #obj.locks == 0 then
+            text = "Lockless " .. COLOR_NAMES[obj.color] .. " Door"
+        elseif #obj.locks == 1 then
+            text = COLOR_NAMES[obj.color] .. " Door\n"
 
-            local lock = obj.data.locks[1]
+            local lock = obj.locks[1]
 
             text = text .. "Cost: " .. LockCostAsString(lock) .. " " .. COLOR_NAMES[lock.color]
         else
-            text = "Combo " .. COLOR_NAMES[obj.data.color] .. " Door"
+            text = "Combo " .. COLOR_NAMES[obj.color] .. " Door"
 
-            for _, lock in ipairs(obj.data.locks) do
+            for _, lock in ipairs(obj.locks) do
                 text = text .. "\nLock: " .. COLOR_NAMES[lock.color] .. ", Cost: " .. LockCostAsString(lock)
             end
         end
 
-        if GetDoorGlitched(obj.data) and obj.data.mimic then
-            text = text .. "\nMimic: " .. COLOR_NAMES[obj.data.mimic]
+        if DoesDoorHaveColor(obj, "glitch", true) and obj.mimic then
+            text = text .. "\nMimic: " .. COLOR_NAMES[obj.mimic]
         end
 
-        if obj.data.frozen or obj.data.eroded or obj.data.painted or obj.data.cursed then
+        if obj.frozen or obj.eroded or obj.painted or obj.cursed then
             text = text .. "\n- Effects -"
 
-            if obj.data.cursed then
+            if obj.cursed then
                 text = text .. "\nCursed!"
             end
 
-            if obj.data.frozen then
+            if obj.frozen then
                 text = text .. "\nFrozen! (1xRed)"
             end
 
-            if obj.data.eroded then
+            if obj.eroded then
                 text = text .. "\nEroded! (5xGreen)"
             end
 
-            if obj.data.painted then
+            if obj.painted then
                 text = text .. "\nPainted! (3xBlue)"
             end
         end
