@@ -23,7 +23,17 @@ Palette = {
 
 AnimationTimer = 0
 
+---@param h number
+---@param s number
+---@param v number
+---@param a number?
+---@return number r
+---@return number g
+---@return number b
+---@return number a
 function HSVtoRGB(h,s,v,a)
+    ---@param n number
+    ---@return number
     local function f(n)
         local k = (n+h/60)%6
 
@@ -34,13 +44,32 @@ function HSVtoRGB(h,s,v,a)
 end
 
 function LoadResources()
-    Textures.key_border = love.graphics.newImage("res/sprKey_0.png")
-    Textures.key_border:setFilter("nearest", "nearest")
-
-    Textures.key_inside = love.graphics.newImage("res/sprKey_1.png")
-    Textures.key_inside:setFilter("nearest", "nearest")
-
     Fonts.default = love.graphics.newFont(12)
+end
+
+---Gets a texture by it's name, loading the texture from res/textures if it currently isn't in the Textures table. If the texture doesn't exist, returns nil (it's up to you to check this).
+---@param name string
+---@param extension string? Appended to the end of the filepath without affecting the name of the texture. Defaults to ".png".
+---@return love.Texture?
+---@nodiscard
+function GetTexture(name, extension)
+    if Textures[name] then
+        return Textures[name]
+    end
+
+    if not extension then
+        extension = ".png"
+    end
+
+    local filepath = "res/textures/" .. name .. extension
+
+    local file_info = love.filesystem.getInfo(filepath, "file")
+
+    if file_info then
+        Textures[name] = love.graphics.newImage(filepath)
+        Textures[name]:setFilter("nearest", "nearest")
+        return Textures[name]
+    end
 end
 
 function love.draw()
@@ -134,10 +163,10 @@ function DrawKeyObject(obj)
     end
 
     love.graphics.setColor(Palette[obj.color] or {1,1,1})
-    love.graphics.draw(Textures.key_inside, obj.x, obj.y)
+    love.graphics.draw(GetTexture("sprKey_1") --[[@as love.Texture]], obj.x, obj.y)
 
     love.graphics.setColor(1,1,1,1)
-    love.graphics.draw(Textures.key_border, obj.x, obj.y)
+    love.graphics.draw(GetTexture("sprKey_0") --[[@as love.Texture]], obj.x, obj.y)
 
     if not obj.amount or obj.amount == 1 then
         return

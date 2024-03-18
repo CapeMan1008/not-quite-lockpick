@@ -99,27 +99,27 @@ end
 function CollectKey(key)
     local color = GetEffectiveColor(key.color, nil, key.mimic)
 
-    if key.type == "add" and not StarKeys[color] then
+    if key.key_type == "add" and not StarKeys[color] then
         Keys[color] = Keys[color] + key.amount
     end
 
-    if key.type == "exact" and not StarKeys[color] then
+    if key.key_type == "exact" and not StarKeys[color] then
         Keys[color] = key.amount
     end
 
-    if key.type == "multiply" and not StarKeys[color] then
+    if key.key_type == "multiply" and not StarKeys[color] then
         Keys[color] = Keys[color] * key.amount
     end
 
-    if key.type == "square" and not StarKeys[color] then
+    if key.key_type == "square" and not StarKeys[color] then
         Keys[color] = Keys[color] * Keys[color]
     end
 
-    if key.type == "star" then
+    if key.key_type == "star" then
         StarKeys[color] = true
     end
 
-    if key.type == "unstar" then
+    if key.key_type == "unstar" then
         StarKeys[color] = false
     end
 
