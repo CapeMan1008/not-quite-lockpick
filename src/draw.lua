@@ -51,6 +51,7 @@ end
 ---@param name string
 ---@param extension string? Appended to the end of the filepath without affecting the name of the texture. Defaults to ".png".
 ---@return love.Texture?
+---@nodiscard
 function GetTexture(name, extension)
     if Textures[name] then
         return Textures[name]
