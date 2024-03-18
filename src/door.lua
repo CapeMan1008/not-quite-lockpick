@@ -75,26 +75,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
 
     if use_master then
         ---@type boolean
-        local master_immune = GetDoorPure(door)
-
-        if not master_immune then
-            ---@type KeyColor
-            local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
-
-            if effective_color == "master" then
-                master_immune = true
-            end
-
-            for _, lock in ipairs(door.locks) do
-                ---@type KeyColor
-                local lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic)
-
-                if lock_color == "master" then
-                    master_immune = true
-                    break
-                end
-            end
-        end
+        local master_immune = DoesDoorHaveColor(door, "pure") or DoesDoorHaveColor(door, "master")
 
         if master_immune then
             return false
@@ -267,7 +248,7 @@ function CheckNormalLock(lock, parent_door, imaginary, negative)
         if lock.negative then
             if Keys[required_color].real <= lock.amount.real then
                 cost = cost + lock.amount.real
-            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].real + Keys.wild.real <= lock.amount.real then
+            elseif required_color ~= "wild" and not DoesDoorHaveColor(parent_door, "pure") and Keys[required_color].real + Keys.wild.real <= lock.amount.real then
                 cost = cost + CreateComplexNum(Keys[required_color].real)
                 wild_cost = wild_cost + CreateComplexNum(lock.amount.real) - CreateComplexNum(Keys[required_color].real)
                 can_open = false
@@ -275,7 +256,7 @@ function CheckNormalLock(lock, parent_door, imaginary, negative)
         else
             if Keys[required_color].real >= lock.amount.real then
                 cost = cost + lock.amount.real
-            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].real + Keys.wild.real >= lock.amount.real then
+            elseif required_color ~= "wild" and not DoesDoorHaveColor(parent_door, "pure") and Keys[required_color].real + Keys.wild.real >= lock.amount.real then
                 cost = cost + CreateComplexNum(Keys[required_color].real)
                 wild_cost = wild_cost + CreateComplexNum(lock.amount.real) - CreateComplexNum(Keys[required_color].real)
             else
@@ -288,7 +269,7 @@ function CheckNormalLock(lock, parent_door, imaginary, negative)
         if lock.imaginary_negative then
             if Keys[required_color].imaginary <= lock.amount.imaginary then
                 cost = cost + lock.amount.imaginary
-            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].imaginary + Keys.wild.imaginary <= lock.amount.imaginary then
+            elseif required_color ~= "wild" and not DoesDoorHaveColor(parent_door, "pure") and Keys[required_color].imaginary + Keys.wild.imaginary <= lock.amount.imaginary then
                 cost = cost + CreateComplexNum(0,Keys[required_color].imaginary)
                 wild_cost = wild_cost + CreateComplexNum(0,lock.amount.imaginary - Keys[required_color].imaginary)
             else
@@ -297,7 +278,7 @@ function CheckNormalLock(lock, parent_door, imaginary, negative)
         else
             if Keys[required_color].imaginary >= lock.amount.imaginary then
                 cost = cost + lock.amount.imaginary
-            elseif required_color ~= "wild" and not GetDoorPure(parent_door) and Keys[required_color].imaginary + Keys.wild.imaginary >= lock.amount.imaginary then
+            elseif required_color ~= "wild" and not DoesDoorHaveColor(parent_door, "pure") and Keys[required_color].imaginary + Keys.wild.imaginary >= lock.amount.imaginary then
                 cost = cost + CreateComplexNum(0,Keys[required_color].imaginary)
                 wild_cost = wild_cost + CreateComplexNum(0,lock.amount.imaginary - Keys[required_color].imaginary)
             else
@@ -423,6 +404,7 @@ function CreateNonWholeNormalLock(lock, imaginary, negative)
     return new_lock
 end
 
+--[[
 ---Checks if the door has any pure parts on it.
 ---@param door Door
 ---@return boolean
@@ -462,6 +444,7 @@ function GetDoorGlitched(door)
 
     return false
 end
+]]
 
 ---Opens one copy of a door, without checking any requirements, nor spending any keys. Not to be confused with TryOpenDoor, which does all necessary checks first.
 ---@param door Door
@@ -590,9 +573,44 @@ function TryAurasOnDoor(door)
         door.painted = false
     end
 
-    if not door.cursed and CheckAura("curse") and not GetDoorPure(door) then
+    if not door.cursed and CheckAura("curse") and not DoesDoorHaveColor(door, "pure") then
         door.cursed = true
     elseif door.cursed and CheckAura("uncurse") then
         door.cursed = false
     end
+end
+
+---Returns whether a given door has a given color anywhere on it.
+---@param door Door
+---@param color KeyColor
+---@param use_raw boolean? Whether to ignore curse, glitch, and other color changing effects.
+---@return boolean
+---@nodiscard
+function DoesDoorHaveColor(door, color, use_raw)
+    local door_color
+    if use_raw then
+        door_color = door.color
+    else
+        door_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
+    end
+
+    if door_color == color then
+        return true
+    end
+
+    for _, lock in ipairs(door.locks) do
+        ---@type KeyColor
+        local lock_color
+        if use_raw then
+            lock_color = lock.color
+        else
+            lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic)
+        end
+
+        if lock_color == color then
+            return true
+        end
+    end
+
+    return false
 end
