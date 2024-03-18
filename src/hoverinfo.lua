@@ -27,7 +27,7 @@ function GenerateHoverInfo(obj)
         if obj.type == "add" then
             HoverBox.text = COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
         else
-            HoverBox.text = KEY_TYPE_NAMES[obj.type] .. " " .. COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
+            HoverBox.text = KEY_TYPE_NAMES[obj.key_type] .. " " .. COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
         end
 
         return

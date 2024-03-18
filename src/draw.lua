@@ -60,7 +60,7 @@ function GetTexture(name, extension)
         extension = ".png"
     end
 
-    local filepath = "res/textures" .. name .. extension
+    local filepath = "res/textures/" .. name .. extension
 
     local file_info = love.filesystem.getInfo(filepath, "file")
 
@@ -162,10 +162,10 @@ function DrawKeyObject(obj)
     end
 
     love.graphics.setColor(Palette[obj.color] or {1,1,1})
-    love.graphics.draw(Textures.key_inside, obj.x, obj.y)
+    love.graphics.draw(GetTexture("sprKey_1") --[[@as love.Texture]], obj.x, obj.y)
 
     love.graphics.setColor(1,1,1,1)
-    love.graphics.draw(Textures.key_border, obj.x, obj.y)
+    love.graphics.draw(GetTexture("sprKey_0") --[[@as love.Texture]], obj.x, obj.y)
 
     if not obj.amount or obj.amount == 1 then
         return
