@@ -27,10 +27,10 @@ AnimationTimer = 0
 ---@param s number
 ---@param v number
 ---@param a number?
----@return number
----@return number
----@return number
----@return number
+---@return number r
+---@return number g
+---@return number b
+---@return number a
 function HSVtoRGB(h,s,v,a)
     ---@param n number
     ---@return number
