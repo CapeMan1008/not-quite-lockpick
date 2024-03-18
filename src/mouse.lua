@@ -33,19 +33,22 @@ function love.mousepressed(x, y, b)
         local menu_click = CheckRightClickMenuButtonsPressed(x, y)
 
         if menu_click then
-            if RightClickMenu.obj.type == "key" then
-                ---@cast RightClickMenu.obj Key
+            local selected_obj = RightClickMenu.obj
+            ---@cast selected_obj Object
+
+            if selected_obj.type == "key" then
+                ---@cast selected_obj Key
                 if menu_click == "Collect" then
-                    CollectKey(RightClickMenu.obj.data)
+                    CollectKey(selected_obj)
                 end
-            elseif RightClickMenu.obj.type == "door" then
-                ---@cast RightClickMenu.obj Door
+            elseif selected_obj.type == "door" then
+                ---@cast selected_obj Door
                 if menu_click == "Open" then
-                    TryOpenDoor(RightClickMenu.obj.data, false, false)
+                    TryOpenDoor(selected_obj, false, false)
                 elseif menu_click == "Use Master Key" then
-                    TryOpenDoor(RightClickMenu.obj.data, true, false)
+                    TryOpenDoor(selected_obj, true, false)
                 elseif menu_click == "Try Auras" then
-                    TryAurasOnDoor(RightClickMenu.obj.data)
+                    TryAurasOnDoor(selected_obj)
                 end
             end
 
@@ -81,11 +84,11 @@ function love.mousepressed(x, y, b)
         elseif clicked_obj.type == "key" then
             ---@cast clicked_obj Key
 
-            CollectKey(clicked_obj.data)
+            CollectKey(clicked_obj)
         elseif clicked_obj.type == "door" then
             ---@cast clicked_obj Door
 
-            TryOpenDoor(clicked_obj.data, b == 2)
+            TryOpenDoor(clicked_obj, b == 2)
         end
     end
 end
