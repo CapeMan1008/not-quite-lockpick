@@ -39,3 +39,13 @@ KEY_TYPE_NAMES = {
     star = "Star",
     unstar = "Unstar"
 }
+
+---@type table<KeyType, string>
+KEY_TYPE_IMAGES = {
+    add = "sprKey",
+    exact = "sprKeyAbs",
+    multiply = "sprKey",
+    square = "sprKey",
+    star = "sprKeyStar",
+    unstar = "sprKeyStar2"
+}

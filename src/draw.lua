@@ -163,13 +163,15 @@ function DrawKeyObject(obj)
         return
     end
 
+    local key_image_prefix = KEY_TYPE_IMAGES[obj.key_type]
+
     love.graphics.setColor(Palette[obj.color] or {1,1,1})
-    love.graphics.draw(GetTexture("sprKey_1") --[[@as love.Texture]], obj.x, obj.y)
+    love.graphics.draw(GetTexture(key_image_prefix .. "_1") --[[@as love.Texture]], obj.x, obj.y)
 
     love.graphics.setColor(1,1,1,1)
-    love.graphics.draw(GetTexture("sprKey_0") --[[@as love.Texture]], obj.x, obj.y)
+    love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
 
-    if not obj.amount or obj.amount == 1 then
+    if not obj.amount or obj.amount == CreateComplexNum(1) then
         return
     end
 
