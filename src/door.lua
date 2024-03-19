@@ -12,6 +12,7 @@
 ---@field eroded boolean If this door is eroded or not.
 ---@field painted boolean If this door is painted or not.
 ---@field mimic KeyColor? The mimic color for glitched doors or locks (locks use the mimic color of the door they're attached to).
+---@field core_switch boolean? Whether fire and ice are switched or not.
 
 ---@class Lock
 ---@field x integer The x position of the lock relative to the door.
@@ -166,7 +167,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
     end
 
     ---@type KeyColor
-    local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
+    local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic, door.core_switch)
 
     if not Keys[effective_color] then
         Keys[effective_color] = CreateComplexNum()
@@ -227,7 +228,7 @@ function CheckNormalLock(lock, parent_door, imaginary, negative)
     end
 
     ---@type KeyColor
-    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
+    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic, parent_door.core_switch)
 
     ---@type boolean
     local check_real, check_imaginary = true,true
@@ -299,7 +300,7 @@ end
 ---@param parent_door Door The door the lock is on (since the lock doesn't store this itself).
 ---@return boolean can_open
 function CheckBlankLock(lock, parent_door)
-    return Keys[GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)] == CreateComplexNum()
+    return Keys[GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic, parent_door.core_switch)] == CreateComplexNum()
 end
 
 ---Returns if a blast lock is openable, as well as how many keys it would cost to open.
@@ -323,7 +324,7 @@ function CheckBlastLock(lock, parent_door, imaginary, negative)
     end
 
     ---@type KeyColor
-    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
+    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic, parent_door.core_switch)
 
     if not check_imaginary and not check_negative then
         if Keys[required_color].real > 0 then
@@ -359,7 +360,7 @@ end
 ---@return ComplexNumber? cost
 function CheckAllLock(lock, parent_door)
     ---@type KeyColor
-    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic)
+    local required_color = GetEffectiveColor(lock.color, parent_door.cursed, parent_door.mimic, parent_door.core_switch)
 
     if Keys[required_color] ~= CreateComplexNum() then
         return true, Keys[required_color]
@@ -483,19 +484,24 @@ function OpenDoor(door, imaginary, negative, no_mimic, always_deactivate)
     end
 
     if not no_mimic then
-        ChangeDoorMimic(GetEffectiveColor(door.color, door.cursed, door.mimic))
+        ChangeAllMimic(GetEffectiveColor(door.color, door.cursed, door.mimic, door.core_switch))
     end
 
     return return_val
 end
 
----Changes the mimic of all active non-cursed doors.
+---Changes the mimic of all active non-cursed objects.
 ---@param color KeyColor
-function ChangeDoorMimic(color)
+function ChangeAllMimic(color)
     for _, obj in ipairs(ObjectList) do
         if obj.type == "door" then
             ---@cast obj Door
             if obj.active and not obj.cursed then
+                obj.mimic = color
+            end
+        elseif obj.type == "key" then
+            ---@cast obj Key
+            if obj.active then
                 obj.mimic = color
             end
         end
@@ -591,7 +597,7 @@ function DoesDoorHaveColor(door, color, use_raw)
     if use_raw then
         door_color = door.color
     else
-        door_color = GetEffectiveColor(door.color, door.cursed, door.mimic)
+        door_color = GetEffectiveColor(door.color, door.cursed, door.mimic, door.core_switch)
     end
 
     if door_color == color then
@@ -604,7 +610,7 @@ function DoesDoorHaveColor(door, color, use_raw)
         if use_raw then
             lock_color = lock.color
         else
-            lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic)
+            lock_color = GetEffectiveColor(lock.color, door.cursed, door.mimic, door.core_switch)
         end
 
         if lock_color == color then

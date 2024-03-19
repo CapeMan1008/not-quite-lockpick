@@ -24,11 +24,23 @@ function GenerateHoverInfo(obj)
     if obj.type == "key" then
         ---@cast obj Key
 
+        local text = ""
+
         if obj.type == "add" then
-            HoverBox.text = COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
+            text = COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
         else
-            HoverBox.text = KEY_TYPE_NAMES[obj.key_type] .. " " .. COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
+            text = KEY_TYPE_NAMES[obj.key_type] .. " " .. COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
         end
+
+        if obj.color == "glitch" and obj.mimic then
+            text = text .. "\nMimic: " .. COLOR_NAMES[obj.mimic]
+        end
+
+        if obj.color == "fire" or obj.color == "ice" then
+            text = text .. "\nCore: " .. tostring(obj.core_switch)
+        end
+
+        HoverBox.text = text
 
         return
     elseif obj.type == "door" then
@@ -54,6 +66,10 @@ function GenerateHoverInfo(obj)
 
         if DoesDoorHaveColor(obj, "glitch", true) and obj.mimic then
             text = text .. "\nMimic: " .. COLOR_NAMES[obj.mimic]
+        end
+
+        if DoesDoorHaveColor(obj, "fire", true) or DoesDoorHaveColor(obj, "ice", true) then
+            text = text .. "\nCore: " .. tostring(obj.core_switch)
         end
 
         if obj.frozen or obj.eroded or obj.painted or obj.cursed then

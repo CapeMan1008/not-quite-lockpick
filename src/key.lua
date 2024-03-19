@@ -6,6 +6,7 @@
 ---@field amount ComplexNumber
 ---@field reusable boolean
 ---@field mimic KeyColor?
+---@field core_switch boolean?
 
 ---@alias KeyType
 ---| '"add"' # Adds to key count
@@ -31,6 +32,8 @@
 ---| '"glitch"' # Glitch keys (change color to the last opened door's color)
 ---| '"stone"' # Stone keys (no special properties, but the amount you start with is equal to the number of worlds you've cleared)
 ---| '"wild"' # Wildcard keys (makes up for keys you don't have)
+---| '"fire"' # Fire keys (change to ice whenever you pick up a fire or ice key)
+---| '"ice"' # Ice keys (change to fire whenever you pick up a fire or ice key)
 
 ---@type table<KeyColor,ComplexNumber>
 Keys = {}
@@ -53,14 +56,35 @@ function InitKeys()
     Keys.glitch = CreateComplexNum()
     Keys.stone = CreateComplexNum()
     Keys.wild = CreateComplexNum()
+    Keys.fire = CreateComplexNum()
+    Keys.ice = CreateComplexNum()
+
+    StarKeys.white = false
+    StarKeys.orange = false
+    StarKeys.cyan = false
+    StarKeys.purple = false
+    StarKeys.pink = false
+    StarKeys.black = false
+    StarKeys.red = false
+    StarKeys.green = false
+    StarKeys.blue = false
+    StarKeys.brown = false
+    StarKeys.master = false
+    StarKeys.pure = false
+    StarKeys.glitch = false
+    StarKeys.stone = false
+    StarKeys.wild = false
+    StarKeys.fire = false
+    StarKeys.ice = false
 end
 
 ---Gets the effective color (the color used for most purposes) from the true color and the mimic status.
 ---@param color KeyColor
 ---@param cursed boolean? Only applies to doors (so far).
 ---@param mimic KeyColor?
+---@param core_switch boolean?
 ---@return KeyColor
-function GetEffectiveColor(color, cursed, mimic)
+function GetEffectiveColor(color, cursed, mimic, core_switch)
     if cursed then
         return "brown"
     end
@@ -69,13 +93,20 @@ function GetEffectiveColor(color, cursed, mimic)
         return mimic
     end
 
+    if color == "fire" and core_switch then
+        return "ice"
+    end
+    if color == "ice" and core_switch then
+        return "fire"
+    end
+
     return color
 end
 
 ---Collect a key, deactivating it and changing your key count accordingly.
 ---@param key Key
 function CollectKey(key)
-    local color = GetEffectiveColor(key.color, nil, key.mimic)
+    local color = GetEffectiveColor(key.color, nil, key.mimic, key.core_switch)
 
     if key.key_type == "add" and not StarKeys[color] then
         Keys[color] = Keys[color] + key.amount
@@ -103,5 +134,24 @@ function CollectKey(key)
 
     if not key.reusable then
         key.active = false
+    end
+
+    SwitchFireIce()
+end
+
+---Switch fire and ice for all active non-cursed objects.
+function SwitchFireIce()
+    for _, obj in ipairs(ObjectList) do
+        if obj.type == "door" then
+            ---@cast obj Door
+            if obj.active and not obj.cursed then
+                obj.core_switch = not obj.core_switch
+            end
+        elseif obj.type == "key" then
+            ---@cast obj Key
+            if obj.active then
+                obj.core_switch = not obj.core_switch
+            end
+        end
     end
 end
