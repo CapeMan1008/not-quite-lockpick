@@ -18,7 +18,8 @@ Palette = {
     pure = {1,1,1},
     master = {1,1,0.5},
     glitch = {0.3,0.3,0.3},
-    wild = {1,0,0},
+    fire = {1,0.3,0},
+    ice = {0.4,0.9,1},
 }
 
 AnimationTimer = 0
