@@ -75,6 +75,46 @@ function love.load()
         reusable = false
     } --[[@as Key]]
 
+    ObjectList[7] = {
+        x = 224,
+        y = 96,
+        type = "key",
+        color = "glitch",
+        key_type = "square",
+        active = true,
+        amount = CreateComplexNum(1),
+        reusable = false
+    } --[[@as Key]]
+
+    ObjectList[8] = {
+        x = 224,
+        y = 32,
+        type = "door",
+        color = "white",
+        active = true,
+        locks = {
+            {
+                x = 8,
+                y = 8,
+                width = 16,
+                height = 16,
+                color = "white",
+                type = "normal",
+                amount = CreateComplexNum(1),
+                negative = false,
+                imaginary_negative = false
+            } --[[@as NormalLock]]
+        },
+        width = 32,
+        height = 32,
+        cursed = false,
+        frozen = false,
+        eroded = false,
+        painted = false,
+        copies = CreateComplexNum(1),
+        negativeborder = false,
+    } --[[@as Door]]
+
 
     LoadResources()
 
