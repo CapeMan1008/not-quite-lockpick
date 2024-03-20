@@ -168,13 +168,13 @@ function DrawKeyObject(obj)
     love.graphics.setColor(Palette[obj.color] or {1,1,1})
     love.graphics.draw(GetTexture(key_image_prefix .. "_1") --[[@as love.Texture]], obj.x, obj.y)
 
-    love.graphics.setColor(1,1,1,1)
-    love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
-
     if obj.color == "glitch" and obj.mimic and obj.mimic ~= "glitch" then
         love.graphics.setColor(Palette[obj.mimic] or {1,1,1})
         love.graphics.draw(GetTexture(key_image_prefix .. "_4") --[[@as love.Texture]], obj.x, obj.y)
     end
+
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
 
     if not obj.amount or obj.amount == CreateComplexNum(1) then
         return
