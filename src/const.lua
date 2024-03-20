@@ -45,7 +45,7 @@ KEY_TYPE_IMAGES = {
     add = "sprKey",
     exact = "sprKeyAbs",
     multiply = "sprKey",
-    square = "sprKey",
+    square = "sprKeySquare",
     star = "sprKeyStar",
     unstar = "sprKeyStar2"
 }
