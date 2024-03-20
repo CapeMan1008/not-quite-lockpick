@@ -7,7 +7,7 @@
 HoverBox = {
     x = 0,
     y = 0,
-    text = ""
+    text = nil
 }
 
 ---Sets HoverBox to have the proper text
