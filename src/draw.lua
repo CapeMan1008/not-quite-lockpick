@@ -177,7 +177,7 @@ function DrawKeyObject(obj)
     --    love.graphics.setColor(1,1,1,1)
     --    love.graphics.setShader(Shaders.static)
     --else
-        love.graphics.setColor(Palette[obj.color] or {1,1,1})
+    love.graphics.setColor(Palette[obj.color] or {1,1,1})
     --end
     love.graphics.draw(GetTexture(key_image_prefix .. "_1") --[[@as love.Texture]], obj.x, obj.y)
     love.graphics.setShader()
