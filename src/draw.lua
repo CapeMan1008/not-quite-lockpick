@@ -2,6 +2,10 @@
 Fonts = {}
 ---@type table<string, love.Texture>
 Textures = {}
+---@type table<string, love.Shader>
+--Shaders = {
+--    static = love.graphics.newShader("src/shaders/static.glsl")
+--}
 
 ---@type table<KeyColor, { [1]: number, [2]: number, [3]: number }>
 Palette = {
@@ -75,6 +79,10 @@ end
 
 function love.draw()
     love.graphics.clear(0.5,0.5,0.5)
+
+    --if Shaders.static:hasUniform("time") then
+    --    Shaders.static:send("time", AnimationTimer)
+    --end
 
     for _, obj in ipairs(ObjectList) do
         DrawObject(obj)
@@ -165,8 +173,14 @@ function DrawKeyObject(obj)
 
     local key_image_prefix = KEY_TYPE_IMAGES[obj.key_type]
 
-    love.graphics.setColor(Palette[obj.color] or {1,1,1})
+    --if obj.color == "glitch" then
+    --    love.graphics.setColor(1,1,1,1)
+    --    love.graphics.setShader(Shaders.static)
+    --else
+        love.graphics.setColor(Palette[obj.color] or {1,1,1})
+    --end
     love.graphics.draw(GetTexture(key_image_prefix .. "_1") --[[@as love.Texture]], obj.x, obj.y)
+    love.graphics.setShader()
 
     if obj.color == "glitch" and obj.mimic and obj.mimic ~= "glitch" then
         love.graphics.setColor(Palette[obj.mimic] or {1,1,1})
