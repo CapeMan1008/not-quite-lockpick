@@ -34,6 +34,7 @@
 ---| '"wild"' # Wildcard keys (makes up for keys you don't have)
 ---| '"fire"' # Fire keys (change to ice whenever you pick up a fire or ice key)
 ---| '"ice"' # Ice keys (change to fire whenever you pick up a fire or ice key)
+---| '"null"' # Used only for doors (doesn't affect any key count when opened (may change in the future))
 
 ---@type table<KeyColor,ComplexNumber>
 Keys = {}

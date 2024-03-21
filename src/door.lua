@@ -169,10 +169,10 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
     ---@type KeyColor
     local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic, door.core_switch)
 
-    if not Keys[effective_color] then
+    if not (Keys[effective_color] or effective_color == "null") then
         Keys[effective_color] = CreateComplexNum()
     end
-    if not StarKeys[effective_color] then
+    if not (StarKeys[effective_color] or effective_color == "null") then
         Keys[effective_color] = Keys[effective_color] - cost
     end
 
@@ -465,20 +465,20 @@ function OpenDoor(door, imaginary, negative, no_mimic, always_deactivate)
         return_val = true
     else
         local to_subtract = CreateComplexNum(1)
-    
+
         if imaginary then
             to_subtract = to_subtract * CreateComplexNum(0,1)
         end
-    
+
         if negative then
             to_subtract = to_subtract * CreateComplexNum(-1)
         end
-    
+
         door.copies = door.copies - to_subtract
-    
+
         if door.copies == CreateComplexNum() then
             door.active = false
-    
+
             return_val = true
         end
     end
