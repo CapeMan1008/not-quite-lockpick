@@ -24,6 +24,7 @@ Palette = {
     glitch = {0.3,0.3,0.3},
     fire = {1,0.3,0},
     ice = {0.4,0.9,1},
+    null = {0,0,0,0}
 }
 
 AnimationTimer = 0

@@ -27,7 +27,8 @@ COLOR_NAMES = {
     glitch = "Glitch",
     wild = "Wildcard",
     fire = "Fire",
-    ice = "Ice"
+    ice = "Ice",
+    null = "Null",
 }
 
 ---@type table<KeyType, string>
