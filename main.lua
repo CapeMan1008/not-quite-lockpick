@@ -32,6 +32,17 @@ function love.load()
         reusable = false
     } --[[@as Key]]
 
+    ObjectList[4] = {
+        x = 32,
+        y = 32,
+        type = "key",
+        color = "white",
+        key_type = "star",
+        active = true,
+        amount = CreateComplexNum(1),
+        reusable = false
+    } --[[@as Key]]
+
     ObjectList[1] = {
         x = 640,
         y = 32,
