@@ -176,11 +176,21 @@ function DrawKeyObject(obj)
 
     local key_image_prefix = KEY_TYPE_IMAGES[obj.key_type]
 
+    if obj.key_type == "auralock" or obj.key_type == "auraunlock" then
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.setShader()
+
+        love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
+
+        return
+    end
+
     --if obj.color == "glitch" then
     --    love.graphics.setColor(1,1,1,1)
     --    love.graphics.setShader(Shaders.static)
     --else
     love.graphics.setColor(Palette[obj.color] or {1,1,1})
+    love.graphics.setShader()
     --end
     love.graphics.draw(GetTexture(key_image_prefix .. "_1") --[[@as love.Texture]], obj.x, obj.y)
     love.graphics.setShader()
