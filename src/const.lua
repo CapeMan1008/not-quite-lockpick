@@ -38,7 +38,9 @@ KEY_TYPE_NAMES = {
     multiply = "Multiply",
     square = "Square",
     star = "Star",
-    unstar = "Unstar"
+    unstar = "Unstar",
+    auralock = "Aura Lock",
+    auraunlock = "Aura Unlock",
 }
 
 ---@type table<KeyType, string>
