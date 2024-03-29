@@ -153,3 +153,59 @@ function SwitchFireIce()
         end
     end
 end
+
+---@param obj Key
+function DrawKey(obj)
+    if not obj.active then
+        return
+    end
+
+    local key_image_prefix = KEY_TYPE_IMAGES[obj.key_type]
+
+    if obj.key_type == "auralock" or obj.key_type == "auraunlock" then
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.setShader()
+
+        love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
+
+        return
+    end
+
+    --if obj.color == "glitch" then
+    --    love.graphics.setColor(1,1,1,1)
+    --    love.graphics.setShader(Shaders.static)
+    --else
+    love.graphics.setColor(Palette[obj.color] or {1,1,1})
+    love.graphics.setShader()
+    --end
+    love.graphics.draw(GetTexture(key_image_prefix .. "_1") --[[@as love.Texture]], obj.x, obj.y)
+    love.graphics.setShader()
+
+    if obj.color == "glitch" and obj.mimic and obj.mimic ~= "glitch" then
+        love.graphics.setColor(Palette[obj.mimic] or {1,1,1})
+        love.graphics.draw(GetTexture(key_image_prefix .. "_4") --[[@as love.Texture]], obj.x, obj.y)
+    end
+
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
+
+    if (not obj.amount or obj.amount == CreateComplexNum(1)) and obj.key_type ~= "multiply" then
+        return
+    end
+
+    local text = tostring(obj.amount)
+
+    if obj.key_type == "multiply" then
+        text = "x" .. text
+    end
+
+    love.graphics.setFont(Fonts.default)
+
+    local text_width, text_height = Fonts.default:getWidth(text), Fonts.default:getHeight()
+
+    love.graphics.setColor(0,0,0)
+    love.graphics.rectangle("fill", obj.x+31-text_width, obj.y+31-text_height, text_width+2, text_height+2)
+
+    love.graphics.setColor(1,1,1)
+    love.graphics.print(text, obj.x+32-text_width, obj.y+32-text_height)
+end

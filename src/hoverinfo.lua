@@ -142,3 +142,20 @@ function LockCostAsString(lock)
 
     return "ERROR"
 end
+
+function DrawHoverBox()
+    love.graphics.setFont(Fonts.default)
+
+    local _,linebreaks = string.gsub(HoverBox.text, "\n", "\n")
+
+    local text_width, text_height = Fonts.default:getWidth(HoverBox.text), Fonts.default:getHeight()*(linebreaks+1)
+
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.rectangle("fill", HoverBox.x, HoverBox.y, text_width+HOVER_BOX_SPACING*2, text_height+HOVER_BOX_SPACING*2)
+
+    love.graphics.setColor(0,0,0,1)
+    love.graphics.setLineWidth(1)
+    love.graphics.rectangle("line", HoverBox.x+0.5, HoverBox.y+0.5, text_width+HOVER_BOX_SPACING*2-1, text_height+HOVER_BOX_SPACING*2-1)
+
+    love.graphics.print(HoverBox.text, HoverBox.x+HOVER_BOX_SPACING, HoverBox.y+HOVER_BOX_SPACING)
+end
