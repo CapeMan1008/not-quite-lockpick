@@ -3,9 +3,10 @@ require "src.update"
 require "src.draw"
 require "src.mouse"
 require "src.complexnumber"
+require "src.objects"
 require "src.key"
 require "src.door"
-require "src.objects"
+require "src.keyhandle"
 require "src.hoverinfo"
 
 function love.load()
