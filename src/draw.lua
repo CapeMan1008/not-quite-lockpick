@@ -203,7 +203,7 @@ function DrawKeyObject(obj)
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
 
-    if not obj.amount or obj.amount == CreateComplexNum(1) then
+    if (not obj.amount or obj.amount == CreateComplexNum(1)) and obj.key_type ~= "multiply" then
         return
     end
 
