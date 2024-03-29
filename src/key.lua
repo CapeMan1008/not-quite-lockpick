@@ -46,41 +46,17 @@ StarKeys = {}
 AuraLocks = nil
 
 function InitKeys()
-    Keys.white = CreateComplexNum()
-    Keys.orange = CreateComplexNum()
-    Keys.cyan = CreateComplexNum()
-    Keys.purple = CreateComplexNum()
-    Keys.pink = CreateComplexNum()
-    Keys.black = CreateComplexNum()
-    Keys.red = CreateComplexNum()
-    Keys.green = CreateComplexNum()
-    Keys.blue = CreateComplexNum()
-    Keys.brown = CreateComplexNum()
-    Keys.master = CreateComplexNum()
-    Keys.pure = CreateComplexNum()
-    Keys.glitch = CreateComplexNum()
-    Keys.stone = CreateComplexNum()
-    Keys.wild = CreateComplexNum()
-    Keys.fire = CreateComplexNum()
-    Keys.ice = CreateComplexNum()
+    Keys = {}
+    for _, color in ipairs(COLOR_LIST) do
+        Keys[color] = CreateComplexNum()
+    end
 
-    StarKeys.white = false
-    StarKeys.orange = false
-    StarKeys.cyan = false
-    StarKeys.purple = false
-    StarKeys.pink = false
-    StarKeys.black = false
-    StarKeys.red = false
-    StarKeys.green = false
-    StarKeys.blue = false
-    StarKeys.brown = false
-    StarKeys.master = false
-    StarKeys.pure = false
-    StarKeys.glitch = false
-    StarKeys.stone = false
-    StarKeys.wild = false
-    StarKeys.fire = false
-    StarKeys.ice = false
+    StarKeys = {}
+    for _, color in ipairs(COLOR_LIST) do
+        StarKeys[color] = false
+    end
+
+    AuraLocks = nil
 end
 
 ---Gets the effective color (the color used for most purposes) from the true color and the mimic status.
@@ -112,6 +88,10 @@ end
 ---@param key Key
 function CollectKey(key)
     local color = GetEffectiveColor(key.color, nil, key.mimic, key.core_switch)
+
+    if not Keys[color] and key.color ~= "null" then
+        Keys[color] = CreateComplexNum()
+    end
 
     if key.key_type == "add" and not StarKeys[color] then
         Keys[color] = Keys[color] + key.amount
