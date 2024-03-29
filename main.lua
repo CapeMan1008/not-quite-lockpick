@@ -34,7 +34,7 @@ function love.load()
 
     ObjectList[4] = {
         x = 32,
-        y = 32,
+        y = 96,
         type = "key",
         color = "white",
         key_type = "star",
