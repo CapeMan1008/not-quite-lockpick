@@ -13,41 +13,34 @@ function love.load()
         x = 32,
         y = 32,
         type = "key",
-        color = "white",
+        color = "red",
         key_type = "add",
         active = true,
         amount = CreateComplexNum(1),
         reusable = false
     } --[[@as Key]]
 
-    ObjectList[2] = {
-        x = 96,
+    ObjectList[1] = {
+        x = 32,
         y = 32,
-        type = "door",
-        color = "null",
+        type = "key",
+        color = "red",
+        key_type = "add",
         active = true,
-        locks = {
-            {
-                x = 8,
-                y = 8,
-                width = 16,
-                height = 16,
-                color = "white",
-                type = "normal",
-                amount = CreateComplexNum(1),
-                negative = false,
-                imaginary_negative = false
-            } --[[@as NormalLock]]
-        },
-        width = 32,
-        height = 32,
-        cursed = false,
-        frozen = false,
-        eroded = false,
-        painted = false,
-        copies = CreateComplexNum(1),
-        negativeborder = false,
-    } --[[@as Door]]
+        amount = CreateComplexNum(-1),
+        reusable = false
+    } --[[@as Key]]
+
+    ObjectList[1] = {
+        x = 32,
+        y = 32,
+        type = "key",
+        color = "null",
+        key_type = "auralock",
+        active = true,
+        amount = CreateComplexNum(1),
+        reusable = false
+    } --[[@as Key]]
 
 
     LoadResources()
