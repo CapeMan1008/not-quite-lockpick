@@ -51,8 +51,8 @@ KEY_TYPE_IMAGES = {
     square = "sprKeySquare",
     star = "sprKeyStar",
     unstar = "sprKeyStar2",
-    auralock = "sprKeyAuraLock", -- This entry in the table is a failsafe.
-    auraunlock = "sprKeyAuraUnlock", -- This entry in the table is a failsafe.
+    auralock = "sprKeyAuraLock",
+    auraunlock = "sprKeyAuraUnlock",
 }
 
 ---@type AuraType[]
