@@ -50,3 +50,12 @@ KEY_TYPE_IMAGES = {
     star = "sprKeyStar",
     unstar = "sprKeyStar2"
 }
+
+---@type AuraType[]
+AURA_TYPES = {
+    "unfreeze",
+    "unerode",
+    "unpaint",
+    "curse",
+    "uncurse",
+}
