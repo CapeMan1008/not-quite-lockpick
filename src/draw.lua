@@ -281,4 +281,6 @@ function DrawAuras()
             end
         end
     end
+
+    love.graphics.setBlendMode("alpha")
 end
