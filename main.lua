@@ -13,10 +13,10 @@ function love.load()
         x = 32,
         y = 32,
         type = "key",
-        color = "red",
+        color = "white",
         key_type = "add",
         active = true,
-        amount = CreateComplexNum(1),
+        amount = CreateComplexNum(2),
         reusable = false
     } --[[@as Key]]
 
@@ -24,10 +24,10 @@ function love.load()
         x = 96,
         y = 32,
         type = "key",
-        color = "red",
+        color = "white",
         key_type = "add",
         active = true,
-        amount = CreateComplexNum(-1),
+        amount = CreateComplexNum(1),
         reusable = false
     } --[[@as Key]]
 
@@ -35,10 +35,21 @@ function love.load()
         x = 32,
         y = 96,
         type = "key",
-        color = "null",
-        key_type = "auralock",
+        color = "white",
+        key_type = "multiply",
         active = true,
-        amount = CreateComplexNum(1),
+        amount = CreateComplexNum(2),
+        reusable = false
+    } --[[@as Key]]
+
+    ObjectList[4] = {
+        x = 96,
+        y = 96,
+        type = "key",
+        color = "white",
+        key_type = "multiply",
+        active = true,
+        amount = CreateComplexNum(3),
         reusable = false
     } --[[@as Key]]
 
