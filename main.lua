@@ -21,7 +21,7 @@ function love.load()
     } --[[@as Key]]
 
     ObjectList[1] = {
-        x = 32,
+        x = 96,
         y = 32,
         type = "key",
         color = "red",
@@ -33,7 +33,7 @@ function love.load()
 
     ObjectList[1] = {
         x = 32,
-        y = 32,
+        y = 96,
         type = "key",
         color = "null",
         key_type = "auralock",
