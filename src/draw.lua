@@ -277,7 +277,11 @@ function DrawAuras()
                 else
                     love.graphics.setBlendMode("add")
                 end
-                love.graphics.draw(texture, love.mouse.getX(), love.mouse.getY())
+
+                local x,y = love.mouse.getPosition()
+                x,y = x-texture:getWidth()/2,y-texture:getHeight()/2
+
+                love.graphics.draw(texture, x, y)
             end
         end
     end
