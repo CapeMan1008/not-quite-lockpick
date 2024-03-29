@@ -55,6 +55,18 @@ KEY_TYPE_IMAGES = {
     auraunlock = "sprKeyAuraUnlock",
 }
 
+---@type table<KeyType, boolean>
+KEY_TYPE_AMOUNT_DISPLAY = {
+    add = true,
+    exact = true,
+    multiply = true,
+    square = false,
+    star = false,
+    unstar = false,
+    auralock = false,
+    auraunlock = false,
+}
+
 ---@type AuraType[]
 AURA_TYPES = {
     "unfreeze",
