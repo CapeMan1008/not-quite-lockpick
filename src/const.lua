@@ -61,3 +61,12 @@ AURA_TYPES = {
     "curse",
     "uncurse",
 }
+
+---@type table<AuraType, string>
+AURA_IMAGES = {
+    unfreeze = "sprAura_0",
+    unerode = "sprAura_1",
+    unpaint = "sprAura_2",
+    curse = "sprBrownAura_0", -- Hardcoded to use a subtractive blend mode.
+    uncurse = "sprBrownAura_0",
+}

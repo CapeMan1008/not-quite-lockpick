@@ -89,6 +89,8 @@ function love.draw()
         DrawObject(obj)
     end
 
+    DrawAuras()
+
     if RightClickMenu.obj then
         DrawRightClickMenu()
     elseif HoverBox.text then
@@ -250,6 +252,23 @@ function DrawRightClickMenu()
 
         if i ~= 1 then
             love.graphics.line(RightClickMenu.x, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1), RightClickMenu.x+text_width+RIGHT_CLICK_MENU_SPACING*2, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1))
+        end
+    end
+end
+
+--- Draws auras. Wow this comment is useless.
+function DrawAuras()
+    for aura, texture_name in pairs(AURA_IMAGES) do
+        if CheckAura(aura) then
+            local texture = GetTexture(texture_name)
+            if texture then
+                if aura == "curse" then
+                    love.graphics.setBlendMode("subtract")
+                else
+                    love.graphics.setBlendMode("add")
+                end
+                love.graphics.draw(texture, love.mouse.getX(), love.mouse.getY())
+            end
         end
     end
 end
