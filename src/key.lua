@@ -152,7 +152,9 @@ function CollectKey(key)
         key.active = false
     end
 
-    SwitchFireIce()
+    if key.color == "fire" or key.color == "ice" then
+        SwitchFireIce()
+    end
 end
 
 ---Switch fire and ice for all active non-cursed objects.
