@@ -89,6 +89,8 @@ function love.draw()
         DrawObject(obj)
     end
 
+    DrawAuras()
+
     if RightClickMenu.obj then
         DrawRightClickMenu()
     elseif HoverBox.text then
@@ -174,11 +176,21 @@ function DrawKeyObject(obj)
 
     local key_image_prefix = KEY_TYPE_IMAGES[obj.key_type]
 
+    if obj.key_type == "auralock" or obj.key_type == "auraunlock" then
+        love.graphics.setColor(1,1,1,1)
+        love.graphics.setShader()
+
+        love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
+
+        return
+    end
+
     --if obj.color == "glitch" then
     --    love.graphics.setColor(1,1,1,1)
     --    love.graphics.setShader(Shaders.static)
     --else
     love.graphics.setColor(Palette[obj.color] or {1,1,1})
+    love.graphics.setShader()
     --end
     love.graphics.draw(GetTexture(key_image_prefix .. "_1") --[[@as love.Texture]], obj.x, obj.y)
     love.graphics.setShader()
@@ -252,4 +264,27 @@ function DrawRightClickMenu()
             love.graphics.line(RightClickMenu.x, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1), RightClickMenu.x+text_width+RIGHT_CLICK_MENU_SPACING*2, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1))
         end
     end
+end
+
+--- Draws auras. Wow this comment is useless.
+function DrawAuras()
+    for aura, texture_name in pairs(AURA_IMAGES) do
+        if CheckAura(aura) then
+            local texture = GetTexture(texture_name)
+            if texture then
+                if aura == "curse" then
+                    love.graphics.setBlendMode("subtract")
+                else
+                    love.graphics.setBlendMode("add")
+                end
+
+                local x,y = love.mouse.getPosition()
+                x,y = x-texture:getWidth()/2,y-texture:getHeight()/2
+
+                love.graphics.draw(texture, x, y)
+            end
+        end
+    end
+
+    love.graphics.setBlendMode("alpha")
 end

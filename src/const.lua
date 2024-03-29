@@ -38,7 +38,9 @@ KEY_TYPE_NAMES = {
     multiply = "Multiply",
     square = "Square",
     star = "Star",
-    unstar = "Unstar"
+    unstar = "Unstar",
+    auralock = "Aura Lock",
+    auraunlock = "Aura Unlock",
 }
 
 ---@type table<KeyType, string>
@@ -48,5 +50,37 @@ KEY_TYPE_IMAGES = {
     multiply = "sprKey",
     square = "sprKeySquare",
     star = "sprKeyStar",
-    unstar = "sprKeyStar2"
+    unstar = "sprKeyStar2",
+    auralock = "sprKeyAuraLock",
+    auraunlock = "sprKeyAuraUnlock",
+}
+
+---@type table<KeyType, boolean>
+KEY_TYPE_AMOUNT_DISPLAY = {
+    add = true,
+    exact = true,
+    multiply = true,
+    square = false,
+    star = false,
+    unstar = false,
+    auralock = false,
+    auraunlock = false,
+}
+
+---@type AuraType[]
+AURA_TYPES = {
+    "unfreeze",
+    "unerode",
+    "unpaint",
+    "curse",
+    "uncurse",
+}
+
+---@type table<AuraType, string>
+AURA_IMAGES = {
+    unfreeze = "sprAura_0",
+    unerode = "sprAura_1",
+    unpaint = "sprAura_2",
+    curse = "sprBrownAura_0", -- Hardcoded to use a subtractive blend mode.
+    uncurse = "sprBrownAura_0",
 }

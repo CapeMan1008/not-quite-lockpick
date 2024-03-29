@@ -545,6 +545,10 @@ end
 ---@return boolean
 ---@nodiscard
 function CheckAura(aura_type)
+    if type(AuraLocks) == "table" and type(AuraLocks[aura_type]) == "boolean" then
+        return AuraLocks[aura_type]
+    end
+
     if aura_type == "unfreeze" and Keys[UNFREEZE_KEY_TYPE].real >= UNFREEZE_KEY_AMOUNT then
         return true
     end

@@ -15,6 +15,8 @@
 ---| '"star"' # Locks the key count in place
 ---| '"unstar"' # Unlocks the key count if it has been previously locked with a star key
 ---| '"square"' # Squares your key count (pain with complex numbers)
+---| '"auralock"' # Keeps your auras from changing, even if your keys change to no longer meet aura requirements.
+---| '"auraunlock"' # Undoes the effect of an aura lock key.
 
 ---@alias KeyColor
 ---| '"white"' # White keys
@@ -40,6 +42,8 @@
 Keys = {}
 ---@type table<KeyColor,boolean>
 StarKeys = {}
+---@type table<AuraType,boolean>?
+AuraLocks = nil
 
 function InitKeys()
     Keys.white = CreateComplexNum()
@@ -131,6 +135,17 @@ function CollectKey(key)
 
     if key.key_type == "unstar" then
         StarKeys[color] = false
+    end
+
+    if key.key_type == "auralock" then
+        AuraLocks = {}
+        for _, aura in ipairs(AURA_TYPES) do
+            AuraLocks[aura] = CheckAura(aura)
+        end
+    end
+
+    if key.key_type == "auraunlock" then
+        AuraLocks = nil
     end
 
     if not key.reusable then
