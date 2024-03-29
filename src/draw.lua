@@ -209,6 +209,10 @@ function DrawKeyObject(obj)
 
     local text = tostring(obj.amount)
 
+    if obj.key_type == "multiply" then
+        text = "x" .. text
+    end
+
     love.graphics.setFont(Fonts.default)
 
     local text_width, text_height = Fonts.default:getWidth(text), Fonts.default:getHeight()
