@@ -20,7 +20,7 @@ function love.load()
         reusable = false
     } --[[@as Key]]
 
-    ObjectList[1] = {
+    ObjectList[2] = {
         x = 96,
         y = 32,
         type = "key",
@@ -31,7 +31,7 @@ function love.load()
         reusable = false
     } --[[@as Key]]
 
-    ObjectList[1] = {
+    ObjectList[3] = {
         x = 32,
         y = 96,
         type = "key",
