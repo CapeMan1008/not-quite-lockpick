@@ -31,6 +31,27 @@ COLOR_NAMES = {
     null = "Null",
 }
 
+--- List of all colors (excluding null, as it's the lack of a color) to reduce redundancy.
+---@type KeyColor[]
+COLOR_LIST = {
+    "white",
+    "orange",
+    "cyan",
+    "purple",
+    "pink",
+    "black",
+    "red",
+    "green",
+    "blue",
+    "brown",
+    "pure",
+    "master",
+    "glitch",
+    "wild",
+    "fire",
+    "ice",
+}
+
 ---@type table<KeyType, string>
 KEY_TYPE_NAMES = {
     add = "Normal",
