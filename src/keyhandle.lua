@@ -1,4 +1,5 @@
 ---@class KeyHandle : Object
+---@field type "keyhandle"
 ---@field colors KeyColor[]
 ---@field width integer
 ---@field height integer
