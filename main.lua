@@ -53,6 +53,18 @@ function love.load()
         reusable = false
     } --[[@as Key]]
 
+    ObjectList[5] = {
+        x = 512,
+        y = 32,
+        type = "keyhandle",
+        colors = {
+            "white",
+            "orange",
+        },
+        width = 128,
+        height = 128,
+    } --[[@as KeyHandle]]
+
 
     LoadResources()
 
