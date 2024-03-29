@@ -26,8 +26,10 @@ function GenerateHoverInfo(obj)
 
         local text = ""
 
-        if obj.type == "add" then
+        if obj.key_type == "add" then
             text = COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
+        elseif obj.key_type == "auralock" or obj.key_type == "auraunlock" then
+            text = KEY_TYPE_NAMES[obj.key_type] .. " Key\nAmount: " .. tostring(obj.amount)
         else
             text = KEY_TYPE_NAMES[obj.key_type] .. " " .. COLOR_NAMES[obj.color] .. " Key\nAmount: " .. tostring(obj.amount)
         end
