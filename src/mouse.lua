@@ -132,3 +132,32 @@ function GetRightClickButtons()
         return {"Open", "Use Master Key", "Try Auras"}
     end
 end
+
+function DrawRightClickMenu()
+    local buttons = GetRightClickButtons()
+
+    love.graphics.setFont(Fonts.default)
+
+    local text_width, text_height = 0, Fonts.default:getHeight()
+
+    for _, text in ipairs(buttons) do
+        if Fonts.default:getWidth(text) >= text_width then
+            text_width = Fonts.default:getWidth(text)
+        end
+    end
+
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.rectangle("fill", RightClickMenu.x, RightClickMenu.y, text_width+RIGHT_CLICK_MENU_SPACING*2, RIGHT_CLICK_MENU_OPTION_HEIGHT*#buttons)
+
+    love.graphics.setColor(0,0,0,1)
+    love.graphics.setLineWidth(1)
+    love.graphics.rectangle("line", RightClickMenu.x+0.5, RightClickMenu.y+0.5, text_width+RIGHT_CLICK_MENU_SPACING*2-1, RIGHT_CLICK_MENU_OPTION_HEIGHT*#buttons-1)
+
+    for i, text in ipairs(buttons) do
+        love.graphics.print(text, RightClickMenu.x+RIGHT_CLICK_MENU_SPACING, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT-text_height)*0.5+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1))
+
+        if i ~= 1 then
+            love.graphics.line(RightClickMenu.x, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1), RightClickMenu.x+text_width+RIGHT_CLICK_MENU_SPACING*2, RightClickMenu.y+(RIGHT_CLICK_MENU_OPTION_HEIGHT)*(i-1))
+        end
+    end
+end

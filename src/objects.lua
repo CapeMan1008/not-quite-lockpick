@@ -6,6 +6,7 @@
 ---@alias ObjectType
 ---| '"door"'
 ---| '"key"'
+---| '"keyhandle"'
 
 ---@type Object[]
 ObjectList = {}
@@ -19,10 +20,13 @@ function DrawObject(object)
 
     if object.type == "door" then
         ---@cast object Door
-        DrawDoorObject(object)
+        DrawDoor(object)
     elseif object.type == "key" then
         ---@cast object Key
-        DrawKeyObject(object)
+        DrawKey(object)
+    elseif object.type == "keyhandle" then
+        ---@cast object KeyHandle
+        DrawKeyHandle(object)
     end
 end
 

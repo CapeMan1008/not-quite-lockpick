@@ -624,3 +624,57 @@ function DoesDoorHaveColor(door, color, use_raw)
 
     return false
 end
+
+---@param obj Door
+function DrawDoor(obj)
+    if not obj.active then
+        return
+    end
+
+    local visible_color = obj.color
+
+    if obj.cursed then
+        visible_color = "brown"
+    end
+
+    love.graphics.setColor(Palette[visible_color] or {1,1,1})
+    love.graphics.rectangle("fill", obj.x, obj.y, obj.width, obj.height)
+
+    love.graphics.setColor(0,0,0)
+    love.graphics.rectangle("line", obj.x+0.5, obj.y+0.5, obj.width-1, obj.height-1)
+
+    for _, lock in ipairs(obj.locks) do
+        visible_color = lock.color
+
+        if obj.cursed then
+            visible_color = "brown"
+        end
+
+        love.graphics.setColor(Palette[visible_color] or {1,1,1})
+        love.graphics.rectangle("fill", obj.x+lock.x, obj.y+lock.y, lock.width, lock.height)
+
+        love.graphics.setColor(0,0,0)
+        love.graphics.rectangle("line", obj.x+lock.x+0.5, obj.y+lock.y+0.5, lock.width-1, lock.height-1)
+
+        if lock.type == "normal" then
+            ---@cast lock NormalLock
+            love.graphics.setFont(Fonts.default)
+
+            local text_width, text_height = Fonts.default:getWidth(tostring(lock.amount)), Fonts.default:getHeight()
+
+            love.graphics.print(tostring(lock.amount), obj.x+lock.x+lock.width/2-text_width/2, obj.y+lock.y+lock.height/2-text_height/2)
+        end
+    end
+
+    if obj.copies ~= CreateComplexNum(1) then
+        local text = "x"..tostring(obj.copies)
+
+        love.graphics.setFont(Fonts.default)
+
+        local text_width, text_height = Fonts.default:getWidth(text), Fonts.default:getHeight()
+
+        love.graphics.setColor(1,1,1)
+
+        love.graphics.print(text, obj.x+obj.width/2-text_width/2, obj.y-text_height)
+    end
+end

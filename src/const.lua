@@ -2,6 +2,14 @@ HOVER_BOX_SPACING = 8
 RIGHT_CLICK_MENU_SPACING = 4
 RIGHT_CLICK_MENU_OPTION_HEIGHT = 24
 
+KEY_HANDLE_SPACING = 32
+KEY_HANDLE_MARGIN = 16
+KEY_HANDLE_TEXT_OFFSET = 64
+KEY_HANDLE_TEXT_HEIGHT = 32
+KEY_HANDLE_STAR_OFFSET_X = 46
+KEY_HANDLE_STAR_OFFSET_Y = 48
+KEY_HANDLE_STAR_SCALE = 0.4
+
 UNFREEZE_KEY_TYPE = "red"
 UNERODE_KEY_TYPE = "green"
 UNPAINT_KEY_TYPE = "blue"
@@ -29,6 +37,27 @@ COLOR_NAMES = {
     fire = "Fire",
     ice = "Ice",
     null = "Null",
+}
+
+--- List of all colors (excluding null, as it's the lack of a color) to reduce redundancy.
+---@type KeyColor[]
+COLOR_LIST = {
+    "white",
+    "orange",
+    "cyan",
+    "purple",
+    "pink",
+    "black",
+    "red",
+    "green",
+    "blue",
+    "brown",
+    "pure",
+    "master",
+    "glitch",
+    "wild",
+    "fire",
+    "ice",
 }
 
 ---@type table<KeyType, string>
