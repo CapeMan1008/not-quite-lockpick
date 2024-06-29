@@ -13,35 +13,31 @@ function love.load()
     ObjectList[2] = {
         x = 32,
         y = 32,
-        type = "key",
+        type = "door",
+        width = 32,
+        height = 32,
         color = "white",
-        key_type = "add",
+        locks = {
+            {
+                x = 8,
+                y = 8,
+                width = 16,
+                height = 16,
+                color = "null",
+                type = "normal",
+                amount = CreateComplexNum(4),
+                negative = false,
+                imaginary_negative = false
+            } --[[@as NormalLock]]
+        },
         active = true,
-        amount = CreateComplexNum(1),
-        reusable = false
-    } --[[@as Key]]
-
-    ObjectList[3] = {
-        x = 96,
-        y = 32,
-        type = "key",
-        color = "orange",
-        key_type = "add",
-        active = true,
-        amount = CreateComplexNum(1),
-        reusable = false
-    } --[[@as Key]]
-
-    ObjectList[4] = {
-        x = 32,
-        y = 96,
-        type = "key",
-        color = "white",
-        key_type = "star",
-        active = true,
-        amount = CreateComplexNum(1),
-        reusable = false
-    } --[[@as Key]]
+        negativeborder = false,
+        copies = CreateComplexNum(1),
+        cursed = false,
+        eroded = false,
+        frozen = false,
+        painted = false,
+    } --[[@as Door]]
 
     ObjectList[1] = {
         x = 640,
@@ -49,7 +45,6 @@ function love.load()
         type = "keyhandle",
         colors = {
             "white",
-            "orange",
         },
         width = 128,
         height = 96,

@@ -38,23 +38,34 @@
 ---| '"ice"' # Ice keys (change to fire whenever you pick up a fire or ice key)
 ---| '"null"' # Used only for doors (doesn't affect any key count when opened (may change in the future))
 
----@type table<KeyColor,ComplexNumber>
-Keys = {}
----@type table<KeyColor,boolean>
-StarKeys = {}
+-----@type table<KeyColor,ComplexNumber>
+--Keys = {}
+-----@type table<KeyColor,boolean>
+--StarKeys = {}
 ---@type table<AuraType,boolean>?
 AuraLocks = nil
 
+---@class KeyState
+---@field count ComplexNumber
+---@field star boolean
+
+---@type table<KeyColor,KeyState>
+KeyStates = {}
+
 function InitKeys()
-    Keys = {}
+    ---@type table<KeyColor,KeyState>
+    KeyStates = {}
     for _, color in ipairs(COLOR_LIST) do
-        Keys[color] = CreateComplexNum()
+        KeyStates[color] = {
+            count = CreateComplexNum(),
+            star = false,
+        }
     end
 
-    StarKeys = {}
-    for _, color in ipairs(COLOR_LIST) do
-        StarKeys[color] = false
-    end
+    KeyStates.null = {
+        count = CreateComplexNum(),
+        star = false,
+    }
 
     AuraLocks = nil
 end
@@ -89,32 +100,32 @@ end
 function CollectKey(key)
     local color = GetEffectiveColor(key.color, nil, key.mimic, key.core_switch)
 
-    if not Keys[color] and key.color ~= "null" then
-        Keys[color] = CreateComplexNum()
+    if not (KeyStates[color] and KeyStates[color].count) then
+        KeyStates[color].count = CreateComplexNum()
     end
 
-    if key.key_type == "add" and not StarKeys[color] then
-        Keys[color] = Keys[color] + key.amount
+    if key.key_type == "add" and not KeyStates[color].star then
+        KeyStates[color].count = KeyStates[color].count + key.amount
     end
 
-    if key.key_type == "exact" and not StarKeys[color] then
-        Keys[color] = key.amount
+    if key.key_type == "exact" and not KeyStates[color].star then
+        KeyStates[color].count = key.amount
     end
 
-    if key.key_type == "multiply" and not StarKeys[color] then
-        Keys[color] = Keys[color] * key.amount
+    if key.key_type == "multiply" and not KeyStates[color].star then
+        KeyStates[color].count = KeyStates[color].count * key.amount
     end
 
-    if key.key_type == "square" and not StarKeys[color] then
-        Keys[color] = Keys[color] * Keys[color]
+    if key.key_type == "square" and not KeyStates[color].star then
+        KeyStates[color].count = KeyStates[color].count * KeyStates[color].count
     end
 
     if key.key_type == "star" then
-        StarKeys[color] = true
+        KeyStates[color].star = true
     end
 
     if key.key_type == "unstar" then
-        StarKeys[color] = false
+        KeyStates[color].star = false
     end
 
     if key.key_type == "auralock" then

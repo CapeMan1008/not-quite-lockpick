@@ -17,7 +17,7 @@ function DrawKeyHandle(obj)
         local y = obj.y+(i-1)*KEY_HANDLE_SPACING+KEY_HANDLE_MARGIN
 
         local star_texture = GetTexture("sprStarGlow")
-        if StarKeys[color] and star_texture then
+        if KeyStates[color].star and star_texture then
             love.graphics.setColor(1,1,0.75,1)
             love.graphics.draw(star_texture, x+16,y+16, AnimationTimer, KEY_HANDLE_STAR_SCALE, KEY_HANDLE_STAR_SCALE, KEY_HANDLE_STAR_OFFSET_X, KEY_HANDLE_STAR_OFFSET_Y)
         end
@@ -37,7 +37,7 @@ function DrawKeyHandle(obj)
 
         DrawKey(key)
 
-        local text = tostring(Keys[color])
+        local text = tostring(KeyStates[color].count or "N/A")
 
         local text_height = Fonts.default:getHeight()
 
