@@ -58,6 +58,7 @@ COLOR_LIST = {
     "wild",
     "fire",
     "ice",
+    "null",
 }
 
 ---@type table<KeyType, string>

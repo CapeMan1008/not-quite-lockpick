@@ -62,11 +62,6 @@ function InitKeys()
         }
     end
 
-    KeyStates.null = {
-        count = CreateComplexNum(),
-        star = false,
-    }
-
     AuraLocks = nil
 end
 
