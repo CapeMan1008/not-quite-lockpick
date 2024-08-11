@@ -8,6 +8,7 @@ require "src.key"
 require "src.door"
 require "src.keyhandle"
 require "src.hoverinfo"
+require "src.player"
 
 function love.load()
     ObjectList[2] = {
