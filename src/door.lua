@@ -112,7 +112,7 @@ function TryOpenDoor(door, use_master, imaginary, no_open)
     ---@type KeyColor
     local effective_color = GetEffectiveColor(door.color, door.cursed, door.mimic, door.core_switch)
 
-    if not (KeyStates[effective_color].count or effective_color == "null") then
+    if not (KeyStates[effective_color].count) then
         KeyStates[effective_color].count = CreateComplexNum()
     end
     if not (KeyStates[effective_color].star or effective_color == "null") then
