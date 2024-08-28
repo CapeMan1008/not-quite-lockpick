@@ -1,4 +1,4 @@
----@type table<KeyColor, { [1]: number, [2]: number, [3]: number }>
+---@type table<KeyColor, { [1]: number, [2]: number, [3]: number, [4]: number? }>
 Palette = {
     white = {214/255,207/255,201/255},
     orange = {214/255,143/255,73/255},
