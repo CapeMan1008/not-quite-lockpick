@@ -39,7 +39,7 @@ COLOR_NAMES = {
     null = "Null",
 }
 
---- List of all colors (excluding null, as it's the lack of a color) to reduce redundancy.
+--- List of all colors to reduce redundancy.
 ---@type KeyColor[]
 COLOR_LIST = {
     "white",
