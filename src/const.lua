@@ -18,6 +18,9 @@ UNFREEZE_KEY_AMOUNT = 1
 UNERODE_KEY_AMOUNT = 5
 UNPAINT_KEY_AMOUNT = 3
 
+PLAYER_WIDTH = 14
+PLAYER_HEIGHT = 20
+
 ---@type table<KeyColor, string>
 COLOR_NAMES = {
     white = "White",
