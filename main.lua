@@ -1,5 +1,6 @@
 require "src.const"
 require "src.update"
+require "src.palette"
 require "src.draw"
 require "src.mouse"
 require "src.complexnumber"
@@ -54,4 +55,6 @@ function love.load()
     LoadResources()
 
     InitKeys()
+
+    LoadPaletteFromFile("res/palettes/default.txt")
 end

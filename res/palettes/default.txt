@@ -1,0 +1,32 @@
+color white
+    base b214 b207 b201
+color orange
+    base b214 b143 b73
+color cyan
+    base b80 b175 b175
+color purple
+    base b143 b95 b192
+color pink
+    base b207 b112 b159
+color red
+    base b200 b55 b55
+color green
+    base b53 b159 b80
+color blue
+    base b95 b113 b160
+color brown
+    base b112 b64 b16
+color black
+    base b54 b48 b41
+color pure
+    base 1 1 1
+color master
+    base 1 1 0.5
+color glitch
+    base 0.3 0.3 0.3
+color fire
+    base 1 0.3 0
+color ice
+    base 0.4 0.9 1
+color null
+    base 0 0 0 0
