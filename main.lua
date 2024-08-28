@@ -1,5 +1,6 @@
 require "src.const"
 require "src.update"
+require "src.palette"
 require "src.draw"
 require "src.mouse"
 require "src.complexnumber"
