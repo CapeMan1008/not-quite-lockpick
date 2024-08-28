@@ -91,6 +91,8 @@ function love.draw()
 
     DrawAuras()
 
+    DrawPlayer()
+
     if RightClickMenu.obj then
         DrawRightClickMenu()
     elseif HoverBox.text then
@@ -119,4 +121,9 @@ function DrawAuras()
     end
 
     love.graphics.setBlendMode("alpha")
+end
+
+function DrawPlayer()
+    love.graphics.setColor(1,1,1)
+    love.graphics.rectangle("fill", Player.x, Player.y, PLAYER_WIDTH, PLAYER_HEIGHT)
 end
