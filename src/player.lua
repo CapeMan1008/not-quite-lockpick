@@ -11,3 +11,8 @@ Player = {
     jumps = 0,
     coyoteTime = 0,
 }
+
+function DrawPlayer()
+    love.graphics.setColor(1,1,1)
+    love.graphics.rectangle("fill", Player.x, Player.y, PLAYER_WIDTH, PLAYER_HEIGHT)
+end
