@@ -55,4 +55,6 @@ function love.load()
     LoadResources()
 
     InitKeys()
+
+    LoadPaletteFromFile("res/palettes/default.txt")
 end
