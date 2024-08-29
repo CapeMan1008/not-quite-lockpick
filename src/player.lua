@@ -51,7 +51,7 @@ function PlayerWalk(dt)
         PlayerCollideRight()
     end
     if walkDir < 0 then
-        --PlayerCollideLeft()
+        PlayerCollideLeft()
     end
 end
 
