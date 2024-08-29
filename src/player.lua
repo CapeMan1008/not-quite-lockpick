@@ -46,6 +46,50 @@ function PlayerWalk(dt)
     end
 
     Player.x = Player.x + walkDir * walkSpeed * dt
+
+    if walkDir > 0 then
+        PlayerCollideRight()
+    end
+    if walkDir < 0 then
+        --PlayerCollideLeft()
+    end
+end
+
+---Check for collision to the right, pushing the player to the left on collision.
+function PlayerCollideRight()
+    for _, obj in ipairs(ObjectList) do
+        if IsObjectSolid(obj) then
+            ---@cast obj RectObject
+            local checkX = Player.x + PLAYER_WIDTH
+            local collision = true
+            collision = collision and checkX > obj.x
+            collision = collision and checkX <= obj.x + obj.width
+            collision = collision and Player.y + PLAYER_HEIGHT > obj.y
+            collision = collision and Player.y <= obj.y + obj.height
+
+            if collision then
+                Player.x = obj.x - PLAYER_WIDTH
+            end
+        end
+    end
+end
+
+---Check for collision to the left, pushing the player to the right on collision.
+function PlayerCollideLeft()
+    for _, obj in ipairs(ObjectList) do
+        if IsObjectSolid(obj) then
+            ---@cast obj RectObject
+            local collision = true
+            collision = collision and Player.x >= obj.x
+            collision = collision and Player.x < obj.x + obj.width
+            collision = collision and Player.y + PLAYER_HEIGHT > obj.y
+            collision = collision and Player.y <= obj.y + obj.height
+
+            if collision then
+                Player.x = obj.x + obj.width
+            end
+        end
+    end
 end
 
 ---@param key love.KeyConstant
