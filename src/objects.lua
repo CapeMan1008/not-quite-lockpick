@@ -67,3 +67,16 @@ function IsObjectOTouchingPoint(obj, x, y)
 
     return false
 end
+
+---Gets if an object is solid.
+---@param obj Object
+---@return boolean
+---@nodiscard
+function IsObjectSolid(obj)
+    if obj.type == "door" then
+        ---@cast obj Door
+        return obj.active
+    end
+
+    return false
+end
