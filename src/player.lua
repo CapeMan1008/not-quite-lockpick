@@ -47,3 +47,19 @@ function PlayerWalk(dt)
 
     Player.x = Player.x + walkDir * walkSpeed * dt
 end
+
+---@param key love.KeyConstant
+function love.keypressed(key)
+    if DoesControlHaveKey("jump", key) then
+        Player.velY = PLAYER_JUMP_SPEED
+    end
+end
+
+---@param key love.KeyConstant
+function love.keyreleased(key)
+    if DoesControlHaveKey("jump", key) then
+        if Player.velY < PLAYER_JUMP_CANCEL_SPEED then
+            Player.velY = PLAYER_JUMP_CANCEL_SPEED
+        end
+    end
+end
