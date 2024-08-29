@@ -19,6 +19,31 @@ end
 
 ---@param dt number
 function UpdatePlayer(dt)
+    PlayerWalk(dt)
+
     Player.y = Player.y + Player.velY * dt
     Player.velY = Player.velY + PLAYER_GRAVITY * dt
+end
+
+---@param dt number
+function PlayerWalk(dt)
+    local walkDir = 0
+
+    if IsControlDown("right") then
+        walkDir = walkDir + 1
+    end
+    if IsControlDown("left") then
+        walkDir = walkDir - 1
+    end
+
+    local walkSpeed = PLAYER_WALK_SPEED
+
+    if IsControlDown("run") then
+        walkSpeed = PLAYER_RUN_SPEED
+    end
+    if IsControlDown("slow_walk") then
+        walkSpeed = PLAYER_SLOW_WALK_SPEED
+    end
+
+    Player.x = Player.x + walkDir * walkSpeed * dt
 end
