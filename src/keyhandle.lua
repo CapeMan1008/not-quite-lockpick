@@ -1,8 +1,6 @@
----@class KeyHandle : Object
+---@class KeyHandle : RectObject
 ---@field type "keyhandle"
 ---@field colors KeyColor[]
----@field width integer
----@field height integer
 
 ---@param obj KeyHandle
 function DrawKeyHandle(obj)

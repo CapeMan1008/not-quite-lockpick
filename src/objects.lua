@@ -3,6 +3,10 @@
 ---@field x integer
 ---@field y integer
 
+---@class RectObject : Object
+---@field width integer
+---@field height integer
+
 ---@alias ObjectType
 ---| '"door"'
 ---| '"key"'
