@@ -19,6 +19,8 @@ end
 
 ---@param dt number
 function UpdatePlayer(dt)
+    Player.coyoteTime = Player.coyoteTime - dt
+
     PlayerWalk(dt)
 
     PlayerMoveY(dt)
@@ -120,6 +122,8 @@ function PlayerCollideDown()
             if collision then
                 Player.y = obj.y - PLAYER_HEIGHT
                 Player.velY = 0
+                Player.coyoteTime = PLAYER_MAX_COYOTE_TIME
+                Player.jumps = PLAYER_MIDAIR_JUMP_COUNT
             end
         end
     end
@@ -147,7 +151,17 @@ end
 ---@param key love.KeyConstant
 function love.keypressed(key)
     if DoesControlHaveKey("jump", key) then
-        Player.velY = PLAYER_JUMP_SPEED
+        if Player.coyoteTime > 0 then
+            Player.velY = PLAYER_JUMP_SPEED
+            return
+        end
+
+        if Player.jumps <= 0 then
+            return
+        end
+
+        Player.velY = PLAYER_AIR_JUMP_SPEED
+        Player.jumps = Player.jumps - 1
     end
 end
 
