@@ -3,6 +3,10 @@
 ---@field x integer
 ---@field y integer
 
+---@class RectObject : Object
+---@field width integer
+---@field height integer
+
 ---@alias ObjectType
 ---| '"door"'
 ---| '"key"'
@@ -45,9 +49,9 @@ function IsObjectOTouchingPoint(obj, x, y)
         end
 
         if x >= obj.x and
-        x <= obj.x+32 and
+        x <= obj.x+KEY_SIZE and
         y >= obj.y and
-        y <= obj.y+32 then
+        y <= obj.y+KEY_SIZE then
             return true
         end
     elseif obj.type == "door" then
@@ -63,6 +67,19 @@ function IsObjectOTouchingPoint(obj, x, y)
         y <= obj.y+obj.height then
             return true
         end
+    end
+
+    return false
+end
+
+---Gets if an object is solid.
+---@param obj Object
+---@return boolean
+---@nodiscard
+function IsObjectSolid(obj)
+    if obj.type == "door" then
+        ---@cast obj Door
+        return obj.active
     end
 
     return false

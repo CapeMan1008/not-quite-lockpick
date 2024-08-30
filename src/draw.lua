@@ -71,6 +71,8 @@ function love.draw()
 
     DrawAuras()
 
+    DrawPlayer()
+
     if RightClickMenu.obj then
         DrawRightClickMenu()
     elseif HoverBox.text then
@@ -90,9 +92,10 @@ function DrawAuras()
                     love.graphics.setBlendMode("add")
                 end
 
-                local x,y = love.mouse.getPosition()
+                local x,y = Player.x + PLAYER_WIDTH/2, Player.y + PLAYER_HEIGHT/2
                 x,y = x-texture:getWidth()/2,y-texture:getHeight()/2
 
+                love.graphics.setColor(1,1,1)
                 love.graphics.draw(texture, x, y)
             end
         end

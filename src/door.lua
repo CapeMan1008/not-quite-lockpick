@@ -1,7 +1,5 @@
----@class Door : Object
+---@class Door : RectObject
 ---@field type "door"
----@field width integer The width of the door.
----@field height integer The height of the door.
 ---@field color KeyColor The "spend color" of the door. Used as the color of key to spend.
 ---@field locks Lock[] The list of locks on the door.
 ---@field active boolean Only active doors check for collision. Doors are deactivated once all copies have been opened.
