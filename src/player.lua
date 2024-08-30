@@ -30,7 +30,7 @@ end
 function PlayerMoveY(dt)
     Player.y = Player.y + Player.velY * dt
 
-    if Player.velY > 0 then
+    if Player.velY >= 0 then
         PlayerCollideDown()
     end
     if Player.velY < 0 then
