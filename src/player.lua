@@ -28,6 +28,14 @@ function UpdatePlayer(dt)
     Player.velY = Player.velY + PLAYER_GRAVITY * dt
 
     PlayerInteractObjects()
+
+    if Player.y > 2000 then
+        Player.x = 0
+        Player.y = 0
+        Player.velY = 0
+        Player.jumps = 0
+        Player.coyoteTime = 0
+    end
 end
 
 ---@param dt number
