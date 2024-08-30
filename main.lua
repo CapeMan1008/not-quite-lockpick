@@ -14,7 +14,7 @@ require "src.player"
 function love.load()
     ObjectList[2] = {
         x = 64,
-        y = 128,
+        y = 256,
         type = "door",
         width = 128,
         height = 32,
@@ -42,10 +42,10 @@ function love.load()
     } --[[@as Door]]
     ObjectList[3] = {
         x = 192,
-        y = 32,
+        y = 112,
         type = "door",
         width = 32,
-        height = 128,
+        height = 176,
         color = "white",
         locks = {
             {
