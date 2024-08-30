@@ -40,6 +40,34 @@ function love.load()
         frozen = false,
         painted = false,
     } --[[@as Door]]
+    ObjectList[3] = {
+        x = 192,
+        y = 32,
+        type = "door",
+        width = 32,
+        height = 128,
+        color = "white",
+        locks = {
+            {
+                x = 8,
+                y = 8,
+                width = 16,
+                height = 16,
+                color = "white",
+                type = "normal",
+                amount = CreateComplexNum(1),
+                negative = false,
+                imaginary_negative = false
+            } --[[@as NormalLock]]
+        },
+        active = true,
+        negativeborder = false,
+        copies = CreateComplexNum(1),
+        cursed = false,
+        eroded = false,
+        frozen = false,
+        painted = false,
+    } --[[@as Door]]
 
     ObjectList[1] = {
         x = 640,
