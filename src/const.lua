@@ -29,6 +29,7 @@ PLAYER_RUN_SPEED = 360
 PLAYER_SLOW_WALK_SPEED = 60
 PLAYER_MAX_COYOTE_TIME = 0.1
 PLAYER_MIDAIR_JUMP_COUNT = 1 -- Number of doublejumps the player has.
+PLAYER_AURA_RADIUS = 32 -- Actually a square
 
 KEY_SIZE = 32
 
