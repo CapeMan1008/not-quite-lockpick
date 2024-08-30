@@ -210,8 +210,8 @@ function DrawKey(obj)
     local text_width, text_height = Fonts.default:getWidth(text), Fonts.default:getHeight()
 
     love.graphics.setColor(0,0,0)
-    love.graphics.rectangle("fill", obj.x+31-text_width, obj.y+31-text_height, text_width+2, text_height+2)
+    love.graphics.rectangle("fill", obj.x+KEY_SIZE-1-text_width, obj.y+KEY_SIZE-1-text_height, text_width+2, text_height+2)
 
     love.graphics.setColor(1,1,1)
-    love.graphics.print(text, obj.x+32-text_width, obj.y+32-text_height)
+    love.graphics.print(text, obj.x+KEY_SIZE-text_width, obj.y+KEY_SIZE-text_height)
 end
