@@ -78,7 +78,7 @@ function PlayerCollideRight()
             collision = collision and checkX > obj.x
             collision = collision and checkX <= obj.x + obj.width
             collision = collision and Player.y + PLAYER_HEIGHT > obj.y
-            collision = collision and Player.y <= obj.y + obj.height
+            collision = collision and Player.y < obj.y + obj.height
 
             if collision then
                 Player.x = obj.x - PLAYER_WIDTH
@@ -96,7 +96,7 @@ function PlayerCollideLeft()
             collision = collision and Player.x >= obj.x
             collision = collision and Player.x < obj.x + obj.width
             collision = collision and Player.y + PLAYER_HEIGHT > obj.y
-            collision = collision and Player.y <= obj.y + obj.height
+            collision = collision and Player.y < obj.y + obj.height
 
             if collision then
                 Player.x = obj.x + obj.width
@@ -119,6 +119,7 @@ function PlayerCollideDown()
 
             if collision then
                 Player.y = obj.y - PLAYER_HEIGHT
+                Player.velY = 0
             end
         end
     end
@@ -137,6 +138,7 @@ function PlayerCollideUp()
 
             if collision then
                 Player.y = obj.y + obj.height
+                Player.velY = 0
             end
         end
     end
