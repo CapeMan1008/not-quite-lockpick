@@ -37,7 +37,7 @@ function love.load()
         copies = CreateComplexNum(1),
         cursed = false,
         eroded = false,
-        frozen = false,
+        frozen = true,
         painted = false,
     } --[[@as Door]]
     ObjectList[3] = {
@@ -68,6 +68,26 @@ function love.load()
         frozen = false,
         painted = false,
     } --[[@as Door]]
+    ObjectList[4] = {
+        type = "key",
+        x = 128,
+        y = 192,
+        color = "white",
+        key_type = "add",
+        active = true,
+        amount = CreateComplexNum(1),
+        reusable = false,
+    } --[[@as Key]]
+    ObjectList[5] = {
+        type = "key",
+        x = 128,
+        y = 128,
+        color = "red",
+        key_type = "add",
+        active = true,
+        amount = CreateComplexNum(1),
+        reusable = false,
+    } --[[@as Key]]
 
     ObjectList[1] = {
         x = 640,
@@ -75,6 +95,7 @@ function love.load()
         type = "keyhandle",
         colors = {
             "white",
+            "red",
         },
         width = 128,
         height = 96,
