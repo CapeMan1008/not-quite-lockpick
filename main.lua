@@ -13,10 +13,10 @@ require "src.player"
 
 function love.load()
     ObjectList[2] = {
-        x = 32,
-        y = 32,
+        x = 64,
+        y = 128,
         type = "door",
-        width = 32,
+        width = 128,
         height = 32,
         color = "white",
         locks = {
@@ -25,9 +25,9 @@ function love.load()
                 y = 8,
                 width = 16,
                 height = 16,
-                color = "null",
+                color = "white",
                 type = "normal",
-                amount = CreateComplexNum(4),
+                amount = CreateComplexNum(1),
                 negative = false,
                 imaginary_negative = false
             } --[[@as NormalLock]]
