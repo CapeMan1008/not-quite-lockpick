@@ -21,8 +21,21 @@ end
 function UpdatePlayer(dt)
     PlayerWalk(dt)
 
-    Player.y = Player.y + Player.velY * dt
+    PlayerMoveY(dt)
+
     Player.velY = Player.velY + PLAYER_GRAVITY * dt
+end
+
+---@param dt number
+function PlayerMoveY(dt)
+    Player.y = Player.y + Player.velY * dt
+
+    if Player.velY > 0 then
+        PlayerCollideDown()
+    end
+    if Player.velY < 0 then
+        PlayerCollideUp()
+    end
 end
 
 ---@param dt number
@@ -87,6 +100,43 @@ function PlayerCollideLeft()
 
             if collision then
                 Player.x = obj.x + obj.width
+            end
+        end
+    end
+end
+
+---Check for collision downwards, pushing the player up on collision.
+function PlayerCollideDown()
+    for _, obj in ipairs(ObjectList) do
+        if IsObjectSolid(obj) then
+            ---@cast obj RectObject
+            local checkY = Player.y + PLAYER_HEIGHT
+            local collision = true
+            collision = collision and checkY > obj.y
+            collision = collision and checkY <= obj.y + obj.height
+            collision = collision and Player.x + PLAYER_WIDTH > obj.x
+            collision = collision and Player.x < obj.x + obj.width
+
+            if collision then
+                Player.y = obj.y - PLAYER_HEIGHT
+            end
+        end
+    end
+end
+
+---Check for collision upwards, pushing the player down on collision.
+function PlayerCollideUp()
+    for _, obj in ipairs(ObjectList) do
+        if IsObjectSolid(obj) then
+            ---@cast obj RectObject
+            local collision = true
+            collision = collision and Player.y >= obj.y
+            collision = collision and Player.y <= obj.y + obj.height
+            collision = collision and Player.x + PLAYER_WIDTH > obj.x
+            collision = collision and Player.x < obj.x + obj.width
+
+            if collision then
+                Player.y = obj.y + obj.height
             end
         end
     end
