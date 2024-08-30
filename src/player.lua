@@ -223,6 +223,7 @@ function love.keypressed(key)
     if DoesControlHaveKey("jump", key) then
         if Player.coyoteTime > 0 then
             Player.velY = PLAYER_JUMP_SPEED
+            Player.coyoteTime = 0
             return
         end
 
@@ -231,7 +232,6 @@ function love.keypressed(key)
         end
 
         Player.velY = PLAYER_AIR_JUMP_SPEED
-        Player.coyoteTime = 0
         Player.jumps = Player.jumps - 1
     end
 end
