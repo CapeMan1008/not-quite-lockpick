@@ -55,7 +55,7 @@ function PlayerWalk(dt)
 
     local walkSpeed = PLAYER_WALK_SPEED
 
-    if IsControlDown("run") then
+    if Player.coyoteTime > 0 and IsControlDown("run") then
         walkSpeed = PLAYER_RUN_SPEED
     end
     if IsControlDown("slow_walk") then
