@@ -30,6 +30,8 @@ PLAYER_SLOW_WALK_SPEED = 60
 PLAYER_MAX_COYOTE_TIME = 0.1
 PLAYER_MIDAIR_JUMP_COUNT = 1 -- Number of doublejumps the player has.
 
+KEY_SIZE = 32
+
 ---@type table<KeyColor, string>
 COLOR_NAMES = {
     white = "White",
