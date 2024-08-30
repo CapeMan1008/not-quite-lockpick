@@ -27,6 +27,7 @@ PLAYER_JUMP_CANCEL_SPEED = -200
 PLAYER_WALK_SPEED = 180
 PLAYER_RUN_SPEED = 360
 PLAYER_SLOW_WALK_SPEED = 60
+PLAYER_MAX_COYOTE_TIME = 0.1
 PLAYER_MIDAIR_JUMP_COUNT = 1 -- Number of doublejumps the player has.
 
 ---@type table<KeyColor, string>
