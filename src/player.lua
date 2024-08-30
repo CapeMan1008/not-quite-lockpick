@@ -26,6 +26,8 @@ function UpdatePlayer(dt)
     PlayerMoveY(dt)
 
     Player.velY = Player.velY + PLAYER_GRAVITY * dt
+
+    PlayerInteractObjects()
 end
 
 ---@param dt number
@@ -144,6 +146,66 @@ function PlayerCollideUp()
                 Player.y = obj.y + obj.height
                 Player.velY = 0
             end
+        end
+    end
+end
+
+---Collect keys and open doors that the player is touching.
+function PlayerInteractObjects()
+    for _, obj in ipairs(ObjectList) do
+        PlayerTryInteractObject(obj)
+    end
+end
+
+---Check if player is touching a key or door and do the appropriate action.
+---@param obj Object
+function PlayerTryInteractObject(obj)
+    if obj.type == "key" then
+        ---@cast obj Key
+
+        if not obj.active then
+            return
+        end
+
+        local collision = true
+        collision = collision and Player.x + PLAYER_WIDTH >= obj.x
+        collision = collision and Player.x <= obj.x + KEY_SIZE
+        collision = collision and Player.y + PLAYER_HEIGHT >= obj.y
+        collision = collision and Player.y <= obj.y + KEY_SIZE
+
+        if not collision then
+            return
+        end
+
+        CollectKey(obj)
+    end
+
+    if obj.type == "door" then
+        ---@cast obj Door
+
+        if not obj.active then
+            return
+        end
+
+        local centerX, centerY = Player.x + PLAYER_WIDTH/2, Player.y + PLAYER_HEIGHT/2
+        local inAura = true
+        inAura = inAura and centerX + PLAYER_AURA_RADIUS >= obj.x
+        inAura = inAura and centerX - PLAYER_AURA_RADIUS <= obj.x + obj.width
+        inAura = inAura and centerY + PLAYER_AURA_RADIUS >= obj.y
+        inAura = inAura and centerY - PLAYER_AURA_RADIUS <= obj.y + obj.height
+
+        if inAura then
+            TryAurasOnDoor(obj)
+        end
+
+        local collision = true
+        collision = collision and Player.x + PLAYER_WIDTH >= obj.x
+        collision = collision and Player.x <= obj.x + obj.width
+        collision = collision and Player.y + PLAYER_HEIGHT >= obj.y
+        collision = collision and Player.y <= obj.y + obj.height
+
+        if collision then
+            TryOpenDoor(obj, false, false, false)
         end
     end
 end
