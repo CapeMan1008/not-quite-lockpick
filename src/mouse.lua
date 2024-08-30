@@ -58,7 +58,7 @@ function love.mousepressed(x, y, b)
         end
     end
 
-    if b == 1 or b == 2 then
+    if b == 2 then
         if RightClickMenu.obj then
             RightClickMenu.obj = nil
         end
@@ -76,20 +76,10 @@ function love.mousepressed(x, y, b)
             return
         end
 
-        if b == 2 then
-            RightClickMenu.x = x
-            RightClickMenu.y = y
+        RightClickMenu.x = x
+        RightClickMenu.y = y
 
-            RightClickMenu.obj = clicked_obj
-        elseif clicked_obj.type == "key" then
-            ---@cast clicked_obj Key
-
-            CollectKey(clicked_obj)
-        elseif clicked_obj.type == "door" then
-            ---@cast clicked_obj Door
-
-            TryOpenDoor(clicked_obj, b == 2)
-        end
+        RightClickMenu.obj = clicked_obj
     end
 end
 
