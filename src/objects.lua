@@ -49,9 +49,9 @@ function IsObjectOTouchingPoint(obj, x, y)
         end
 
         if x >= obj.x and
-        x <= obj.x+32 and
+        x <= obj.x+KEY_SIZE and
         y >= obj.y and
-        y <= obj.y+32 then
+        y <= obj.y+KEY_SIZE then
             return true
         end
     elseif obj.type == "door" then
