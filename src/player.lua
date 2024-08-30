@@ -233,6 +233,7 @@ function love.keypressed(key)
 
         Player.velY = PLAYER_AIR_JUMP_SPEED
         Player.jumps = Player.jumps - 1
+        Player.coyoteTime = 0
     end
 end
 
