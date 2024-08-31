@@ -11,6 +11,7 @@ require "src.keyhandle"
 require "src.hoverinfo"
 require "src.controls"
 require "src.player"
+require "src.tilemap"
 
 function love.load()
     ObjectList[2] = {
