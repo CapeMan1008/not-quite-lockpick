@@ -33,6 +33,8 @@ PLAYER_AURA_RADIUS = 32 -- Actually a square
 
 KEY_SIZE = 32
 
+TILE_SIZE = 32
+
 ---@type table<KeyColor, string>
 COLOR_NAMES = {
     white = "White",
