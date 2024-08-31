@@ -16,6 +16,17 @@ require "src.tilemap"
 function love.load()
     InitializeTilemap()
 
+    Tilemap[TileCoordsToId(1,8)] = 0
+    Tilemap[TileCoordsToId(2,8)] = 0
+    Tilemap[TileCoordsToId(3,8)] = 0
+    Tilemap[TileCoordsToId(4,8)] = 0
+    Tilemap[TileCoordsToId(5,8)] = 0
+    Tilemap[TileCoordsToId(5,7)] = 0
+    Tilemap[TileCoordsToId(5,6)] = 0
+    Tilemap[TileCoordsToId(5,5)] = 0
+    Tilemap[TileCoordsToId(5,4)] = 0
+
+    --[=[
     ObjectList[2] = {
         x = 64,
         y = 256,
@@ -104,6 +115,7 @@ function love.load()
         width = 128,
         height = 96,
     } --[[@as KeyHandle]]
+    ]=]
 
 
     LoadResources()

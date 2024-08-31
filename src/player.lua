@@ -82,6 +82,8 @@ end
 
 ---Check for collision to the right, pushing the player to the left on collision.
 function PlayerCollideRight()
+    
+
     for _, obj in ipairs(ObjectList) do
         if IsObjectSolid(obj) then
             ---@cast obj RectObject

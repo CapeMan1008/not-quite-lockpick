@@ -67,11 +67,12 @@ function DrawTile(id)
     love.graphics.setColor(1,1,1)
 
     local x,y = TileCoordsToPixelCoords(TileIdToCoords(id))
-    love.graphics.rectangle("fill", x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+    print(x,y)
+    love.graphics.rectangle("fill", x, y, TILE_SIZE, TILE_SIZE)
 end
 
 function DrawTilemap()
-    for _, id in ipairs(Tilemap) do
+    for id = 0, Mapdata.width * Mapdata.height - 1 do
         DrawTile(id)
     end
 end
