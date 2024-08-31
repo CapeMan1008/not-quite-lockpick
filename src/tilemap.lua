@@ -30,7 +30,7 @@ end
 ---@return integer y
 ---@nodiscard
 function TileIdToCoords(id)
-    return id % Mapdata.width, id * Mapdata.width
+    return id % Mapdata.width, math.floor(id / Mapdata.width)
 end
 
 ---@param x integer
