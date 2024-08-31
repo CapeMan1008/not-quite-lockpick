@@ -63,6 +63,16 @@ function love.load()
         amount = CreateComplexNum(1),
         reusable = false,
     } --[[@as Key]]
+    ObjectList[4] = {
+        type = "key",
+        x = 96,
+        y = 128,
+        color = "master",
+        key_type = "add",
+        active = true,
+        amount = CreateComplexNum(-1),
+        reusable = false,
+    } --[[@as Key]]
 
     ObjectList[1] = {
         x = 640,
