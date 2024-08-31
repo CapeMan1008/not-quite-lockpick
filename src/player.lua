@@ -375,7 +375,7 @@ function love.keypressed(key)
     end
 
     if DoesControlHaveKey("action", key) then
-        if KeyStates.master.count == 0 then
+        if KeyStates.master.count == CreateComplexNum() then
             Player.useMaster = false
             return
         end
