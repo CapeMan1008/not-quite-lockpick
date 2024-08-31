@@ -29,7 +29,13 @@ function DrawPlayer()
     if Player.useMaster then
         love.graphics.setColor(1,1,1,0.5)
 
-        local masterTexture = GetTexture("sprKMaster_0") --[[@as love.Texture]]
+        ---@type love.Texture
+        local masterTexture
+        if KeyStates.master.count.real < 0 then
+            masterTexture = GetTexture("sprKMasterAnti_0") --[[@as love.Texture]]
+        else
+            masterTexture = GetTexture("sprKMaster_0") --[[@as love.Texture]]
+        end
 
         local masterX, masterY = Player.x + PLAYER_WIDTH / 2 - masterTexture:getWidth() / 2, Player.y + PLAYER_HEIGHT / 2  - masterTexture:getHeight() / 2
     
