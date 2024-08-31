@@ -14,6 +14,8 @@ require "src.player"
 require "src.tilemap"
 
 function love.load()
+    InitializeTilemap()
+
     ObjectList[2] = {
         x = 64,
         y = 256,
