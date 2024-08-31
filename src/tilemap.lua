@@ -54,9 +54,9 @@ end
 
 ---Returns the top-left corner of the tile.
 ---@param x integer
----@param y integer
+---@param y integer?
 ---@return integer x
----@return integer y?
+---@return integer? y
 ---@nodiscard
 function RoundPixelCoordsToTile(x,y)
     return math.floor(x / TILE_SIZE) * TILE_SIZE, y and math.floor(y / TILE_SIZE) * TILE_SIZE
