@@ -5,4 +5,8 @@ Tilemap = {}
 ---@field width integer
 ---@field height integer
 ---@field tileset string
-Mapdata = {}
+Mapdata = {
+    width = 25,
+    height = 19,
+    tileset = "placeholder",
+}
