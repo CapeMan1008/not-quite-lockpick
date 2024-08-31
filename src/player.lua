@@ -25,6 +25,16 @@ end
 function DrawPlayer()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", Player.x, Player.y, PLAYER_WIDTH, PLAYER_HEIGHT)
+
+    if Player.useMaster then
+        love.graphics.setColor(1,1,1,0.5)
+
+        local masterTexture = GetTexture("sprKMaster_0") --[[@as love.Texture]]
+
+        local masterX, masterY = Player.x + PLAYER_WIDTH / 2 - masterTexture:getWidth() / 2, Player.y + PLAYER_HEIGHT / 2  - masterTexture:getHeight() / 2
+    
+        love.graphics.draw(masterTexture, masterX, masterY)
+    end
 end
 
 ---@param dt number
