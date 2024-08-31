@@ -53,6 +53,12 @@ function TileCoordsToPixelCoords(x,y)
 end
 
 ---@param id integer
+---@return boolean
+function IsTileSolid(id)
+    return Tilemap[id] >= 0
+end
+
+---@param id integer
 function DrawTile(id)
     if Tilemap[id] < 0 then
         return
