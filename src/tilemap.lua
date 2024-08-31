@@ -42,6 +42,7 @@ function PixelCoordsToTileCoords(x,y)
     return math.floor(x / TILE_SIZE), math.floor(y / TILE_SIZE)
 end
 
+---Returns the top-left corner of the tile.
 ---@param x integer
 ---@param y integer
 ---@return integer x
