@@ -54,6 +54,7 @@ end
 
 ---@param id integer
 ---@return boolean
+---@nodiscard
 function IsTileSolid(id)
     return Tilemap[id] >= 0
 end
