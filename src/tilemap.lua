@@ -47,7 +47,7 @@ end
 ---@return integer x
 ---@return integer y
 ---@nodiscard
-function PixelCoordsToTileCoords(x,y)
+function TileCoordsToPixelCoords(x,y)
     return x * TILE_SIZE, y * TILE_SIZE
 end
 
