@@ -82,10 +82,38 @@ end
 
 ---Check for collision to the right, pushing the player to the left on collision.
 function PlayerCollideRight()
+    local checkX = Player.x + PLAYER_WIDTH
+
+    ---@param x integer
+    ---@param y integer
+    ---@return integer?
+    ---@nodiscard
+    local function PixelToTileIdFixBias(x,y)
+        if y % TILE_SIZE == 0 then
+            return nil
+        end
+        local tx = math.floor(x / TILE_SIZE)
+        local ty = math.floor(y / TILE_SIZE)
+        return TileCoordsToId(tx,ty)
+    end
+
+    local tileCollision = false
+    local tile1 = PixelToTileIdFixBias(checkX, Player.y)
+    local tile2 = PixelToTileIdFixBias(checkX, Player.y + PLAYER_HEIGHT)
+    if tile1 then
+        tileCollision = tileCollision or IsTileSolid(tile1)
+    end
+    if tile2 then
+        tileCollision = tileCollision or IsTileSolid(tile2)
+    end
+
+    if tileCollision then
+        Player.x = RoundPixelCoordsToTile(checkX) - PLAYER_WIDTH
+    end
+
     for _, obj in ipairs(ObjectList) do
         if IsObjectSolid(obj) then
             ---@cast obj RectObject
-            local checkX = Player.x + PLAYER_WIDTH
             local collision = true
             collision = collision and checkX > obj.x
             collision = collision and checkX <= obj.x + obj.width
@@ -101,6 +129,33 @@ end
 
 ---Check for collision to the left, pushing the player to the right on collision.
 function PlayerCollideLeft()
+    ---@param x integer
+    ---@param y integer
+    ---@return integer?
+    ---@nodiscard
+    local function PixelToTileIdFixBias(x,y)
+        if y % TILE_SIZE == 0 then
+            return nil
+        end
+        local tx = math.ceil(x / TILE_SIZE - 1)
+        local ty = math.floor(y / TILE_SIZE)
+        return TileCoordsToId(tx,ty)
+    end
+
+    local tileCollision = false
+    local tile1 = PixelToTileIdFixBias(Player.x, Player.y)
+    local tile2 = PixelToTileIdFixBias(Player.x, Player.y + PLAYER_HEIGHT)
+    if tile1 then
+        tileCollision = tileCollision or IsTileSolid(tile1)
+    end
+    if tile2 then
+        tileCollision = tileCollision or IsTileSolid(tile2)
+    end
+
+    if tileCollision then
+        Player.x = RoundPixelCoordsToTile(Player.x) + TILE_SIZE
+    end
+
     for _, obj in ipairs(ObjectList) do
         if IsObjectSolid(obj) then
             ---@cast obj RectObject
@@ -119,10 +174,40 @@ end
 
 ---Check for collision downwards, pushing the player up on collision.
 function PlayerCollideDown()
+    local checkY = Player.y + PLAYER_HEIGHT
+
+    ---@param x integer
+    ---@param y integer
+    ---@return integer?
+    ---@nodiscard
+    local function PixelToTileIdFixBias(x,y)
+        if x % TILE_SIZE == 0 then
+            return nil
+        end
+        local tx = math.floor(x / TILE_SIZE)
+        local ty = math.floor(y / TILE_SIZE)
+        return TileCoordsToId(tx,ty)
+    end
+
+    local tileCollision = false
+    local tile1 = PixelToTileIdFixBias(Player.x, checkY)
+    local tile2 = PixelToTileIdFixBias(Player.x + PLAYER_WIDTH, checkY)
+    if tile1 then
+        tileCollision = tileCollision or IsTileSolid(tile1)
+    end
+    if tile2 then
+        tileCollision = tileCollision or IsTileSolid(tile2)
+    end
+
+    if tileCollision then
+        Player.y = RoundPixelCoordsToTile(checkY) - PLAYER_HEIGHT
+        Player.velY = 0
+        PlayerLand()
+    end
+
     for _, obj in ipairs(ObjectList) do
         if IsObjectSolid(obj) then
             ---@cast obj RectObject
-            local checkY = Player.y + PLAYER_HEIGHT
             local collision = true
             collision = collision and checkY > obj.y
             collision = collision and checkY <= obj.y + obj.height
@@ -132,8 +217,7 @@ function PlayerCollideDown()
             if collision then
                 Player.y = obj.y - PLAYER_HEIGHT
                 Player.velY = 0
-                Player.coyoteTime = PLAYER_MAX_COYOTE_TIME
-                Player.jumps = PLAYER_MIDAIR_JUMP_COUNT
+                PlayerLand()
             end
         end
     end
@@ -141,6 +225,34 @@ end
 
 ---Check for collision upwards, pushing the player down on collision.
 function PlayerCollideUp()
+    ---@param x integer
+    ---@param y integer
+    ---@return integer?
+    ---@nodiscard
+    local function PixelToTileIdFixBias(x,y)
+        if x % TILE_SIZE == 0 then
+            return nil
+        end
+        local tx = math.floor(x / TILE_SIZE)
+        local ty = math.ceil(y / TILE_SIZE - 1)
+        return TileCoordsToId(tx,ty)
+    end
+
+    local tileCollision = false
+    local tile1 = PixelToTileIdFixBias(Player.x, Player.y)
+    local tile2 = PixelToTileIdFixBias(Player.x + PLAYER_WIDTH, Player.y)
+    if tile1 then
+        tileCollision = tileCollision or IsTileSolid(tile1)
+    end
+    if tile2 then
+        tileCollision = tileCollision or IsTileSolid(tile2)
+    end
+
+    if tileCollision then
+        Player.y = RoundPixelCoordsToTile(Player.y) + TILE_SIZE
+        Player.velY = 0
+    end
+
     for _, obj in ipairs(ObjectList) do
         if IsObjectSolid(obj) then
             ---@cast obj RectObject
@@ -156,6 +268,12 @@ function PlayerCollideUp()
             end
         end
     end
+end
+
+---Reset jumps and coyote time.
+function PlayerLand()
+    Player.coyoteTime = PLAYER_MAX_COYOTE_TIME
+    Player.jumps = PLAYER_MIDAIR_JUMP_COUNT
 end
 
 ---Collect keys and open doors that the player is touching.

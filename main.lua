@@ -11,21 +11,33 @@ require "src.keyhandle"
 require "src.hoverinfo"
 require "src.controls"
 require "src.player"
+require "src.tilemap"
 
 function love.load()
+    InitializeTilemap()
+
+    Tilemap[TileCoordsToId(0,8)] = 0
+    Tilemap[TileCoordsToId(1,8)] = 0
+    Tilemap[TileCoordsToId(2,8)] = 0
+    Tilemap[TileCoordsToId(3,8)] = 0
+    Tilemap[TileCoordsToId(4,8)] = 0
+    Tilemap[TileCoordsToId(5,8)] = 0
+    Tilemap[TileCoordsToId(5,5)] = 0
+    Tilemap[TileCoordsToId(5,4)] = 0
+
     ObjectList[2] = {
-        x = 64,
-        y = 256,
+        x = 160,
+        y = 192,
         type = "door",
-        width = 128,
-        height = 32,
+        width = 32,
+        height = 64,
         color = "orange",
         locks = {
             {
                 x = 8,
                 y = 8,
-                width = 112,
-                height = 16,
+                width = 16,
+                height = 48,
                 color = "orange",
                 type = "normal",
                 amount = CreateComplexNum(1),
@@ -42,47 +54,9 @@ function love.load()
         painted = false,
     } --[[@as Door]]
     ObjectList[3] = {
-        x = 192,
-        y = 128,
-        type = "door",
-        width = 32,
-        height = 160,
-        color = "white",
-        locks = {
-            {
-                x = 8,
-                y = 8,
-                width = 16,
-                height = 144,
-                color = "white",
-                type = "normal",
-                amount = CreateComplexNum(1),
-                negative = false,
-                imaginary_negative = false
-            } --[[@as NormalLock]]
-        },
-        active = true,
-        negativeborder = false,
-        copies = CreateComplexNum(1),
-        cursed = false,
-        eroded = false,
-        frozen = false,
-        painted = false,
-    } --[[@as Door]]
-    ObjectList[4] = {
         type = "key",
-        x = 128,
+        x = 96,
         y = 192,
-        color = "white",
-        key_type = "add",
-        active = true,
-        amount = CreateComplexNum(1),
-        reusable = false,
-    } --[[@as Key]]
-    ObjectList[5] = {
-        type = "key",
-        x = 128,
-        y = 128,
         color = "orange",
         key_type = "add",
         active = true,
@@ -101,7 +75,6 @@ function love.load()
         width = 128,
         height = 96,
     } --[[@as KeyHandle]]
-
 
     LoadResources()
 
