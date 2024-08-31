@@ -22,8 +22,6 @@ function love.load()
     Tilemap[TileCoordsToId(3,8)] = 0
     Tilemap[TileCoordsToId(4,8)] = 0
     Tilemap[TileCoordsToId(5,8)] = 0
-    Tilemap[TileCoordsToId(5,5)] = 0
-    Tilemap[TileCoordsToId(5,4)] = 0
 
     ObjectList[2] = {
         x = 160,
@@ -57,10 +55,20 @@ function love.load()
         type = "key",
         x = 96,
         y = 192,
-        color = "orange",
+        color = "master",
         key_type = "add",
         active = true,
         amount = CreateComplexNum(1),
+        reusable = false,
+    } --[[@as Key]]
+    ObjectList[4] = {
+        type = "key",
+        x = 96,
+        y = 128,
+        color = "master",
+        key_type = "add",
+        active = true,
+        amount = CreateComplexNum(-1),
         reusable = false,
     } --[[@as Key]]
 
@@ -69,7 +77,7 @@ function love.load()
         y = 32,
         type = "keyhandle",
         colors = {
-            "white",
+            "master",
             "orange",
         },
         width = 128,
@@ -79,6 +87,7 @@ function love.load()
     LoadResources()
 
     InitKeys()
+    InitPlayer()
 
     LoadPaletteFromFile("res/palettes/default.txt")
 end

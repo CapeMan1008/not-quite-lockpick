@@ -48,7 +48,7 @@
 ---@param use_master boolean? If true, checks if you can use a master key on the door before preforming normal checks.
 ---@param imaginary boolean? If true, tries to open an imaginary copy of the door instead of a real copy.
 ---@param no_open boolean? If true, returns a value without opening the door.
----@return boolean can_open If you can open the door.
+---@return boolean can_open If you can open the door (also returns true if you copy a door).
 ---@return ComplexNumber? cost The number of keys spent to open the door.
 ---@return ComplexNumber? wild_cost The number of wildcard keys spent to open the door.
 function TryOpenDoor(door, use_master, imaginary, no_open)
@@ -132,7 +132,7 @@ end
 ---@param door Door The door to try opening.
 ---@param imaginary boolean? If true, tries to open an imaginary copy of the door instead of a real copy.
 ---@param no_open boolean? If true, returns a value without opening the door.
----@return boolean can_open If you can open the door.
+---@return boolean can_open If you can open the door (also returns true if you copy a door).
 function CheckMasterKey(door, imaginary, no_open)
     ---@type boolean
     local master_immune = DoesDoorHaveColor(door, "pure") or DoesDoorHaveColor(door, "master")
@@ -182,7 +182,7 @@ function CheckMasterKey(door, imaginary, no_open)
             end
         end
 
-        return false
+        return true
     elseif KeyStates.master.count.imaginary < 0 and imaginary then
         if not no_open then
             if not KeyStates.master.star then
@@ -196,7 +196,7 @@ function CheckMasterKey(door, imaginary, no_open)
             end
         end
 
-        return false
+        return true
     end
 
     return false

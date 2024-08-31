@@ -10,11 +10,37 @@ Player = {
     velY = 0,
     jumps = 0,
     coyoteTime = 0,
+    useMaster = false,
 }
+
+function InitPlayer()
+    Player.x = 0
+    Player.y = 0
+    Player.velY = 0
+    Player.jumps = 0
+    Player.coyoteTime = 0
+    Player.useMaster = false
+end
 
 function DrawPlayer()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", Player.x, Player.y, PLAYER_WIDTH, PLAYER_HEIGHT)
+
+    if Player.useMaster then
+        love.graphics.setColor(1,1,1,0.5)
+
+        ---@type love.Texture
+        local masterTexture
+        if KeyStates.master.count.real < 0 then
+            masterTexture = GetTexture("sprKMasterAnti_0") --[[@as love.Texture]]
+        else
+            masterTexture = GetTexture("sprKMaster_0") --[[@as love.Texture]]
+        end
+
+        local masterX, masterY = Player.x + PLAYER_WIDTH / 2 - masterTexture:getWidth() / 2, Player.y + PLAYER_HEIGHT / 2  - masterTexture:getHeight() / 2
+    
+        love.graphics.draw(masterTexture, masterX, masterY)
+    end
 end
 
 ---@param dt number
@@ -30,11 +56,7 @@ function UpdatePlayer(dt)
     PlayerInteractObjects()
 
     if Player.y > 2000 then
-        Player.x = 0
-        Player.y = 0
-        Player.velY = 0
-        Player.jumps = 0
-        Player.coyoteTime = 0
+        InitPlayer()
     end
 end
 
@@ -331,7 +353,11 @@ function PlayerTryInteractObject(obj)
         collision = collision and Player.y <= obj.y + obj.height
 
         if collision then
-            TryOpenDoor(obj, false, false, false)
+            local opened = TryOpenDoor(obj, Player.useMaster, false, false)
+
+            if opened and Player.useMaster then
+                Player.useMaster = false
+            end
         end
     end
 end
@@ -352,6 +378,15 @@ function love.keypressed(key)
         Player.velY = PLAYER_AIR_JUMP_SPEED
         Player.jumps = Player.jumps - 1
         Player.coyoteTime = 0
+    end
+
+    if DoesControlHaveKey("action", key) then
+        if KeyStates.master.count == CreateComplexNum() then
+            Player.useMaster = false
+            return
+        end
+
+        Player.useMaster = not Player.useMaster
     end
 end
 
