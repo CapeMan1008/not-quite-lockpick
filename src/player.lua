@@ -13,6 +13,15 @@ Player = {
     useMaster = false,
 }
 
+function InitPlayer()
+    Player.x = 0
+    Player.y = 0
+    Player.velY = 0
+    Player.jumps = 0
+    Player.coyoteTime = 0
+    Player.useMaster = false
+end
+
 function DrawPlayer()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", Player.x, Player.y, PLAYER_WIDTH, PLAYER_HEIGHT)
@@ -31,11 +40,7 @@ function UpdatePlayer(dt)
     PlayerInteractObjects()
 
     if Player.y > 2000 then
-        Player.x = 0
-        Player.y = 0
-        Player.velY = 0
-        Player.jumps = 0
-        Player.coyoteTime = 0
+        InitPlayer()
     end
 end
 

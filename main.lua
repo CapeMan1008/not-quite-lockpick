@@ -79,6 +79,7 @@ function love.load()
     LoadResources()
 
     InitKeys()
+    InitPlayer()
 
     LoadPaletteFromFile("res/palettes/default.txt")
 end
