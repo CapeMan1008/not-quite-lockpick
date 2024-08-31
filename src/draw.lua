@@ -35,19 +35,14 @@ end
 
 ---Gets a texture by it's name, loading the texture from res/textures if it currently isn't in the Textures table. If the texture doesn't exist, returns nil (it's up to you to check this).
 ---@param name string
----@param extension string? Appended to the end of the filepath without affecting the name of the texture. Defaults to ".png".
 ---@return love.Texture?
 ---@nodiscard
-function GetTexture(name, extension)
+function GetTexture(name)
     if Textures[name] then
         return Textures[name]
     end
 
-    if not extension then
-        extension = ".png"
-    end
-
-    local filepath = "res/textures/" .. name .. extension
+    local filepath = "res/textures/" .. name
 
     local file_info = love.filesystem.getInfo(filepath, "file")
 
