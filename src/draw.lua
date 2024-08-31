@@ -3,9 +3,9 @@ Fonts = {}
 ---@type table<string, love.Texture>
 Textures = {}
 ---@type table<string, love.Shader>
---Shaders = {
+Shaders = {
 --    static = love.graphics.newShader("src/shaders/static.glsl")
---}
+}
 
 AnimationTimer = 0
 
