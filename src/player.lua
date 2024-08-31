@@ -10,6 +10,7 @@ Player = {
     velY = 0,
     jumps = 0,
     coyoteTime = 0,
+    useMaster = false,
 }
 
 function DrawPlayer()
@@ -331,7 +332,11 @@ function PlayerTryInteractObject(obj)
         collision = collision and Player.y <= obj.y + obj.height
 
         if collision then
-            TryOpenDoor(obj, false, false, false)
+            local opened = TryOpenDoor(obj, Player.useMaster, false, false)
+
+            if opened and Player.useMaster then
+                Player.useMaster = false
+            end
         end
     end
 end
@@ -352,6 +357,15 @@ function love.keypressed(key)
         Player.velY = PLAYER_AIR_JUMP_SPEED
         Player.jumps = Player.jumps - 1
         Player.coyoteTime = 0
+    end
+
+    if DoesControlHaveKey("action", key) then
+        if KeyStates.master.count == 0 then
+            Player.useMaster = false
+            return
+        end
+
+        Player.useMaster = not Player.useMaster
     end
 end
 
