@@ -22,8 +22,6 @@ function love.load()
     Tilemap[TileCoordsToId(3,8)] = 0
     Tilemap[TileCoordsToId(4,8)] = 0
     Tilemap[TileCoordsToId(5,8)] = 0
-    Tilemap[TileCoordsToId(5,5)] = 0
-    Tilemap[TileCoordsToId(5,4)] = 0
 
     ObjectList[2] = {
         x = 160,
