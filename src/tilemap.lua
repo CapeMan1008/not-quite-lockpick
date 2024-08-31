@@ -32,3 +32,13 @@ end
 function TileIdToCoords(id)
     return id % Mapdata.width, id * Mapdata.width
 end
+
+---@param id integer
+function DrawTile(id)
+    if Tilemap[id] < 0 then
+        return
+    end
+
+    love.graphics.setColor(1,1,1)
+    love.graphics.rectangle("fill", id % Mapdata.width * TILE_SIZE, id * Mapdata.width * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+end
