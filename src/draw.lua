@@ -65,6 +65,8 @@ function love.draw()
     --    Shaders.static:send("time", AnimationTimer)
     --end
 
+    DrawTilemap()
+
     for _, obj in ipairs(ObjectList) do
         DrawObject(obj)
     end

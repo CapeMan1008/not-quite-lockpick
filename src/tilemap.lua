@@ -42,3 +42,9 @@ function DrawTile(id)
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", id % Mapdata.width * TILE_SIZE, id * Mapdata.width * TILE_SIZE, TILE_SIZE, TILE_SIZE)
 end
+
+function DrawTilemap()
+    for _, id in ipairs(Tilemap) do
+        DrawTile(id)
+    end
+end
