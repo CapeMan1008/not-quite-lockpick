@@ -33,6 +33,24 @@ function TileIdToCoords(id)
     return id % Mapdata.width, id * Mapdata.width
 end
 
+---@param x integer
+---@param y integer
+---@return integer x
+---@return integer y
+---@nodiscard
+function PixelCoordsToTileCoords(x,y)
+    return math.floor(x / TILE_SIZE), math.floor(y / TILE_SIZE)
+end
+
+---@param x integer
+---@param y integer
+---@return integer x
+---@return integer y
+---@nodiscard
+function PixelCoordsToTileCoords(x,y)
+    return x * TILE_SIZE, y * TILE_SIZE
+end
+
 ---@param id integer
 function DrawTile(id)
     if Tilemap[id] < 0 then
