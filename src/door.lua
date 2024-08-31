@@ -149,12 +149,18 @@ function CheckMasterKey(door, imaginary, no_open)
 
             if door.copies.real <= 0 then
                 CopyDoor(door, false, true)
+                return false
             else
                 OpenDoor(door, false, false, true)
+                return true
+            end
+        else
+            if door.copies.imaginary <= 0 then
+                return false
+            else
+                return true
             end
         end
-
-        return true
     elseif KeyStates.master.count.imaginary > 0 and imaginary then
         if not no_open then
             if not KeyStates.master.star then
@@ -163,12 +169,18 @@ function CheckMasterKey(door, imaginary, no_open)
 
             if door.copies.imaginary <= 0 then
                 CopyDoor(door, true, true)
+                return false
             else
                 OpenDoor(door, true, false, true)
+                return true
+            end
+        else
+            if door.copies.real <= 0 then
+                return false
+            else
+                return true
             end
         end
-
-        return true
     elseif KeyStates.master.count.real < 0 and not imaginary then
         if not no_open then
             if not KeyStates.master.star then
@@ -177,12 +189,18 @@ function CheckMasterKey(door, imaginary, no_open)
 
             if door.copies.real < 0 then
                 OpenDoor(door, false, true, true)
+                return true
             else
                 CopyDoor(door, false, false)
+                return false
+            end
+        else
+            if door.copies.real < 0 then
+                return true
+            else
+                return false
             end
         end
-
-        return false
     elseif KeyStates.master.count.imaginary < 0 and imaginary then
         if not no_open then
             if not KeyStates.master.star then
@@ -191,12 +209,18 @@ function CheckMasterKey(door, imaginary, no_open)
 
             if door.copies.imaginary < 0 then
                 OpenDoor(door, true, true, true)
+                return true
             else
                 CopyDoor(door, true, false)
+                return false
+            end
+        else
+            if door.copies.imaginary < 0 then
+                return true
+            else
+                return false
             end
         end
-
-        return false
     end
 
     return false
