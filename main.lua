@@ -57,7 +57,7 @@ function love.load()
         type = "key",
         x = 96,
         y = 192,
-        color = "orange",
+        color = "master",
         key_type = "add",
         active = true,
         amount = CreateComplexNum(1),
@@ -69,7 +69,7 @@ function love.load()
         y = 32,
         type = "keyhandle",
         colors = {
-            "white",
+            "master",
             "orange",
         },
         width = 128,
