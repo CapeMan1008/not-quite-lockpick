@@ -2,6 +2,8 @@
 Fonts = {}
 ---@type table<string, love.Texture>
 Textures = {}
+Textures.error = love.graphics.newImage("res/textures/error.png")
+Textures.error:setFilter("nearest", "nearest")
 ---@alias SpriteData { x: integer, y: integer, w: integer, h: integer }
 ---@alias Spritesheet { image: love.Texture, quad: love.Quad, spriteData: table<string, SpriteData> }
 ---@type table<string, Spritesheet>
@@ -37,9 +39,9 @@ function LoadResources()
     Fonts.default = love.graphics.newFont(12)
 end
 
----Gets a texture by it's name, loading the texture from res/textures if it currently isn't in the Textures table. If the texture doesn't exist, returns nil (it's up to you to check this).
+---Gets a texture by it's name, loading the texture from res/textures if it currently isn't in the Textures table. If the texture doesn't exist, returns an error texture.
 ---@param name string
----@return love.Texture?
+---@return love.Texture
 ---@nodiscard
 function GetTexture(name)
     if Textures[name] then
@@ -55,6 +57,8 @@ function GetTexture(name)
         Textures[name]:setFilter("nearest", "nearest")
         return Textures[name]
     end
+
+    return Textures.error
 end
 
 function love.draw()
