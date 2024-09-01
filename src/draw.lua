@@ -2,6 +2,10 @@
 Fonts = {}
 ---@type table<string, love.Texture>
 Textures = {}
+---@alias SpriteData { x: integer, y: integer, w: integer, h: integer }
+---@alias Spritesheet { image: love.Texture, quad: love.Quad, spriteData: table<string, SpriteData> }
+---@type table<string, Spritesheet>
+Spritesheets = {}
 ---@type table<string, love.Shader>
 Shaders = {
 --    static = love.graphics.newShader("src/shaders/static.glsl")
