@@ -37,6 +37,8 @@ end
 
 function LoadResources()
     Fonts.default = love.graphics.newFont(12)
+
+    LoadSpritesheetFromFile("res/spritesheets/sheetKey.txt", "sheetKey")
 end
 
 ---Gets a texture by it's name, loading the texture from res/textures if it currently isn't in the Textures table. If the texture doesn't exist, returns an error texture.
