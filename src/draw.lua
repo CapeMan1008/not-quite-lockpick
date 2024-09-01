@@ -50,7 +50,7 @@ function GetTexture(name)
         return Textures[name]
     end
 
-    local filepath = "res/textures/" .. name
+    local filepath = "res/textures/" .. name .. ".png"
 
     local file_info = love.filesystem.getInfo(filepath, "file")
 
