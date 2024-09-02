@@ -2,6 +2,12 @@
 Fonts = {}
 ---@type table<string, love.Texture>
 Textures = {}
+Textures.error = love.graphics.newImage("res/textures/error.png")
+Textures.error:setFilter("nearest", "nearest")
+---@alias SpriteData { x: integer, y: integer, w: integer, h: integer }
+---@alias Spritesheet { image: love.Texture, quad: love.Quad, spriteData: table<string, SpriteData> }
+---@type table<string, Spritesheet>
+Spritesheets = {}
 ---@type table<string, love.Shader>
 Shaders = {
 --    static = love.graphics.newShader("src/shaders/static.glsl")
@@ -31,31 +37,36 @@ end
 
 function LoadResources()
     Fonts.default = love.graphics.newFont(12)
+
+    LoadSpritesheetFromFile("res/spritesheets/sheetKey.txt", "sheetKey")
 end
 
----Gets a texture by it's name, loading the texture from res/textures if it currently isn't in the Textures table. If the texture doesn't exist, returns nil (it's up to you to check this).
+---Gets a texture by it's name, loading the texture from res/textures if it currently isn't in the Textures table. If the texture doesn't exist, returns an error texture.
 ---@param name string
----@param extension string? Appended to the end of the filepath without affecting the name of the texture. Defaults to ".png".
----@return love.Texture?
+---@return love.Texture
 ---@nodiscard
-function GetTexture(name, extension)
+function GetTexture(name)
     if Textures[name] then
         return Textures[name]
     end
 
-    if not extension then
-        extension = ".png"
+    local filepath, textureData = ParseTextureData(name)
+
+    if not filepath then
+        return Textures.error
     end
 
-    local filepath = "res/textures/" .. name .. extension
+    filepath = "res/" .. filepath
 
     local file_info = love.filesystem.getInfo(filepath, "file")
 
-    if file_info then
-        Textures[name] = love.graphics.newImage(filepath)
-        Textures[name]:setFilter("nearest", "nearest")
-        return Textures[name]
+    if not file_info then
+        return Textures.error
     end
+
+    Textures[name] = love.graphics.newImage(filepath)
+    Textures[name]:setFilter(textureData.minFilter or "nearest", textureData.maxFilter or textureData.minFilter or "nearest")
+    return Textures[name]
 end
 
 function love.draw()
@@ -104,4 +115,116 @@ function DrawAuras()
     end
 
     love.graphics.setBlendMode("alpha")
+end
+
+---@param filepath string
+---@param name string
+function LoadSpritesheetFromFile(filepath, name)
+    local fileInfo = love.filesystem.getInfo(filepath, "file")
+
+    if not fileInfo then
+        return
+    end
+
+    local file = love.filesystem.newFile(filepath, "r")
+
+    if not file then
+        return
+    end
+
+    local lines = {}
+
+    for line in file:lines() do
+        lines[#lines+1] = line
+    end
+
+    Spritesheets[name] = ParseSpritesheetData(lines, string.match(filepath, "^res/spritesheets/(.-)%.?.*$"))
+end
+
+---@param lines string[]
+---@param defaultImage string
+---@return Spritesheet
+function ParseSpritesheetData(lines, defaultImage)
+    ---@type table<string, SpriteData>
+    local spriteData = {}
+    local sheetImage = defaultImage
+
+    for _, line in ipairs(lines) do
+        ---@type string,string
+        local cmd, params = string.match(line, "^%s*(%S*)%s*(.*)")
+
+        if cmd == "sprite" then
+            local name, x,y,w,h = string.match(params, "^([%w_]*)%s*(%d*)%s*(%d*)%s*(%d*)%s*(%d*)")
+
+            x,y,w,h = tonumber(x) or 0, tonumber(y) or 0, tonumber(w) or 1, tonumber(h) or 1
+
+            spriteData[name] = {x=x,y=y,w=w,h=h}
+        end
+
+        if cmd == "setimage" then
+            local name = string.match(params, "^[%w_]*")
+
+            sheetImage = name
+        end
+    end
+
+    local imageTexture = GetTexture(sheetImage)
+
+    return {
+        image = imageTexture,
+        spriteData = spriteData,
+        quad = love.graphics.newQuad(0,0, 1,1, imageTexture),
+    } --[[@as Spritesheet]]
+end
+
+---Filepath returned starts from folder "res".
+---@param textureName string
+---@return string filepath
+---@return table textureData
+function ParseTextureData(textureName)
+    local textureDataFile = love.filesystem.newFile("res/textureData.txt", "r")
+
+    if not textureDataFile then
+        error("where the hell is textureData.txt")
+    end
+
+    ---@type string
+    local currentTexture = nil
+    ---@type string
+    local filepath = nil
+    ---@type table
+    local textureData = {}
+
+    for line in textureDataFile:lines() do
+        ---@type string,string
+        local cmd, params = string.match(line, "^%s*(%S*)%s*(.*)")
+
+        if cmd == "texture" then
+            ---@type string,string
+            local name, path = string.match(params, "^([%w_]*)%s*(%S*)")
+
+            currentTexture = name
+
+            if currentTexture == textureName then
+                filepath = path
+            end
+        end
+
+        if currentTexture == textureName and cmd == "filter" then
+            ---@type string?, string?
+            local minFilter, maxFilter = string.match(params, "^(%S*)%s*(%S*)")
+
+            if minFilter ~= "nearest" and minFilter ~= "linear" then
+                minFilter = nil
+            end
+            if maxFilter ~= "nearest" and maxFilter ~= "linear" then
+                maxFilter = nil
+            end
+
+            textureData.minFilter = minFilter
+            textureData.maxFilter = maxFilter
+        end
+    end
+
+    return filepath, textureData
 end
