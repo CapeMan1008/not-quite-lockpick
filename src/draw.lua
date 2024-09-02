@@ -171,6 +171,7 @@ function ParseSpritesheetData(lines, defaultImage)
     } --[[@as Spritesheet]]
 end
 
+---Filepath returned starts from folder "res".
 ---@param textureName string
 ---@return string filepath
 ---@return table textureData
