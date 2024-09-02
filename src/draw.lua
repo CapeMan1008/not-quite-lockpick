@@ -50,17 +50,22 @@ function GetTexture(name)
         return Textures[name]
     end
 
-    local filepath = "res/textures/" .. name .. ".png"
+    local filepath, textureData = ParseTextureData(name)
+    filepath = "res/" .. filepath
+
+    if not filepath then
+        return Textures.error
+    end
 
     local file_info = love.filesystem.getInfo(filepath, "file")
 
-    if file_info then
-        Textures[name] = love.graphics.newImage(filepath)
-        Textures[name]:setFilter("nearest", "nearest")
-        return Textures[name]
+    if not file_info then
+        return Textures.error
     end
 
-    return Textures.error
+    Textures[name] = love.graphics.newImage(filepath)
+    Textures[name]:setFilter(textureData.minFilter or "nearest", textureData.maxFilter or textureData.minFilter or "nearest")
+    return Textures[name]
 end
 
 function love.draw()
