@@ -170,3 +170,46 @@ function ParseSpritesheetData(lines, defaultImage)
         quad = love.graphics.newQuad(0,0, 1,1, imageTexture),
     } --[[@as Spritesheet]]
 end
+
+---@param textureName string
+---@return string filepath
+---@return table textureData
+function ParseTextureData(textureName)
+    local textureDataFile = love.filesystem.newFile("res/textureData.txt", "r")
+
+    if not textureDataFile then
+        error("where the hell is textureData.txt")
+    end
+
+    ---@type string
+    local currentTexture = nil
+    ---@type string
+    local filepath = nil
+    ---@type table
+    local textureData = {}
+
+    for line in textureDataFile:lines() do
+        ---@type string,string
+        local cmd, params = string.match(line, "^%s*(%S*)%s*(.*)")
+
+        if cmd == "texture" then
+            ---@type string,string
+            local name, path = string.match(params, "^([%w_]*)%s*(%S*)")
+
+            currentTexture = name
+
+            if currentTexture == name then
+                filepath = path
+            end
+        end
+
+        if currentTexture == textureName and cmd == "filter" then
+            ---@type love.FilterMode
+            local filterMode = string.match(params, "^(%S*)")
+
+            textureData.filterMode = filterMode
+        end
+    end
+
+    return filepath, textureData
+end
