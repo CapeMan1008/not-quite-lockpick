@@ -205,10 +205,18 @@ function ParseTextureData(textureName)
         end
 
         if currentTexture == textureName and cmd == "filter" then
-            ---@type love.FilterMode
-            local filterMode = string.match(params, "^(%S*)")
+            ---@type string?, string?
+            local minFilter, maxFilter = string.match(params, "^(%S*)%s*(%S*)")
 
-            textureData.filterMode = filterMode
+            if minFilter ~= "nearest" and minFilter ~= "linear" then
+                minFilter = nil
+            end
+            if maxFilter ~= "nearest" and maxFilter ~= "linear" then
+                maxFilter = nil
+            end
+
+            textureData.minFilter = minFilter
+            textureData.maxFilter = maxFilter
         end
     end
 
