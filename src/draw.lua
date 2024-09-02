@@ -204,7 +204,7 @@ function ParseTextureData(textureName)
 
             currentTexture = name
 
-            if currentTexture == name then
+            if currentTexture == textureName then
                 filepath = path
             end
         end
