@@ -50,17 +50,23 @@ function GetTexture(name)
         return Textures[name]
     end
 
-    local filepath = "res/textures/" .. name .. ".png"
+    local filepath, textureData = ParseTextureData(name)
+
+    if not filepath then
+        return Textures.error
+    end
+
+    filepath = "res/" .. filepath
 
     local file_info = love.filesystem.getInfo(filepath, "file")
 
-    if file_info then
-        Textures[name] = love.graphics.newImage(filepath)
-        Textures[name]:setFilter("nearest", "nearest")
-        return Textures[name]
+    if not file_info then
+        return Textures.error
     end
 
-    return Textures.error
+    Textures[name] = love.graphics.newImage(filepath)
+    Textures[name]:setFilter(textureData.minFilter or "nearest", textureData.maxFilter or textureData.minFilter or "nearest")
+    return Textures[name]
 end
 
 function love.draw()
@@ -169,4 +175,56 @@ function ParseSpritesheetData(lines, defaultImage)
         spriteData = spriteData,
         quad = love.graphics.newQuad(0,0, 1,1, imageTexture),
     } --[[@as Spritesheet]]
+end
+
+---Filepath returned starts from folder "res".
+---@param textureName string
+---@return string filepath
+---@return table textureData
+function ParseTextureData(textureName)
+    local textureDataFile = love.filesystem.newFile("res/textureData.txt", "r")
+
+    if not textureDataFile then
+        error("where the hell is textureData.txt")
+    end
+
+    ---@type string
+    local currentTexture = nil
+    ---@type string
+    local filepath = nil
+    ---@type table
+    local textureData = {}
+
+    for line in textureDataFile:lines() do
+        ---@type string,string
+        local cmd, params = string.match(line, "^%s*(%S*)%s*(.*)")
+
+        if cmd == "texture" then
+            ---@type string,string
+            local name, path = string.match(params, "^([%w_]*)%s*(%S*)")
+
+            currentTexture = name
+
+            if currentTexture == textureName then
+                filepath = path
+            end
+        end
+
+        if currentTexture == textureName and cmd == "filter" then
+            ---@type string?, string?
+            local minFilter, maxFilter = string.match(params, "^(%S*)%s*(%S*)")
+
+            if minFilter ~= "nearest" and minFilter ~= "linear" then
+                minFilter = nil
+            end
+            if maxFilter ~= "nearest" and maxFilter ~= "linear" then
+                maxFilter = nil
+            end
+
+            textureData.minFilter = minFilter
+            textureData.maxFilter = maxFilter
+        end
+    end
+
+    return filepath, textureData
 end
