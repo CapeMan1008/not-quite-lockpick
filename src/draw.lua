@@ -51,11 +51,12 @@ function GetTexture(name)
     end
 
     local filepath, textureData = ParseTextureData(name)
-    filepath = "res/" .. filepath
 
     if not filepath then
         return Textures.error
     end
+
+    filepath = "res/" .. filepath
 
     local file_info = love.filesystem.getInfo(filepath, "file")
 
