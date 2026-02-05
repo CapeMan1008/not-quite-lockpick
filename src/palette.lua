@@ -79,6 +79,7 @@ function ParsePaletteData(lines)
                 return tonumber(str)
             end
 
+---@diagnostic disable-next-line: param-type-mismatch
             r,g,b,a = annoyingConversion(r),annoyingConversion(g),annoyingConversion(b),annoyingConversion(a)
 
             if currentColor then
