@@ -32,14 +32,15 @@ function DrawPlayer()
         ---@type love.Texture
         local masterTexture
         if KeyStates.master.count.real < 0 then
-            masterTexture = GetTexture("sprKMasterAnti_0") --[[@as love.Texture]]
+            masterTexture = GetTexture("sprKMasterAnti_0") --[[@as {type: string, data: ImageTexture}]]
         else
-            masterTexture = GetTexture("sprKMaster_0") --[[@as love.Texture]]
+            masterTexture = GetTexture("sprKMaster_0") --[[@as {type: string, data: ImageTexture}]]
         end
 
-        local masterX, masterY = Player.x + PLAYER_WIDTH / 2 - masterTexture:getWidth() / 2, Player.y + PLAYER_HEIGHT / 2  - masterTexture:getHeight() / 2
+        local sx,sy = TextureSize(masterTexture)
+        local masterX, masterY = Player.x + PLAYER_WIDTH / 2 - sx / 2, Player.y + PLAYER_HEIGHT / 2  - sy / 2
     
-        love.graphics.draw(masterTexture, masterX, masterY)
+        DrawTexture(masterTexture, {masterX,masterY})
     end
 end
 

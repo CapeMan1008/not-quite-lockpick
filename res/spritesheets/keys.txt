@@ -1,3 +1,4 @@
+texture sheetKey
 sprite key_add_0    0  0   32 32
 sprite key_add_1    33 0   32 32
 sprite key_add_4    66 0   32 32

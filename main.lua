@@ -14,6 +14,8 @@ require "src.player"
 require "src.tilemap"
 
 function love.load()
+    LoadResources()
+
     InitializeTilemap()
 
     Tilemap[TileCoordsToId(0,8)] = 0
@@ -83,8 +85,6 @@ function love.load()
         width = 128,
         height = 96,
     } --[[@as KeyHandle]]
-
-    LoadResources()
 
     InitKeys()
     InitPlayer()

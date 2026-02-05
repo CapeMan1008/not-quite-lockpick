@@ -172,7 +172,7 @@ function DrawKey(obj)
         love.graphics.setColor(1,1,1,1)
         love.graphics.setShader()
 
-        love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
+        DrawTexture(GetTexture(key_image_prefix .. "_0"), {obj.x, obj.y})
 
         return
     end
@@ -184,16 +184,16 @@ function DrawKey(obj)
     love.graphics.setColor(Palette[obj.color] or {1,1,1})
     love.graphics.setShader()
     --end
-    love.graphics.draw(GetTexture(key_image_prefix .. "_1") --[[@as love.Texture]], obj.x, obj.y)
+    DrawTexture(GetTexture(key_image_prefix .. "_1"), {obj.x, obj.y})
     love.graphics.setShader()
 
     if obj.color == "glitch" and obj.mimic and obj.mimic ~= "glitch" then
         love.graphics.setColor(Palette[obj.mimic] or {1,1,1})
-        love.graphics.draw(GetTexture(key_image_prefix .. "_4") --[[@as love.Texture]], obj.x, obj.y)
+        DrawTexture(GetTexture(key_image_prefix .. "_4"), {obj.x, obj.y})
     end
 
     love.graphics.setColor(1,1,1,1)
-    love.graphics.draw(GetTexture(key_image_prefix .. "_0") --[[@as love.Texture]], obj.x, obj.y)
+    DrawTexture(GetTexture(key_image_prefix .. "_0"), {obj.x, obj.y})
 
     if (not obj.amount or obj.amount == CreateComplexNum(1)) and obj.key_type ~= "multiply" then
         return

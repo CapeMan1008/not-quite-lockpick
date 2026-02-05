@@ -17,7 +17,7 @@ function DrawKeyHandle(obj)
         local star_texture = GetTexture("sprStarGlow")
         if KeyStates[color].star and star_texture then
             love.graphics.setColor(1,1,0.75,1)
-            love.graphics.draw(star_texture, x+16,y+16, AnimationTimer, KEY_HANDLE_STAR_SCALE, KEY_HANDLE_STAR_SCALE, KEY_HANDLE_STAR_OFFSET_X, KEY_HANDLE_STAR_OFFSET_Y)
+            DrawTexture(star_texture, {x+16,y+16, AnimationTimer, KEY_HANDLE_STAR_SCALE, KEY_HANDLE_STAR_SCALE, KEY_HANDLE_STAR_OFFSET_X, KEY_HANDLE_STAR_OFFSET_Y})
         end
 
         -- Construct a dummy key to draw.
