@@ -1,0 +1,26 @@
+filetex error textures/error.png
+filetex sheetKey textures/sheetKey.png
+sheettex sprKey_0 keys key_add_0
+sheettex sprKey_1 keys key_add_1
+sheettex sprKey_4 keys key_add_4
+sheettex sprKeyAbs_0 keys key_exact_0
+sheettex sprKeyAbs_1 keys key_exact_1
+sheettex sprKeyAbs_4 keys key_exact_4
+sheettex sprKeyStar_0 keys key_star_0
+sheettex sprKeyStar_1 keys key_star_1
+sheettex sprKeyStar_4 keys key_star_4
+sheettex sprKeyStar2_0 keys key_unstar_0
+sheettex sprKeyStar2_1 keys key_unstar_1
+sheettex sprKeyStar2_4 keys key_unstar_4
+sheettex sprKeySquare_0 keys key_square_0
+sheettex sprKeySquare_1 keys key_square_1
+sheettex sprKeySquare_4 keys key_square_4
+filetex sprKeyAuraLock_0 textures/sprKeyAuraLock.png
+filetex sprKeyAuraUnlock_0 textures/sprKeyAuraUnlock.png
+filetex sprAura_0 textures/sprAura_0.png
+filetex sprAura_1 textures/sprAura_1.png
+filetex sprAura_2 textures/sprAura_2.png
+filetex sprBrownAura_0 textures/sprBrownAura_0.png
+filetex sprKMaster_0 textures/sprKMaster_0.png
+filetex sprKMasterAnti_0 textures/sprKMasterAnti_0.png
+filetex sprStarGlow textures/sprStarGlow.png
