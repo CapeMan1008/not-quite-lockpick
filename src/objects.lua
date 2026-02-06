@@ -79,7 +79,7 @@ end
 function IsObjectSolid(obj)
     if obj.type == "door" then
         ---@cast obj Door
-        return obj.active
+        return obj.active and not obj.ghost
     end
 
     return false

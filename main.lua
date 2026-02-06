@@ -52,6 +52,7 @@ function love.load()
         eroded = false,
         frozen = false,
         painted = false,
+        ghost = true,
     } --[[@as Door]]
     ObjectList[3] = {
         type = "key",
