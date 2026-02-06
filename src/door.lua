@@ -9,6 +9,7 @@
 ---@field frozen boolean If this door is frozen or not.
 ---@field eroded boolean If this door is eroded or not.
 ---@field painted boolean If this door is painted or not.
+---@field ghost boolean
 ---@field mimic KeyColor? The mimic color for glitched doors or locks (locks use the mimic color of the door they're attached to).
 ---@field core_switch boolean? Whether fire and ice are switched or not.
 
